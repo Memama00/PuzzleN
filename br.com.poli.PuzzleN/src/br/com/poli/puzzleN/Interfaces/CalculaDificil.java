@@ -14,10 +14,6 @@ public class CalculaDificil implements CalculaScore{
 	public int getPontos() {
 		return pontos;
 	}
-
-	public void setPontos(int pontos) {
-		this.pontos = pontos;
-	}
 	
 	public int pontos(Puzzle partida) {
 		long time = partida.getTempo(Calendar.getInstance());

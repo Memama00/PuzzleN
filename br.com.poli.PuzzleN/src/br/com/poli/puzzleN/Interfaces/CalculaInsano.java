@@ -15,7 +15,7 @@ public class CalculaInsano implements CalculaScore{
 	public int getPontos() {
 		return pontos;
 	}
-	
+
 	public int pontos(Puzzle partida) {
 		long time = partida.getTempo(Calendar.getInstance());
 		int moves = partida.getQuantidadeMovimentos();
