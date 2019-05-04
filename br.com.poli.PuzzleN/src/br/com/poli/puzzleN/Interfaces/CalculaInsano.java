@@ -6,9 +6,24 @@ import br.com.poli.puzzleN.engine.Puzzle;
 
 public class CalculaInsano implements CalculaScore{
 	
+	int pontos;
+	
+	public CalculaInsano(Puzzle partida){	
+		pontos = partida.getTabuleiro().getGrid().length * 100000;
+	}
+	
+	public int getPontos() {
+		return pontos;
+	}
+
+	public void setPontos(int pontos) {
+		this.pontos = pontos;
+	}
+	
 	public int pontos(Puzzle partida) {
 		long time = partida.getTempo(Calendar.getInstance());
 		int moves = partida.getQuantidadeMovimentos();
-		return (int) (partida.getTabuleiro().getGrid().length * 100000) / ((int)time / 10) - moves;
+		pontos /= ((int)time / 10) + moves;
+		return pontos;
 	}
 }
