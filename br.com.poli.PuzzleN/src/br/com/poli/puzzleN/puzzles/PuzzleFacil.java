@@ -8,7 +8,9 @@ public class PuzzleFacil extends Puzzle {
 
 	public PuzzleFacil(String nome) {
 		super(nome, Dificuldade.FACIL);
-		super.setScore(new CalculaFacil());
+		super.setScore(new CalculaFacil(this));
 	}
-
+	
+	
+	
 }

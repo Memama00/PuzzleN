@@ -1,7 +1,6 @@
 package br.com.poli.puzzleN.engine;
 
 import java.util.Random;
-
 import br.com.poli.puzzleN.exceptions.MovimentoInvalido;
 
 public class Tabuleiro {

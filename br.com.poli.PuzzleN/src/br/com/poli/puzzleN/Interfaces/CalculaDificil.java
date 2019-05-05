@@ -4,21 +4,24 @@ import java.util.Calendar;
 
 import br.com.poli.puzzleN.engine.Puzzle;
 
-public class CalculaDificil implements CalculaScore{
+public class CalculaDificil implements CalculaScore {
 	int pontos;
-	
+
 	public CalculaDificil(Puzzle partida) {
 		pontos = partida.getTabuleiro().getGrid().length * 100000;
 	}
-	
+
 	public int getPontos() {
 		return pontos;
 	}
-	
+
 	public int pontos(Puzzle partida) {
 		long time = partida.getTempo(Calendar.getInstance());
 		int moves = partida.getQuantidadeMovimentos();
-		pontos /=  ((int)time / 10) + moves;
-		return  pontos; 
+		if (time != 0)
+			pontos /= ((int) time / 10) + moves;
+		else
+			pontos = 0;
+		return pontos;
 	}
 }

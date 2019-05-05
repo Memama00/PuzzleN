@@ -14,16 +14,20 @@ public class PuzzleInsano extends Puzzle {
 
 	public PuzzleInsano(String nome) {
 		super(nome, Dificuldade.INSANO);
-		super.setScore(new CalculaInsano());
+		super.setScore(new CalculaInsano(this));
 		tamanho = defineK();
 	}
 
 	public int getTamanho() {
 		return tamanho;
 	}
-
+	/*
 	public void setTamanho() {
 		tamanho = defineK();
+	}
+	*/
+	public void setTamanho(int in) {
+		tamanho = in;
 	}
 	
 	public void iniciaPartida() {
@@ -37,11 +41,10 @@ public class PuzzleInsano extends Puzzle {
 		int in = 1;
 		Scanner read = new Scanner(System.in);
 		try {		
-			System.out.println("Digite um numero de 2 a 2000");
+			System.out.println("Digite um numero de 6 a 2000");
 			in =  read.nextInt();
-			if (in < 2 || in > 2000)// Sem numeros negativos dessa vez <3
+			if (in < 5 || in > 2000)// Sem numeros negativos dessa vez <3
 				throw new K_Invalido();
-			read.close();
 		} catch (K_Invalido e) {
 			System.out.println(e.getMessage() + " O valor foi automaticamente definido como maximo!");
 			in = 2000;

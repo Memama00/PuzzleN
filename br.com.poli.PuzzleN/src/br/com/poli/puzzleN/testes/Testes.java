@@ -2,8 +2,9 @@ package br.com.poli.puzzleN.testes;
 
 import br.com.poli.puzzleN.engine.*;
 import br.com.poli.puzzleN.puzzles.*;
+import java.util.Calendar;
 import br.com.poli.puzzleN.Interfaces.CalculaFacil;
-
+import br.com.poli.puzzleN.Interfaces.CalculaDificil;
 
 
 
@@ -22,8 +23,43 @@ public class Testes {
 
 	public void testePuzzle(Puzzle teste) {
 		
-		System.out.println("\nCheck Classe Puzzle:\n");
-		testGetSet(teste);
+		System.out.print("\nCheck Classe Puzzle" + teste.getDificuldade() + ":\n\n");
+		if(teste instanceof PuzzleInsano)
+			teste.iniciaPartida();
+		showTab(teste.getTabuleiro());
+		
+		System.out.println("\tCheck dificuldade:");
+		System.out.println("\t  antes: " + teste.getDificuldade());
+		teste.setDificuldade((teste instanceof PuzzleDificil)? Dificuldade.FACIL : Dificuldade.DIFICIL);
+		System.out.println("\t  depois: " + teste.getDificuldade());
+
+		System.out.println("\n\tCheck score(get/set):");
+		System.out.println("\t  antes: " + teste.getScore());
+		teste.setScore((teste instanceof PuzzleDificil)? new CalculaFacil(teste) : new CalculaDificil(teste));
+		System.out.println("\t  depos: " + teste.getScore());
+
+		System.out.println("\n\tCheck venceu(get/set):");
+		System.out.println("\t   antes: " + teste.getVenceu());
+		teste.setVenceu(true);
+		System.out.println("\t   depos: " + teste.getVenceu());
+
+		System.out.println("\n\tCheck quantidadeMovimentos(get/set):");
+		System.out.println("\t   antes: " + teste.getQuantidadeMovimentos());
+		teste.setQuantidadeMovimentos(100);
+		System.out.println("\t   depos: " + teste.getQuantidadeMovimentos());
+
+		System.out.println("\n\tCheck jogador(get/set):");
+		System.out.println("\t   antes: " + teste.getJogador().getNome());
+		teste.setJogador(new Jogador("alberto"));
+		System.out.println("\t   depos: " + teste.getJogador().getNome());
+		
+		if(teste instanceof PuzzleInsano) {
+			System.out.println("\n\tCheck tamanho(get/set):");
+			System.out.println("\t  antes: " + ((PuzzleInsano)teste).getTamanho());
+			((PuzzleInsano)teste).setTamanho(10);
+			System.out.println("\t  depos: " + ((PuzzleInsano)teste).getTamanho());
+		}
+		
 		teste.getTabuleiro().geraTabuleiro(teste.getDificuldade().getValor());
 		System.out.print("\n\tCheck isFimDeJogo, metodo.: ");
 		System.out.println(teste.isFimDeJogo());
@@ -34,7 +70,8 @@ public class Testes {
 		System.out.println("\t   Check dificuldade: " + teste.getDificuldade());
 		System.out.println("\t   Check score: " + teste.getScore());
 		System.out.println("\t   Check venceu: " + teste.getVenceu());
-		System.out.println("\t   Check tempo: " + teste.getTempo() + "\n");
+		System.out.println("\t   Check tempo: " + teste.getTempo(Calendar.getInstance()) + "\n");
+		
 	}
 
 	public void testeClass_Tabuleiro() {
@@ -43,7 +80,7 @@ public class Testes {
 		System.out.println("\nCheck Classe Tabuleiro:");
 
 		System.out.println("\n\tCheck isTabuleiroOrdenado, metodo:\n");
-		teste.geraTabuleiro(Dificuldade.FACIL.getValor());
+		teste.geraTabuleiro((int)Math.sqrt(Dificuldade.FACIL.getValor()+1));
 		showTab(teste);
 		System.out.println("\t   antes: " + teste.isTabuleiroOrdenado(Dificuldade.FACIL));
 		teste.getGrid()[1][1].setValor(9);
@@ -51,7 +88,7 @@ public class Testes {
 		System.out.println("\t   depois: " + teste.isTabuleiroOrdenado(Dificuldade.FACIL));
 
 		System.out.println("\n\tCheck executaMovimento, metodo:\n");
-		teste.geraTabuleiro(Dificuldade.FACIL.getValor());
+		teste.geraTabuleiro((int)Math.sqrt(Dificuldade.FACIL.getValor()+1));
 		System.out.println("\t   antes: ");
 		showTab(teste);
 		teste.executaMovimento(1, 2, "direita");
@@ -91,45 +128,8 @@ public class Testes {
 
 		System.out.print("\tCheck nome(get/set):\n");
 		System.out.println("\t   antes: " + teste.getNome());
-		teste.setNome("euNAguentoMaisEstudar ;-;");
+		teste.setNome("eu não aguento mais estudar ;-;");
 		System.out.println("\t   depois: " + teste.getNome());
 	}
 	
-	private void testGetSet(Puzzle teste){
-
-		
-		System.out.println("\tCheck dificuldade:");
-		System.out.println("\t  antes: " + teste.getDificuldade());
-		teste.setDificuldade(Dificuldade.DIFICIL);
-		System.out.println("\t  depois: " + teste.getDificuldade());
-
-		System.out.println("\n\tCheck score(get/set):");
-		System.out.println("\t  antes: " + teste.getScore());
-		teste.setScore(new CalculaFacil(teste));
-		System.out.println("\t  depos: " + teste.getScore());
-
-		System.out.println("\n\tCheck venceu(get/set):");
-		System.out.println("\t   antes: " + teste.getVenceu());
-		teste.setVenceu(true);
-		System.out.println("\t   depos: " + teste.getVenceu());
-
-		System.out.println("\n\tCheck quantidadeMovimentos(get/set):");
-		System.out.println("\t   antes: " + teste.getQuantidadeMovimentos());
-		teste.setQuantidadeMovimentos(100);
-		System.out.println("\t   depos: " + teste.getQuantidadeMovimentos());
-
-		System.out.println("\n\tCheck jogador(get/set):");
-		System.out.println("\t   antes: " + teste.getJogador().getNome());
-		teste.setJogador(new Jogador("alberto"));
-		System.out.println("\t   depos: " + teste.getJogador().getNome());
-		
-		if(teste instanceof PuzzleInsano) {
-			System.out.println("\n\tCheck tamanho(get/set):");
-			System.out.println("\t  antes: " + ((PuzzleInsano)teste).getTamanho() );
-			((PuzzleInsano)teste).setTamanho(10);
-			System.out.println("\t  depos: " + ((PuzzleInsano)teste).getTamanho() );
-		}
-
-	}
 }
-

@@ -4,14 +4,14 @@ import java.util.Calendar;
 
 import br.com.poli.puzzleN.engine.Puzzle;
 
-public class CalculaMedio implements CalculaScore{
+public class CalculaMedio implements CalculaScore {
 	int pontos;
-	
-	public CalculaMedio(Puzzle partida){
-		
+
+	public CalculaMedio(Puzzle partida) {
+
 		pontos = partida.getTabuleiro().getGrid().length * 100000;
 	}
-	
+
 	public int getPontos() {
 		return pontos;
 	}
@@ -19,7 +19,10 @@ public class CalculaMedio implements CalculaScore{
 	public int pontos(Puzzle partida) {
 		long time = partida.getTempo(Calendar.getInstance());
 		int moves = partida.getQuantidadeMovimentos();
-		pontos /= ((int)time / 10) + moves;
+		if (time != 0)
+			pontos /= ((int) time / 10) + moves;
+		else
+			pontos = 0;
 		return pontos;
 	}
 }
