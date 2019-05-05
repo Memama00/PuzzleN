@@ -24,8 +24,17 @@ public class Testes {
 	public void testePuzzle(Puzzle teste) {
 		
 		System.out.print("\nCheck Classe Puzzle" + teste.getDificuldade() + ":\n\n");
+		System.out.println("\n\tCheck iniciaPartida, metodo.:");
+		teste.iniciaPartida();
+		System.out.println("\t   Check quantidade de movimentos: " + teste.getQuantidadeMovimentos());
+		System.out.println("\t   Check dificuldade: " + teste.getDificuldade());
 		if(teste instanceof PuzzleInsano)
-			teste.iniciaPartida();
+			System.out.println("\t   Check tamanho: " + ((PuzzleInsano)teste).getTamanho());
+		System.out.println("\t   Check score: " + teste.getScore().pontos(teste));
+		System.out.println("\t   Check venceu: " + teste.getVenceu());
+		System.out.println("\t   Check tempo: " + teste.getTempo(Calendar.getInstance()) + "\n\n");
+		
+		System.out.println("\t  Tabuleiro:\n");
 		showTab(teste.getTabuleiro());
 		
 		System.out.println("\tCheck dificuldade:");
@@ -63,15 +72,7 @@ public class Testes {
 		teste.getTabuleiro().geraTabuleiro(teste.getDificuldade().getValor());
 		System.out.print("\n\tCheck isFimDeJogo, metodo.: ");
 		System.out.println(teste.isFimDeJogo());
-
-		System.out.println("\n\tCheck iniciaPartida, metodo.:");
-		teste.iniciaPartida();
-		System.out.println("\t   Check quantidade de movimentos: " + teste.getQuantidadeMovimentos());
-		System.out.println("\t   Check dificuldade: " + teste.getDificuldade());
-		System.out.println("\t   Check score: " + teste.getScore());
-		System.out.println("\t   Check venceu: " + teste.getVenceu());
-		System.out.println("\t   Check tempo: " + teste.getTempo(Calendar.getInstance()) + "\n");
-		
+	
 	}
 
 	public void testeClass_Tabuleiro() {

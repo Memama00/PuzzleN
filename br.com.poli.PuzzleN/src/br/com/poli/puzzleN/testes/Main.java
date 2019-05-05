@@ -1,7 +1,5 @@
 package br.com.poli.puzzleN.testes;
 
-import java.io.File;
-
 import br.com.poli.puzzleN.puzzles.*;
 
 public class Main {

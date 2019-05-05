@@ -19,7 +19,7 @@ public class CalculaMedio implements CalculaScore {
 	public int pontos(Puzzle partida) {
 		long time = partida.getTempo(Calendar.getInstance());
 		int moves = partida.getQuantidadeMovimentos();
-		if (time != 0)
+		if (time > 2)
 			pontos /= ((int) time / 10) + moves;
 		else
 			pontos = 0;
