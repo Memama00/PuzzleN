@@ -5,7 +5,7 @@ import java.util.Calendar;
 import br.com.poli.puzzleN.engine.Puzzle;
 
 public class CalculaMedio implements CalculaScore {
-	int pontos;
+	private int pontos;
 
 	public CalculaMedio(Puzzle partida) {
 
