@@ -2,7 +2,6 @@ package br.com.poli.puzzleN.engine;
 
 import java.util.Calendar;
 import java.util.Date;
-
 import br.com.poli.puzzleN.Interfaces.CalculaScore;
 import br.com.poli.puzzleN.exceptions.TempoExcedido;
 
@@ -83,15 +82,15 @@ public class Puzzle {
 		this.dificuldade = dificuldade;
 	}
 
+	public Dificuldade getDificuldade() {
+		return dificuldade;
+	}
+	
 	public void iniciaPartida() {
 		quantidadeMovimentos = 0;
 		venceu = false;
 		tempo.setTime(new Date());
 		gridPuzzle.geraTabuleiro((int)Math.sqrt(dificuldade.getValor() + 1));
-	}
-
-	public Dificuldade getDificuldade() {
-		return dificuldade;
 	}
 
 	public void resolveTabuleiro() {

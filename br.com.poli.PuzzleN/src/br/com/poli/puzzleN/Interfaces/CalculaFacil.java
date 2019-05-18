@@ -5,8 +5,7 @@ import java.util.Calendar;
 import br.com.poli.puzzleN.engine.Puzzle;
 
 public class CalculaFacil implements CalculaScore {
-
-	int pontos;
+	private int pontos;
 
 	public CalculaFacil(Puzzle partida) {
 		pontos = partida.getTabuleiro().getGrid().length * 100000;

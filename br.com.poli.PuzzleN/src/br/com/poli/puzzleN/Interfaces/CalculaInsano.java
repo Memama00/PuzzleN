@@ -5,9 +5,8 @@ import java.util.Calendar;
 import br.com.poli.puzzleN.engine.Puzzle;
 
 public class CalculaInsano implements CalculaScore {
-
-	int pontos;
-
+	private int pontos;
+	
 	public CalculaInsano(Puzzle partida) {
 		pontos = partida.getTabuleiro().getGrid().length * 100000;
 	}
