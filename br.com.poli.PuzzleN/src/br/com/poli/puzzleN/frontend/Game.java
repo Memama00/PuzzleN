@@ -1,18 +1,22 @@
 package br.com.poli.puzzleN.frontend;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import br.com.poli.puzzleN.puzzles.*;
+import br.com.poli.puzzleN.engine.*;
 
 public class Game extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+	private Puzzle partida;
 	private JPanel contentPane;
+	private JButton[] tabuleiro;
 
 	/**
 	 * Launch the application.
@@ -34,62 +38,39 @@ public class Game extends JFrame {
 	 * Create the frame.
 	 */
 	public Game() {
+		this.partida = new PuzzleFacil("ronaldo");
+		int k = this.partida.getTabuleiro().getGrid().length;
+		this.partida.iniciaPartida();
+		this.tabuleiro = new JButton[k * k];
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 621, 400);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(1, 0, 0, 0));
-		
+
 		JPanel panel = new JPanel();
 		contentPane.add(panel);
 		panel.setLayout(null);
-		
-		JLabel lblNome = new JLabel("nome: ");
-		lblNome.setBounds(31, 303, 46, 14);
+		panel.setBackground(new Color(175, 238, 238));
+
+		JLabel lblNome = new JLabel("nome: " + partida.getJogador().getNome());
+		lblNome.setBounds(31, 303, 8 * (6 + partida.getJogador().getNome().length()), 20);
 		panel.add(lblNome);
-		
+
 		JButton btnDesistir = new JButton("desistir");
 		btnDesistir.setBounds(465, 299, 89, 23);
 		panel.add(btnDesistir);
-		
-		
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(132, 47, 89, 23);
-		panel.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("New button");
-		btnNewButton_1.setBounds(132, 100, 89, 23);
-		panel.add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("New button");
-		btnNewButton_2.setBounds(132, 157, 89, 23);
-		panel.add(btnNewButton_2);
-		
-		JButton btnNewButton_3 = new JButton("New button");
-		btnNewButton_3.setBounds(245, 47, 89, 23);
-		panel.add(btnNewButton_3);
-		
-		JButton btnNewButton_4 = new JButton("New button");
-		btnNewButton_4.setBounds(245, 100, 89, 23);
-		panel.add(btnNewButton_4);
-		
-		JButton btnNewButton_5 = new JButton("New button");
-		btnNewButton_5.setBounds(245, 157, 89, 23);
-		panel.add(btnNewButton_5);
-		
-		JButton btnNewButton_6 = new JButton("New button");
-		btnNewButton_6.setBounds(368, 47, 89, 23);
-		panel.add(btnNewButton_6);
-		
-		JButton btnNewButton_7 = new JButton("New button");
-		btnNewButton_7.setBounds(368, 100, 89, 23);
-		panel.add(btnNewButton_7);
-		
-		JButton btnNewButton_8 = new JButton("New button");
-		btnNewButton_8.setBounds(368, 157, 89, 23);
-		panel.add(btnNewButton_8);
+
+		for (int y = 0; y < k; y++) {
+			for (int x = 0; x < k; x++) {
+				if (partida.getTabuleiro().getGrid()[y][x].getValor() == 0)
+					continue;
+				this.tabuleiro[(y * k) + x] = new BlocoButton(partida, x, y);
+				panel.add(this.tabuleiro[(y * k) + x]);
+			}
+		}
 	}
 
 }

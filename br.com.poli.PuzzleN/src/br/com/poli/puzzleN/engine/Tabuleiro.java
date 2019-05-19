@@ -21,17 +21,18 @@ public class Tabuleiro {
 		b.setValor(trade);
 	}
 
-	private boolean isMovimentoValido(Bloco a) throws MovimentoInvalido{
+	private boolean isMovimentoValido(Bloco a) throws Exception{
 		boolean check = (a != null && a.getValido());
-		if(check) throw new MovimentoInvalido();
+		if(!check) throw new MovimentoInvalido();
 		return check;
 	}
 
-	public void executaMovimento(int x, int y, String movimento) {
+	public boolean executaMovimento(int x, int y, String movimento){
 		try {
 			if (x < 0 || y < 0)
 				throw new MovimentoInvalido();
-			switch (movimento) {
+			
+				switch (movimento) {
 
 			case "direita":
 				if (isMovimentoValido(grid[y][x + 1])) {
@@ -66,8 +67,10 @@ public class Tabuleiro {
 			default:
 				throw new MovimentoInvalido();
 			}
-		} catch (MovimentoInvalido e) {
+			return true;
+		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage() + "\n tente um movimento valido");
+			return false;
 		}
 
 	}

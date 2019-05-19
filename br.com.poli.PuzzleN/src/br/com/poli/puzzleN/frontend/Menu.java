@@ -1,8 +1,5 @@
-package br.com.poli.puzzleN.frontend;
-
-import java.awt.BorderLayout;
+/*package br.com.poli.puzzleN.frontend;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -17,12 +14,13 @@ import javax.swing.JButton;
 
 public class Menu extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField;
 
 	/**
-	 * Launch the application.
-	 */
+	 * //Launch the application.
+	 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -37,8 +35,8 @@ public class Menu extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
-	 */
+	 * //Create the frame.
+	 
 	public Menu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 621, 450);
@@ -62,7 +60,7 @@ public class Menu extends JFrame {
 		panel.add(lblNivel);
 		
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"selecionar nivel..", "facil", "medio ", "dificil"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"selecionar nivel..", "facil", "medio ", "dificil", "insano"}));
 		comboBox.setBounds(200, 185, 182, 20);
 		panel.add(comboBox);
 		
@@ -84,3 +82,4 @@ public class Menu extends JFrame {
 		panel.add(btnIniciar);
 	}
 }
+*/

@@ -92,13 +92,14 @@ public class Testes {
 		teste.geraTabuleiro((int)Math.sqrt(Dificuldade.FACIL.getValor()+1));
 		System.out.println("\t   antes: ");
 		showTab(teste);
+		try {
 		teste.executaMovimento(1, 2, "direita");
 		System.out.println("\n\t   depois: ");
 		showTab(teste);
 		teste.executaMovimento(1, 1, "baixo");
 		System.out.println("\n\t   depois: ");
 		showTab(teste);
-		
+		}catch(Exception e){};
 		System.out.print("\n\tCheck grid(get):\n");
 		System.out.println("\t   antes: " + teste.getGrid()[0][0]);
 		System.out.println("\t   depos: " + teste.getGrid()[2][2]);

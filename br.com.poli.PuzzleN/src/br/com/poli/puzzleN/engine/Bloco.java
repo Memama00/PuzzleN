@@ -5,9 +5,10 @@ public class Bloco {
 	private int valor;
 	private boolean valido;
 
+
 	public Bloco(int numero) {
 		this.valor = numero;
-		valido = (numero == 0) ? true : false;
+		this.valido = (numero == 0) ? true : false;
 	}
 
 	public int getValor() {
@@ -19,8 +20,8 @@ public class Bloco {
 	}
 
 	public void setValor(int numero) {
-		valido = (numero == 0) ? true : false;
-		valor = numero;
+		this.valido = (numero == 0) ? true : false;
+		this.valor = numero;
 	}
 
 	public void setValido(boolean valido) {
