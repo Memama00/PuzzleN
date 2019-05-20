@@ -55,6 +55,10 @@ public class BlocoButton extends JButton {
         public void actionPerformed(ActionEvent e) {
             this.moveButton(e.getSource());
             showTab(partida.getTabuleiro());
+            int k = partida.getTabuleiro().getGrid().length - 1;
+            if (partida.getTabuleiro().getGrid()[k][k].getValor() == 0)
+                if (partida.getTabuleiro().isTabuleiroOrdenado(partida.getDificuldade()))
+                    System.out.println("ganhou! pontos:" + partida.getScore().pontos(partida));
         }
 
         private void moveButton(Object in) {

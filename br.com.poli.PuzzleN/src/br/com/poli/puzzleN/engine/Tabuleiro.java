@@ -21,18 +21,19 @@ public class Tabuleiro {
 		b.setValor(trade);
 	}
 
-	private boolean isMovimentoValido(Bloco a) throws Exception{
+	private boolean isMovimentoValido(Bloco a) throws Exception {
 		boolean check = (a != null && a.getValido());
-		if(!check) throw new MovimentoInvalido();
+		if (!check)
+			throw new MovimentoInvalido();
 		return check;
 	}
 
-	public boolean executaMovimento(int x, int y, String movimento){
+	public boolean executaMovimento(int x, int y, String movimento) {
 		try {
 			if (x < 0 || y < 0)
 				throw new MovimentoInvalido();
-			
-				switch (movimento) {
+
+			switch (movimento) {
 
 			case "direita":
 				if (isMovimentoValido(grid[y][x + 1])) {
@@ -79,7 +80,7 @@ public class Tabuleiro {
 		boolean check = false;
 		int i, j = 0;
 		for (i = 0; i < grid.length; i++) {
-			for (j = 0; j < grid.length; j++) {
+			for (j = 0; i != grid.length - 1 ? j < grid.length : j < grid.length - 1; j++) {
 				check = (grid[i][j].getValor() != ((i * grid.length) + j + 1));
 				if (check)
 					break;
@@ -88,7 +89,7 @@ public class Tabuleiro {
 			if (check)
 				break;
 		}
-		return (((i * grid.length) + j) == dificuldade.getValor());
+			return !check;
 	}
 
 	private boolean fillGrid(int y, int x, int i) {
@@ -97,17 +98,17 @@ public class Tabuleiro {
 
 		if (check)
 			grid[y][x] = new Bloco(i);
-		
+
 		return check;
 	}
 
 	public void geraTabuleiro(int k) {
 		Random r = new Random();
-		this.grid = new Bloco[k][k];		
+		this.grid = new Bloco[k][k];
 		int i = 0;
 		while (i <= ((k * k) - 1)) {
-		if (fillGrid(r.nextInt(grid.length), r.nextInt(grid.length), i))
-			i++;
+			if (fillGrid(r.nextInt(grid.length), r.nextInt(grid.length), i))
+				i++;
 		}
 	}
 }

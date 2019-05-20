@@ -94,9 +94,15 @@ public class Puzzle {
 	}
 
 	public void resolveTabuleiro() throws Error {
-		this.setTempo(Calendar.getInstance());
-		if (this.getTempo(Calendar.getInstance()) > 200.000)
-			throw new TempoExcedido();
+		// this.setTempo(Calendar.getInstance());
+		// if (this.getTempo(Calendar.getInstance()) > 200.000)
+		// 	throw new TempoExcedido();
+		int k = gridPuzzle.getGrid().length;
+		for(int i = 0; i < k; i ++)
+			for(int j = 0; j < k; j++){
+				gridPuzzle.getGrid()[i][j].setValor(((i*k) + j) + 1);
+			}
+		gridPuzzle.getGrid()[k - 1][k - 1].setValor(0);
 	}
 
 	private boolean inRange(int in, int min, int max) {
