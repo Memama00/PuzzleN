@@ -9,7 +9,7 @@ public class BackGround extends JLabel {
 
 	public BackGround() {
 		super();
-		super.setIcon(new ImageIcon("giphy.gif"));
+		super.setIcon(new ImageIcon("/home/gustavo/Área de Trabalho/PuzzleN/br.com.poli.PuzzleN/giphy.gif"));
 		super.setBounds(0, 0, 820, 600);
 		super.setHorizontalAlignment(SwingConstants.CENTER);
 

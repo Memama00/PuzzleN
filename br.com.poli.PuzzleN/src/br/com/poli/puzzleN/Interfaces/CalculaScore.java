@@ -4,4 +4,5 @@ import br.com.poli.puzzleN.engine.Puzzle;
 
 public interface CalculaScore {
 	int pontos(Puzzle partida);
+	int getPontos();
 }

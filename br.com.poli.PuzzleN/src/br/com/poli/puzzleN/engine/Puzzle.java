@@ -7,7 +7,7 @@ import br.com.poli.puzzleN.Interfaces.CalculaScore;
 import br.com.poli.puzzleN.exceptions.*;
 
 public class Puzzle implements Serializable{
-	private static char slash;
+	private static char slash = '/';
 	private static final long serialVersionUID = -1936167855961132987L;
 	private Jogador jogador;
 	private Tabuleiro gridPuzzle;

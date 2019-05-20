@@ -1,28 +1,39 @@
 package br.com.poli.puzzleN.frontend;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import br.com.poli.puzzleN.engine.*;
-import java.awt.event.*;
-
+import br.com.poli.puzzleN.engine.Puzzle;
+import br.com.poli.puzzleN.engine.Tabuleiro;
 public class BlocoButton extends JButton {
 
     private static final long serialVersionUID = 1L;
     int xButton;
     int yButton;
-    BlocoButton me;
 
     public BlocoButton(int numero) {
         super(Integer.toString(numero));
-        me = this;
+        this.setForeground(Color.WHITE);
+		this.setBackground(Color.BLACK);
     }
 
-    public BlocoButton(Puzzle partida, int x, int y) {
+    public BlocoButton(Puzzle partida, PuzzleFrame frame, int x, int y) {
         super(Integer.toString(partida.getTabuleiro().getGrid()[y][x].getValor()));
         xButton = x;
         yButton = y;
-        me = this;
-        this.setBounds(131 + (x * 50), 47 + (y * 50), 50, 50);
-        this.addActionListener(new PressBlock(partida));
+        float middleX = (float) (frame.getSize().getWidth()/ 2);
+        float middleY = (float) (frame.getSize().getHeight()/ 2);
+        int blocoSize = 300 /partida.getTabuleiro().getGrid().length;
+        int tab_size = partida.getTabuleiro().getGrid().length * blocoSize;
+        float startX = middleX - (tab_size / 2);
+        float startY = middleY - (tab_size / 2) - 30;
+        this.setBounds((int) (startX + (blocoSize * x)), (int) (startY + (blocoSize * y)), blocoSize, blocoSize);
+        this.setFont(new Font(this.getFont().getName(),Font.BOLD, blocoSize/5));
+        this.addActionListener(new PressBlock(partida, frame));
+        this.setForeground(Color.WHITE);
+        this.setBackground(Color.BLACK);
     }
 
     public void setNumero(int in) {
@@ -47,9 +58,10 @@ public class BlocoButton extends JButton {
 
     private class PressBlock implements ActionListener {
         Puzzle partida;
-
-        public PressBlock(Puzzle partida) {
+        PuzzleFrame frame;
+        public PressBlock(Puzzle partida, PuzzleFrame frame) {
             this.partida = partida;
+            this.frame = frame;
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -57,34 +69,34 @@ public class BlocoButton extends JButton {
             showTab(partida.getTabuleiro());
             int k = partida.getTabuleiro().getGrid().length - 1;
             if (partida.getTabuleiro().getGrid()[k][k].getValor() == 0)
-                if (partida.getTabuleiro().isTabuleiroOrdenado(partida.getDificuldade()))
-                    System.out.println("ganhou! pontos:" + partida.getScore().pontos(partida));
+                if (partida.isFimDeJogo())
+                    frame.updateTela(new End(frame));
         }
 
         private void moveButton(Object in) {
-            if (in == me) {
+            if (in == BlocoButton.this) {
                 try {
                     String sentido = partida.smartMove(xButton, yButton);
                     System.out.println("Selected:");
-                    System.out.println("X:" + me.getX() + "/[x]:" + xButton);
-                    System.out.println("Y:" + me.getY() + "/[Y]:" + yButton);
+                    System.out.println("X:" + BlocoButton.this.getX() + "/[x]:" + xButton);
+                    System.out.println("Y:" + BlocoButton.this.getY() + "/[Y]:" + yButton);
                     System.out.println("sentido:" + sentido);
                     switch (sentido) {
                     case "cima":
-                        me.setLocation(me.getX(), me.getY() - 50);
-                        me.setYButton(me.getYButton() - 1);
+                        BlocoButton.this.setLocation(BlocoButton.this.getX(), BlocoButton.this.getY() - BlocoButton.this.getWidth());
+                        BlocoButton.this.setYButton(BlocoButton.this.getYButton() - 1);
                         break;
                     case "baixo":
-                        me.setLocation(me.getX(), me.getY() + 50);
-                        me.setYButton(me.getYButton() + 1);
+                        BlocoButton.this.setLocation(BlocoButton.this.getX(), BlocoButton.this.getY() + BlocoButton.this.getWidth());
+                        BlocoButton.this.setYButton(BlocoButton.this.getYButton() + 1);
                         break;
                     case "direita":
-                        me.setLocation(me.getX() + 50, me.getY());
-                        me.setXButton(me.getXButton() + 1);
+                        BlocoButton.this.setLocation(BlocoButton.this.getX() + BlocoButton.this.getHeight(), BlocoButton.this.getY());
+                        BlocoButton.this.setXButton(BlocoButton.this.getXButton() + 1);
                         break;
                     case "esquerda":
-                        me.setLocation(me.getX() - 50, me.getY());
-                        me.setXButton(me.getXButton() - 1);
+                        BlocoButton.this.setLocation(BlocoButton.this.getX() - BlocoButton.this.getHeight(), BlocoButton.this.getY());
+                        BlocoButton.this.setXButton(BlocoButton.this.getXButton() - 1);
                         break;
                     default:
                     }
