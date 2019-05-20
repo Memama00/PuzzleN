@@ -7,7 +7,7 @@ import javax.swing.SwingConstants;
 public class BackGround extends JLabel {
 	public BackGround() {
 		super();
-		super.setIcon(new ImageIcon("C:\\Users\\vinic\\OneDrive\\\u00C1rea de Trabalho\\PuzzleN-master\\giphy.gif"));
+		super.setIcon(new ImageIcon("C:\\Users\\ester\\Desktop\\PuzzleN-master\\br.com.poli.PuzzleN\\src\\br\\com\\poli\\puzzleN\\frontend\\giphy.gif.gif"));
 		super.setBounds(0, 0, 820, 600);
 		super.setHorizontalAlignment(SwingConstants.CENTER);
 
