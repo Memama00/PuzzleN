@@ -22,7 +22,7 @@ public class PuzzleFrame extends JFrame {
         
         super();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(0, 0, 620, 450);
+        setBounds(0, 0, 820, 600);
         setLocationRelativeTo(null);
         
         this.tela = new Menu( partida, this);
@@ -30,7 +30,6 @@ public class PuzzleFrame extends JFrame {
         setContentPane(fundo);
         fundo.setLayout(new GridLayout(1, 0, 0, 0));
         fundo.add(tela);
-        tela.setBackground(new Color(175, 238, 238));
         tela.setLayout(null);
         
     }

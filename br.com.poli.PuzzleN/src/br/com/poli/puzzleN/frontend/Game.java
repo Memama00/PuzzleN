@@ -15,11 +15,9 @@ public class Game extends JPanel {
 	SurrenderButton btnDesistir;
 
 	public Game(Puzzle partida, PuzzleFrame frame) {
-
 		this.partida = partida;
 		this.partida.iniciaPartida();
 		this.setLayout(null);
-		this.setBackground(new Color(175, 238, 238));
 		int k = this.partida.getTabuleiro().getGrid().length;
 		this.tabuleiro = new JButton[k * k];
 		lblNome = new JLabel("nome: " + partida.getJogador().getNome());
@@ -38,6 +36,9 @@ public class Game extends JPanel {
 				this.add(this.tabuleiro[(y * k) + x]);
 			}
 		}
+		
+		JLabel backGround = new BackGround();
+		this.add(backGround);
 	}
 	Puzzle getPartida(){
 		return this.partida;

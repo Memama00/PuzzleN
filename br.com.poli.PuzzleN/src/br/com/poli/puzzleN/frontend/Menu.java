@@ -32,39 +32,47 @@ public class Menu extends JPanel {
 		this.partida = partida;
 		JLabel lblPuzzleN = new JLabel("PUZZLE N");
 		lblPuzzleN.setFont(new Font("Franklin Gothic Medium", Font.PLAIN, 56));
-		lblPuzzleN.setBounds(171, 59, 278, 56);
-		lblPuzzleN.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblPuzzleN.setBounds(171 + 95, 59, 278, 56);
+		lblPuzzleN.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblPuzzleN);
 
 		JLabel lblNOME = new JLabel("NOME");
-		lblNOME.setBounds(287, 130, 46, 14);
-		lblNOME.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblNOME.setBounds(287+ 95, 130, 46, 14);
+		lblNOME.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblNOME);
 
 		textField = new JTextField("Digite seu nome...");
-		textField.setBounds(235, 150, 150, 20);
+		textField.setBounds(235+ 95, 150, 150, 20);
 		this.add(textField);
 		textField.setColumns(20);
+		textField.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel lblNivel = new JLabel("NIVEL");
-		lblNivel.setBounds(286, 186, 48, 14);
+		lblNivel.setBounds(286+ 95, 186, 48, 14);
 		lblNivel.setHorizontalTextPosition(SwingConstants.CENTER);
+		lblNivel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblNivel);
 
 		final JComboBox dificuldade = new JComboBox();
 		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil" }));
-		dificuldade.setBounds(240, 195 + 10, 140, 20);
+		dificuldade.setBounds(240 + 95, 195 + 10, 140, 20);
 		dificuldade.addActionListener(new SelectedDificult());
+		dificuldade.setAlignmentX(SwingConstants.CENTER);
 		this.add(dificuldade);
 
 		JButton btnRanking = new JButton("ranking");
-		btnRanking.setBounds(265, 255, 89, 23);
+		btnRanking.setBounds(265 + 95, 255, 89, 23);
+		btnRanking.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(btnRanking);
 
 		startButton = new JButton("iniciar");
-		startButton.setBounds(265, 303, 89, 23);
+		startButton.setBounds(265 + 95, 303, 89, 23);
 		startButton.addActionListener(new StartGame(frame));
+		startButton.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(startButton);
+		
+		JLabel backGround = new BackGround();
+		this.add(backGround);
 
 	}
 
