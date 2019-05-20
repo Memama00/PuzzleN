@@ -1,11 +1,14 @@
 package br.com.poli.puzzleN.engine;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import br.com.poli.puzzleN.Interfaces.CalculaScore;
 import br.com.poli.puzzleN.exceptions.*;
 
-public class Puzzle {
+public class Puzzle implements Serializable{
+	private static char slash;
+	private static final long serialVersionUID = -1936167855961132987L;
 	private Jogador jogador;
 	private Tabuleiro gridPuzzle;
 	private int quantidadeMovimentos;
@@ -22,6 +25,14 @@ public class Puzzle {
 		tempo = Calendar.getInstance();
 		tempo.setTime(new Date());
 		gridPuzzle = new Tabuleiro((int) Math.sqrt(dificuldade.getValor() + 1));
+	}
+	
+	public static char getSlash() {
+		return slash;
+	}
+
+	public static void setSlash(char slash) {
+		Puzzle.slash = slash;
 	}
 
 	public Jogador getJogador() {

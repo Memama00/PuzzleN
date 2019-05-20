@@ -10,6 +10,7 @@ import br.com.poli.puzzleN.exceptions.K_Invalido;
 
 public class PuzzleInsano extends Puzzle {
 
+	private static final long serialVersionUID = 1L;
 	private int tamanho;
 
 	public PuzzleInsano(String nome) {

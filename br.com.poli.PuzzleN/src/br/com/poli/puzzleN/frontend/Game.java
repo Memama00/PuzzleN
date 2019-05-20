@@ -1,6 +1,5 @@
 package br.com.poli.puzzleN.frontend;
 
-import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;

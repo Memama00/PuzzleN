@@ -6,6 +6,8 @@ import br.com.poli.puzzleN.engine.Puzzle;
 
 public class PuzzleMedio extends Puzzle {
 
+	private static final long serialVersionUID = 1L;
+
 	public PuzzleMedio(String nome) {
 		super(nome, Dificuldade.MEDIO);
 		super.setScore(new CalculaMedio(this));

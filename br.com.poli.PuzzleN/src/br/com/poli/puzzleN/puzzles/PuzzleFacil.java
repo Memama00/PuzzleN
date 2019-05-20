@@ -6,6 +6,8 @@ import br.com.poli.puzzleN.engine.Puzzle;
 
 public class PuzzleFacil extends Puzzle {
 
+	private static final long serialVersionUID = 1L;
+
 	public PuzzleFacil(String nome) {
 		super(nome, Dificuldade.FACIL);
 		super.setScore(new CalculaFacil(this));
