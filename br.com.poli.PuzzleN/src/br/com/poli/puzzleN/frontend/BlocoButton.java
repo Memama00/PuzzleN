@@ -15,14 +15,18 @@ public class BlocoButton extends JButton {
 
     public BlocoButton(int numero) {
         super(Integer.toString(numero));
+<<<<<<< HEAD
         this.setForeground(Color.WHITE);
 		this.setBackground(Color.BLACK);
+=======
+>>>>>>> master
     }
 
     public BlocoButton(Puzzle partida, PuzzleFrame frame, int x, int y) {
         super(Integer.toString(partida.getTabuleiro().getGrid()[y][x].getValor()));
         xButton = x;
         yButton = y;
+<<<<<<< HEAD
         float middleX = (float) (frame.getSize().getWidth()/ 2);
         float middleY = (float) (frame.getSize().getHeight()/ 2);
         int blocoSize = 300 /partida.getTabuleiro().getGrid().length;
@@ -34,6 +38,10 @@ public class BlocoButton extends JButton {
         this.addActionListener(new PressBlock(partida, frame));
         this.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
+=======
+        this.setBounds(131 + (x * 50), 47 + (y * 50), 50, 50);
+        this.addActionListener(new PressBlock(partida, frame));
+>>>>>>> master
     }
 
     public void setNumero(int in) {
@@ -70,7 +78,12 @@ public class BlocoButton extends JButton {
             int k = partida.getTabuleiro().getGrid().length - 1;
             if (partida.getTabuleiro().getGrid()[k][k].getValor() == 0)
                 if (partida.isFimDeJogo())
+<<<<<<< HEAD
                     frame.updateTela(new End(frame));
+=======
+                    frame.updateTela(new End(partida, frame));
+                else partida.resolveTabuleiro();
+>>>>>>> master
         }
 
         private void moveButton(Object in) {
@@ -83,6 +96,7 @@ public class BlocoButton extends JButton {
                     System.out.println("sentido:" + sentido);
                     switch (sentido) {
                     case "cima":
+<<<<<<< HEAD
                         BlocoButton.this.setLocation(BlocoButton.this.getX(), BlocoButton.this.getY() - BlocoButton.this.getWidth());
                         BlocoButton.this.setYButton(BlocoButton.this.getYButton() - 1);
                         break;
@@ -96,6 +110,21 @@ public class BlocoButton extends JButton {
                         break;
                     case "esquerda":
                         BlocoButton.this.setLocation(BlocoButton.this.getX() - BlocoButton.this.getHeight(), BlocoButton.this.getY());
+=======
+                        BlocoButton.this.setLocation(BlocoButton.this.getX(), BlocoButton.this.getY() - 50);
+                        BlocoButton.this.setYButton(BlocoButton.this.getYButton() - 1);
+                        break;
+                    case "baixo":
+                        BlocoButton.this.setLocation(BlocoButton.this.getX(), BlocoButton.this.getY() + 50);
+                        BlocoButton.this.setYButton(BlocoButton.this.getYButton() + 1);
+                        break;
+                    case "direita":
+                        BlocoButton.this.setLocation(BlocoButton.this.getX() + 50, BlocoButton.this.getY());
+                        BlocoButton.this.setXButton(BlocoButton.this.getXButton() + 1);
+                        break;
+                    case "esquerda":
+                        BlocoButton.this.setLocation(BlocoButton.this.getX() - 50, BlocoButton.this.getY());
+>>>>>>> master
                         BlocoButton.this.setXButton(BlocoButton.this.getXButton() - 1);
                         break;
                     default:

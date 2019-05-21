@@ -56,8 +56,21 @@ public class PuzzleFrame extends JFrame {
         this.getTela().setLayout(null);
         this.setVisible(true);
     }
+<<<<<<< HEAD
 
     public JPanel getTela() {
+=======
+        
+    public void updateTela(JPanel tela){
+        this.setTela(tela);
+        this.setContentPane(new JPanel());
+        this.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+        this.getContentPane().add(this.getTela());
+        this.getTela().setLayout(null);
+        this.setVisible(true);
+    }
+	public JPanel getTela(){
+>>>>>>> master
         return tela;
     }
 

@@ -3,9 +3,15 @@ package br.com.poli.puzzleN.frontend;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
+<<<<<<< HEAD
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+=======
+
+import java.awt.Color;
+
+>>>>>>> master
 import javax.swing.JButton;
 import br.com.poli.puzzleN.engine.Puzzle;
 
@@ -17,13 +23,20 @@ public class Game extends JPanel {
 	JLabel nome;
 	SurrenderButton desistir;
 
+<<<<<<< HEAD
 	public Game(PuzzleFrame frame) {
 
 		this.partida = frame.getPartida();
+=======
+	public Game(Puzzle partida, PuzzleFrame frame) {
+
+		this.partida = partida;
+>>>>>>> master
 		this.partida.iniciaPartida();
 		this.setLayout(null);
 		int k = this.partida.getTabuleiro().getGrid().length;
 		this.tabuleiro = new JButton[k * k];
+<<<<<<< HEAD
 
 		nome = new JLabel("nome: " + this.partida.getJogador().getNome());
 		nome.setBounds(30, 500, 10 * (6 + this.partida.getJogador().getNome().length()), 20);
@@ -42,6 +55,18 @@ public class Game extends JPanel {
 		save.setForeground(Color.WHITE);
 		save.setBackground(Color.BLACK);
 		save.addActionListener(new ActionListener(){
+=======
+
+		lblNome = new JLabel("nome: " + partida.getJogador().getNome());
+		lblNome.setBounds(30, 500, 10 * (6 + partida.getJogador().getNome().length()), 20);
+		lblNome.setForeground(Color.WHITE);
+		lblNome.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.add(lblNome);
+
+		btnDesistir = new SurrenderButton(partida, frame);
+		btnDesistir.setBounds(700, 500, 90, 30);
+		this.add(btnDesistir);
+>>>>>>> master
 		
 			@Override
 			public void actionPerformed(ActionEvent e) {
