@@ -25,13 +25,13 @@ public class PuzzleFrame extends JFrame {
         return this.fundo;
     }
 
-    public ArrayList<Puzzle> getRanking() {
-        return ranking.getRanking();
+    public Ranking getRanking() {
+        return ranking;
     }
 
     public PuzzleFrame() {
 
-        super();
+        super("Puzzle-N :o");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, 820, 600);
         setLocationRelativeTo(null);
@@ -56,21 +56,8 @@ public class PuzzleFrame extends JFrame {
         this.getTela().setLayout(null);
         this.setVisible(true);
     }
-<<<<<<< HEAD
 
     public JPanel getTela() {
-=======
-        
-    public void updateTela(JPanel tela){
-        this.setTela(tela);
-        this.setContentPane(new JPanel());
-        this.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
-        this.getContentPane().add(this.getTela());
-        this.getTela().setLayout(null);
-        this.setVisible(true);
-    }
-	public JPanel getTela(){
->>>>>>> master
         return tela;
     }
 

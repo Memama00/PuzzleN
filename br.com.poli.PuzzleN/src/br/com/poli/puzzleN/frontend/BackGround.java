@@ -9,11 +9,7 @@ public class BackGround extends JLabel {
 
 	public BackGround() {
 		super();
-<<<<<<< HEAD
 		super.setIcon(new ImageIcon("/home/gustavo/Área de Trabalho/PuzzleN/br.com.poli.PuzzleN/giphy.gif"));
-=======
-		super.setIcon(new ImageIcon("C:\\Users\\vinic\\OneDrive\\\u00C1rea de Trabalho\\PuzzleN-master\\giphy.gif"));
->>>>>>> parent of 4cac816... Add files via upload
 		super.setBounds(0, 0, 820, 600);
 		super.setHorizontalAlignment(SwingConstants.CENTER);
 
