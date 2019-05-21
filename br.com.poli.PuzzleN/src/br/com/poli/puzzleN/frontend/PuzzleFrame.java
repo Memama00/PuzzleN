@@ -2,7 +2,6 @@ package br.com.poli.puzzleN.frontend;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.Color;
 import java.awt.GridLayout;
 import br.com.poli.puzzleN.engine.Puzzle;
 
@@ -34,6 +33,14 @@ public class PuzzleFrame extends JFrame {
         
     }
         
+    public void updateTela(JPanel tela){
+        this.setTela(tela);
+        this.setContentPane(new JPanel());
+        this.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
+        this.getContentPane().add(this.getTela());
+        this.getTela().setLayout(null);
+        this.setVisible(true);
+    }
 	public JPanel getTela(){
         return tela;
     }

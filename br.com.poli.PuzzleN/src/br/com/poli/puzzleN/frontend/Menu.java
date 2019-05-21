@@ -5,9 +5,10 @@ import javax.swing.JLabel;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
@@ -30,47 +31,48 @@ public class Menu extends JPanel {
 
 		super();
 		this.partida = partida;
-		JLabel lblPuzzleN = new JLabel("PUZZLE N");
-		lblPuzzleN.setFont(new Font("Franklin Gothic Medium", Font.PLAIN, 56));
-		lblPuzzleN.setBounds(171 + 95, 59, 278, 56);
+		JLabel lblPuzzleN = new JLabel("PUZZLE-N");
+		lblPuzzleN.setFont(new Font("Franklin Gothic Medium", Font.ITALIC, 63));
+		lblPuzzleN.setBounds(245, 59, 330, 56);
 		lblPuzzleN.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPuzzleN.setForeground(Color.WHITE);
 		this.add(lblPuzzleN);
 
 		JLabel lblNOME = new JLabel("NOME");
-		lblNOME.setBounds(287+ 95, 130, 46, 14);
+		lblNOME.setBounds(382, 130, 46, 14);
 		lblNOME.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblNOME);
 
 		textField = new JTextField("Digite seu nome...");
-		textField.setBounds(235+ 95, 150, 150, 20);
+		textField.setBounds(330, 150, 150, 20);
 		this.add(textField);
 		textField.setColumns(20);
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JLabel lblNivel = new JLabel("NIVEL");
-		lblNivel.setBounds(286+ 95, 186, 48, 14);
+		lblNivel.setBounds(381, 186, 48, 14);
 		lblNivel.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblNivel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblNivel);
 
 		final JComboBox dificuldade = new JComboBox();
 		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil" }));
-		dificuldade.setBounds(240 + 95, 195 + 10, 140, 20);
+		dificuldade.setBounds(335, 195 + 10, 140, 20);
 		dificuldade.addActionListener(new SelectedDificult());
 		dificuldade.setAlignmentX(SwingConstants.CENTER);
 		this.add(dificuldade);
 
 		JButton btnRanking = new JButton("ranking");
-		btnRanking.setBounds(265 + 95, 255, 89, 23);
+		btnRanking.setBounds(360, 255, 89, 23);
 		btnRanking.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(btnRanking);
 
 		startButton = new JButton("iniciar");
-		startButton.setBounds(265 + 95, 303, 89, 23);
+		startButton.setBounds(360, 303, 89, 23);
 		startButton.addActionListener(new StartGame(frame));
 		startButton.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(startButton);
-		
+
 		JLabel backGround = new BackGround();
 		this.add(backGround);
 
@@ -105,14 +107,8 @@ public class Menu extends JPanel {
 		public void actionPerformed(ActionEvent a) {
 
 			if (a.getSource() == startButton) {
-				//partida = new PuzzleFacil(textField.getText());
-				frame.setTela(new Game(partida, frame));
-				frame.setContentPane(new JPanel());
-				frame.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
-				frame.getContentPane().add(frame.getTela());
-				frame.getTela().setBackground(new Color(175, 238, 238));
-				frame.getTela().setLayout(null);
-				frame.setVisible(true);
+				frame.updateTela(new Game(partida, frame));
+				partida.setTempo(Calendar.getInstance());
 			}
 		}
 	}

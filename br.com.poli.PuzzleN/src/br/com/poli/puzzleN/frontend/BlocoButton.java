@@ -9,20 +9,17 @@ public class BlocoButton extends JButton {
     private static final long serialVersionUID = 1L;
     int xButton;
     int yButton;
-    BlocoButton me;
 
     public BlocoButton(int numero) {
         super(Integer.toString(numero));
-        me = this;
     }
 
-    public BlocoButton(Puzzle partida, int x, int y) {
+    public BlocoButton(Puzzle partida, PuzzleFrame frame, int x, int y) {
         super(Integer.toString(partida.getTabuleiro().getGrid()[y][x].getValor()));
         xButton = x;
         yButton = y;
-        me = this;
         this.setBounds(131 + (x * 50), 47 + (y * 50), 50, 50);
-        this.addActionListener(new PressBlock(partida));
+        this.addActionListener(new PressBlock(partida, frame));
     }
 
     public void setNumero(int in) {
@@ -47,9 +44,10 @@ public class BlocoButton extends JButton {
 
     private class PressBlock implements ActionListener {
         Puzzle partida;
-
-        public PressBlock(Puzzle partida) {
+        PuzzleFrame frame;
+        public PressBlock(Puzzle partida, PuzzleFrame frame) {
             this.partida = partida;
+            this.frame = frame;
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -57,34 +55,35 @@ public class BlocoButton extends JButton {
             showTab(partida.getTabuleiro());
             int k = partida.getTabuleiro().getGrid().length - 1;
             if (partida.getTabuleiro().getGrid()[k][k].getValor() == 0)
-                if (partida.getTabuleiro().isTabuleiroOrdenado(partida.getDificuldade()))
-                    System.out.println("ganhou! pontos:" + partida.getScore().pontos(partida));
+                if (partida.isFimDeJogo())
+                    frame.updateTela(new End(partida, frame));
+                else partida.resolveTabuleiro();
         }
 
         private void moveButton(Object in) {
-            if (in == me) {
+            if (in == BlocoButton.this) {
                 try {
                     String sentido = partida.smartMove(xButton, yButton);
                     System.out.println("Selected:");
-                    System.out.println("X:" + me.getX() + "/[x]:" + xButton);
-                    System.out.println("Y:" + me.getY() + "/[Y]:" + yButton);
+                    System.out.println("X:" + BlocoButton.this.getX() + "/[x]:" + xButton);
+                    System.out.println("Y:" + BlocoButton.this.getY() + "/[Y]:" + yButton);
                     System.out.println("sentido:" + sentido);
                     switch (sentido) {
                     case "cima":
-                        me.setLocation(me.getX(), me.getY() - 50);
-                        me.setYButton(me.getYButton() - 1);
+                        BlocoButton.this.setLocation(BlocoButton.this.getX(), BlocoButton.this.getY() - 50);
+                        BlocoButton.this.setYButton(BlocoButton.this.getYButton() - 1);
                         break;
                     case "baixo":
-                        me.setLocation(me.getX(), me.getY() + 50);
-                        me.setYButton(me.getYButton() + 1);
+                        BlocoButton.this.setLocation(BlocoButton.this.getX(), BlocoButton.this.getY() + 50);
+                        BlocoButton.this.setYButton(BlocoButton.this.getYButton() + 1);
                         break;
                     case "direita":
-                        me.setLocation(me.getX() + 50, me.getY());
-                        me.setXButton(me.getXButton() + 1);
+                        BlocoButton.this.setLocation(BlocoButton.this.getX() + 50, BlocoButton.this.getY());
+                        BlocoButton.this.setXButton(BlocoButton.this.getXButton() + 1);
                         break;
                     case "esquerda":
-                        me.setLocation(me.getX() - 50, me.getY());
-                        me.setXButton(me.getXButton() - 1);
+                        BlocoButton.this.setLocation(BlocoButton.this.getX() - 50, BlocoButton.this.getY());
+                        BlocoButton.this.setXButton(BlocoButton.this.getXButton() - 1);
                         break;
                     default:
                     }

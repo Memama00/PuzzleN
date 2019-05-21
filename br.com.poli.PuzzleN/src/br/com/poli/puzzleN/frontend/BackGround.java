@@ -5,9 +5,11 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class BackGround extends JLabel {
+	private static final long serialVersionUID = 1L;
+
 	public BackGround() {
 		super();
-		super.setIcon(new ImageIcon("C:\\Users\\ester\\Desktop\\PuzzleN-master\\br.com.poli.PuzzleN\\src\\br\\com\\poli\\puzzleN\\frontend\\giphy.gif.gif"));
+		super.setIcon(new ImageIcon("/home/gustavo/Área de Trabalho/PuzzleN/br.com.poli.PuzzleN/giphy.gif"));
 		super.setBounds(0, 0, 820, 600);
 		super.setHorizontalAlignment(SwingConstants.CENTER);
 

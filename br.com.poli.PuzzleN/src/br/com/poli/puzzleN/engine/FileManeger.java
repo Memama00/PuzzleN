@@ -1,6 +1,7 @@
 package br.com.poli.puzzleN.engine;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,18 +14,17 @@ public class FileManeger {
 	private FileOutputStream fileOut;
 	private ObjectOutputStream objOut;
 	private ObjectInputStream objIn;
-	
-	public FileManeger(Puzzle save)  {
+
+	public FileManeger(Puzzle save) {
 		try {
 			fileOut = new FileOutputStream("serialF.dat");
 			objOut = new ObjectOutputStream(fileOut);
 			objOut.writeObject(save);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
-	}	
+		}
+
+	}
 }

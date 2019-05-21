@@ -22,6 +22,6 @@ public class CalculaFacil implements CalculaScore {
 			pontos /= ((int) time / 10) + moves;
 		else
 			pontos = 0;
-		return pontos;
+		return partida.getVenceu() ? pontos : 0;
 	}
 }
