@@ -1,6 +1,8 @@
 package br.com.poli.puzzleN.engine;
 
-public class Jogador {
+import java.io.Serializable;
+
+public class Jogador implements Serializable{
 	private String nome;
 
 	public Jogador(String nome) {

@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import br.com.poli.puzzleN.engine.Puzzle;
@@ -22,12 +20,12 @@ public class RankingScreen extends JPanel {
         this.frame = frame;
         jogos = new ArrayList<JButton>();
 
-        for (int i = 0; i < frame.getRanking().size(); i++) {
+        for (int i = 0; i < frame.getRanking().read().size(); i++) {
 
-            Puzzle partida = frame.getRanking().get(i);
-            JLabel nome = new JLabel( 1 + i + " Nome:" + partida.getJogador().getNome());
-            JLabel pontos = new JLabel("Pontos:" + Integer.toString(partida.getScore().getPontos()));
-            jogos.add(new GameInfo(nome, pontos, i, partida));
+            Puzzle partida = frame.getRanking().read().get(i);
+            String nome = " Nome:" + partida.getJogador().getNome();
+            String pontos = "Pontos:" + Integer.toString(partida.getScore().getPontos());
+            jogos.add(new GameInfo(nome + "\t" + pontos, partida, i));
             this.add(jogos.get(i));
         }
         JButton next = new JButton("Voltar");
@@ -44,26 +42,16 @@ public class RankingScreen extends JPanel {
     private class GameInfo extends JButton {
         private static final long serialVersionUID = 1L;
 
-        public GameInfo(Component text1, Component text2, int index, Puzzle partida) {
-            super();
-            this.setBounds(100, 50 + (30 * index), 300, 30);
-
-            text1.setBounds(0, 0, 150, 30);
-            text2.setBounds(150, 0, 150, 30);
-
-            text1.setForeground(Color.WHITE);
-            text2.setForeground(Color.WHITE);
-            text1.setBackground(Color.BLACK);
-            text2.setBackground(Color.BLACK);
+        public GameInfo(String text, Puzzle partida, int index) {
+            super(index + 1 + "º-" + text);
+            this.setBounds(200, 50 + (31 * index), 400, 30);
             this.setBackground(Color.BLACK);
-            this.add(text1);
-            this.add(text2);
-
-            this.setVisible(true);
+            this.setForeground(Color.WHITE);
+            //this.setBorderPainted(false);
             this.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent a) {
-                    RankingScreen.this.frame.updateTela(new End( RankingScreen.this.frame));
+                    RankingScreen.this.frame.updateTela(new InfoGame(RankingScreen.this.frame));
                 }
             });
         }

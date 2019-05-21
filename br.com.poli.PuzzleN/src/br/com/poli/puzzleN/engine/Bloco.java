@@ -1,6 +1,8 @@
 package br.com.poli.puzzleN.engine;
 
-public class Bloco {
+import java.io.Serializable;
+
+public class Bloco implements Serializable{
 
 	private int valor;
 	private boolean valido;

@@ -1,5 +1,6 @@
 package br.com.poli.puzzleN.puzzles;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -8,7 +9,7 @@ import br.com.poli.puzzleN.engine.Dificuldade;
 import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.exceptions.K_Invalido;
 
-public class PuzzleInsano extends Puzzle {
+public class PuzzleInsano extends Puzzle implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private int tamanho;

@@ -1,17 +1,12 @@
 package br.com.poli.puzzleN.engine;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import br.com.poli.puzzleN.Interfaces.CalculaScore;
 import br.com.poli.puzzleN.exceptions.*;
 
-<<<<<<< HEAD
 public class Puzzle implements Serializable{
-	private static char slash = '/';
-	private static final long serialVersionUID = -1936167855961132987L;
-=======
-public class Puzzle {
->>>>>>> parent of 4cac816... Add files via upload
 	private Jogador jogador;
 	private Tabuleiro gridPuzzle;
 	private int quantidadeMovimentos;
@@ -29,7 +24,7 @@ public class Puzzle {
 		tempo.setTime(new Date());
 		gridPuzzle = new Tabuleiro((int) Math.sqrt(dificuldade.getValor() + 1));
 	}
-
+	
 	public Jogador getJogador() {
 		return jogador;
 	}
@@ -168,5 +163,4 @@ public class Puzzle {
 	 * 
 	 * }
 	 */
-
 }

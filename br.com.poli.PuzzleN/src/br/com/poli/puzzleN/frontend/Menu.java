@@ -14,7 +14,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.puzzles.*;
 import javax.swing.JButton;
 
@@ -22,17 +21,11 @@ public class Menu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	private Puzzle partida;
 	private JButton startButton;
 
 	public Menu(PuzzleFrame frame) {
 
 		super();
-<<<<<<< HEAD
-		this.partida = frame.getPartida();
-=======
-		this.partida = partida;
->>>>>>> master
 		JLabel lblPuzzleN = new JLabel("PUZZLE-N");
 		lblPuzzleN.setFont(new Font("Franklin Gothic Medium", Font.ITALIC, 63));
 		lblPuzzleN.setBounds(245, 59, 330, 56);
@@ -57,8 +50,7 @@ public class Menu extends JPanel {
 		lblNivel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblNivel);
 		final JComboBox dificuldade = new JComboBox();
-<<<<<<< HEAD
-		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil", "INSANO"}));
+		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil"}));
 		dificuldade.setBounds(335, 195 + 10, 140, 20);
 		dificuldade.addActionListener(new SelectedDificult(frame));
 		dificuldade.setAlignmentX(SwingConstants.CENTER);
@@ -69,26 +61,12 @@ public class Menu extends JPanel {
 		ranking.setHorizontalAlignment(SwingConstants.CENTER);
 		ranking.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent a) {
-				if (a.getSource() == ranking)
 					frame.updateTela(new RankingScreen(frame, "save1.dat"));
 
 			}
 		});
 		this.add(ranking);
-=======
-		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil" }));
-		dificuldade.setBounds(335, 195 + 10, 140, 20);
-		dificuldade.addActionListener(new SelectedDificult());
-		dificuldade.setAlignmentX(SwingConstants.CENTER);
-		this.add(dificuldade);
-
-		JButton btnRanking = new JButton("ranking");
-		btnRanking.setBounds(360, 255, 89, 23);
-		btnRanking.setHorizontalAlignment(SwingConstants.CENTER);
-		this.add(btnRanking);
->>>>>>> master
 
 		startButton = new JButton("iniciar");
 		startButton.setBounds(360, 303, 89, 23);
@@ -135,12 +113,8 @@ public class Menu extends JPanel {
 		public void actionPerformed(ActionEvent a) {
 
 			if (a.getSource() == startButton) {
-<<<<<<< HEAD
 				frame.updateTela(new Game(frame));
-=======
-				frame.updateTela(new Game(partida, frame));
->>>>>>> master
-				partida.setTempo(Calendar.getInstance());
+				frame.getPartida().setTempo(Calendar.getInstance());
 			}
 		}
 	}

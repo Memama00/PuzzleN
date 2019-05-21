@@ -1,10 +1,11 @@
 package br.com.poli.puzzleN.Interfaces;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import br.com.poli.puzzleN.engine.Puzzle;
 
-public class CalculaMedio implements CalculaScore {
+public class CalculaMedio implements CalculaScore , Serializable{
 	private int pontos;
 
 	public CalculaMedio(Puzzle partida) {

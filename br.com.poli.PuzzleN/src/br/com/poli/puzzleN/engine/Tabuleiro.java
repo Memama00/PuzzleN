@@ -1,9 +1,10 @@
 package br.com.poli.puzzleN.engine;
 
+import java.io.Serializable;
 import java.util.Random;
 import br.com.poli.puzzleN.exceptions.MovimentoInvalido;
 
-public class Tabuleiro {
+public class Tabuleiro implements Serializable{
 	private Bloco[][] grid;
 
 	public Tabuleiro(int k) {

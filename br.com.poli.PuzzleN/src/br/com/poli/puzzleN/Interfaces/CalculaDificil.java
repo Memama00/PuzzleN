@@ -1,10 +1,11 @@
 package br.com.poli.puzzleN.Interfaces;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import br.com.poli.puzzleN.engine.Puzzle;
 
-public class CalculaDificil implements CalculaScore {
+public class CalculaDificil implements CalculaScore , Serializable {
 	private int pontos;
 
 	public CalculaDificil(Puzzle partida) {

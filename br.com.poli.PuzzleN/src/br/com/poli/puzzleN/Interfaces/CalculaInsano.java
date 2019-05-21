@@ -1,10 +1,11 @@
 package br.com.poli.puzzleN.Interfaces;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 import br.com.poli.puzzleN.engine.Puzzle;
 
-public class CalculaInsano implements CalculaScore {
+public class CalculaInsano implements CalculaScore , Serializable {
 	private int pontos;
 
 	public CalculaInsano(Puzzle partida) {
