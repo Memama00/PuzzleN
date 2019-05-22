@@ -1,15 +1,15 @@
 package br.com.poli.puzzleN.Interfaces;
 
-import java.io.Serializable;
-import java.util.Calendar;
 
+import java.io.Serializable;
 import br.com.poli.puzzleN.engine.Puzzle;
 
-public class CalculaFacil implements CalculaScore , Serializable{
+public class CalculaFacil implements CalculaScore, Serializable {
+	private static final long serialVersionUID = 4277702193527498891L;
 	private int pontos;
 
 	public CalculaFacil(Puzzle partida) {
-		pontos = partida.getTabuleiro().getGrid().length * 100000;
+		pontos = 3000000;
 	}
 
 	public int getPontos() {
@@ -17,12 +17,14 @@ public class CalculaFacil implements CalculaScore , Serializable{
 	}
 
 	public int pontos(Puzzle partida) {
-		long time = partida.getTempo(Calendar.getInstance());
+
+		int time = (int) partida.getTempoDecorrido() * 60;
 		int moves = partida.getQuantidadeMovimentos();
-		if (time > 2)
-			pontos /= ((int) time / 10) + moves;
+
+		if (partida.getVenceu())
+			pontos /= (time * 10) + moves;
 		else
 			pontos = 0;
-		return partida.getVenceu() ? pontos : 0;
+		return pontos;
 	}
 }

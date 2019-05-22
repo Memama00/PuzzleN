@@ -18,9 +18,10 @@ public class Ranking {
         try {
             if ((new File(FILE_NAME)).canRead() == true) {
                 ObjectInputStream read = new ObjectInputStream(new FileInputStream(FILE_NAME));
+                System.out.print("Abrindo...");
                 ranking = (Save) read.readObject();
                 read.close();
-                System.out.println(ranking.size());
+                System.out.println(" Sucesso!");
             }
             else 
                 throw new EOFException();
@@ -37,7 +38,7 @@ public class Ranking {
                 e1.printStackTrace();
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getLocalizedMessage());
             e.printStackTrace();
         }
     }

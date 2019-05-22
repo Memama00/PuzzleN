@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public class Save extends ArrayList<Puzzle> implements Serializable {
 
-    private static final long serialVersionUID = 0105L;
+    private static final long serialVersionUID = 105L;
 
     public Save() {
         super();

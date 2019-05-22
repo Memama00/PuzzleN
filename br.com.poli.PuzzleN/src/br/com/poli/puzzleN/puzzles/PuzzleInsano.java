@@ -1,6 +1,5 @@
 package br.com.poli.puzzleN.puzzles;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -43,13 +42,13 @@ public class PuzzleInsano extends Puzzle {
 		int in = 1;
 		Scanner read = new Scanner(System.in);
 		try {		
-			System.out.println("Digite um numero de 6 a 2000");
+			System.out.println("Digite um numero de 6 a 200");
 			in =  read.nextInt();
-			if (in < 5 || in > 2000)// Sem numeros negativos dessa vez <3
+			if (in < 5 || in > 200)// Sem numeros negativos dessa vez <3
 				throw new K_Invalido();
 		} catch (K_Invalido e) {
 			System.out.println(e.getMessage() + " O valor foi automaticamente definido como maximo!");
-			in = 2000;
+			in = 200;
 		} finally {
 			read.close();
 		}

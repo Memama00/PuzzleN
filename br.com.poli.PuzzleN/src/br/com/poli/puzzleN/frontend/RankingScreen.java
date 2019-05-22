@@ -16,7 +16,7 @@ public class RankingScreen extends JPanel {
     private ArrayList<JButton> jogos;
     private PuzzleFrame frame;
 
-    public RankingScreen(PuzzleFrame frame, String save) {
+    public RankingScreen(PuzzleFrame frame) {
         
         this.frame = frame;
         jogos = new ArrayList<JButton>();
@@ -26,24 +26,18 @@ public class RankingScreen extends JPanel {
             Puzzle partida = Ranking.get(i);
             String nome = " Nome:" + partida.getJogador().getNome();
             String pontos = "Pontos:" + Integer.toString(partida.getScore().getPontos());
-            jogos.add(new GameInfo(nome + "\t" + pontos, partida, i));
+            jogos.add(new GameInfoButton(nome + "\t" + pontos, partida, i));
             this.add(jogos.get(i));
         }
-        JButton next = new JButton("Voltar");
-        next.setBounds(640, 500, 100, 30);
-        next.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.updateTela(new Menu(frame));
-            }
-        });
-        this.add(next);
+        this.add(new BackButton(frame));
+        this.add(new CleanRankingButton(frame));
         this.add(new BackGround());
     }
 
-    private class GameInfo extends JButton {
+    private class GameInfoButton extends JButton {
         private static final long serialVersionUID = 1L;
 
-        public GameInfo(String text, Puzzle partida, int index) {
+        public GameInfoButton(String text, Puzzle partida, int index) {
             super(index + 1 + "º-" + text);
             this.setBounds(200, 50 + (31 * index), 400, 30);
             this.setBackground(Color.BLACK);

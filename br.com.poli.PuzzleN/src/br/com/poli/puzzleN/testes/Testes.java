@@ -10,7 +10,7 @@ import br.com.poli.puzzleN.Interfaces.CalculaDificil;
 
 public class Testes {
 
-	private void showTab(Tabuleiro tab) {
+	public static void showTab(Tabuleiro tab) {
 		for (int i = 0; i < tab.getGrid().length; i++) {
 			System.out.printf("\t   ");
 			for (int j = 0; j < tab.getGrid().length; j++) {
@@ -21,7 +21,7 @@ public class Testes {
 		System.out.printf("\n\n");
 	}
 
-	public void testePuzzle(Puzzle teste) {
+	public static void testePuzzle(Puzzle teste) {
 		
 		System.out.print("\nCheck Classe Puzzle" + teste.getDificuldade() + ":\n\n");
 		System.out.println("\n\tCheck iniciaPartida, metodo.:");
@@ -29,7 +29,7 @@ public class Testes {
 		System.out.println("\t   Check quantidade de movimentos: " + teste.getQuantidadeMovimentos());
 		System.out.println("\t   Check dificuldade: " + teste.getDificuldade());
 		if(teste instanceof PuzzleInsano)
-			System.out.println("\t   Check tamanho: " + ((PuzzleInsano)teste).getTamanho());
+		System.out.println("\t   Check tamanho: " + ((PuzzleInsano)teste).getTamanho());
 		System.out.println("\t   Check score: " + teste.getScore().pontos(teste));
 		System.out.println("\t   Check venceu: " + teste.getVenceu());
 		System.out.println("\t   Check tempo: " + teste.getTempo(Calendar.getInstance()) + "\n\n");
@@ -75,7 +75,7 @@ public class Testes {
 	
 	}
 
-	public void testeClass_Tabuleiro() {
+	public static void testeClass_Tabuleiro() {
 		Tabuleiro teste = new Tabuleiro(Dificuldade.FACIL.getValor());
 
 		System.out.println("\nCheck Classe Tabuleiro:");
@@ -106,7 +106,7 @@ public class Testes {
 
 	}
 
-	public void testeClass_Bloco() {
+	public static void testeClass_Bloco() {
 
 		System.out.println("\nCheck Class Bloco:\n");
 		Bloco teste = new Bloco(55);
@@ -123,7 +123,7 @@ public class Testes {
 
 	}
 
-	public void testeClass_Jogador() {
+	public static void testeClass_Jogador() {
 
 		System.out.println("\nCheck Class Jogador:\n");
 		Jogador teste = new Jogador("Ricardo");

@@ -6,8 +6,8 @@ import java.util.Date;
 import br.com.poli.puzzleN.Interfaces.CalculaScore;
 import br.com.poli.puzzleN.exceptions.*;
 
-public class Puzzle implements Serializable, Comparable <Puzzle>{
-	
+public class Puzzle implements Serializable, Comparable<Puzzle> {
+
 	private static final long serialVersionUID = 0104L;
 	private Jogador jogador;
 	private Tabuleiro gridPuzzle;
@@ -15,6 +15,7 @@ public class Puzzle implements Serializable, Comparable <Puzzle>{
 	private CalculaScore score;
 	private boolean venceu;
 	private Calendar tempo;
+	private Calendar finalTime;
 	private Dificuldade dificuldade;
 
 	public Puzzle(String nome, Dificuldade dificuldade) {
@@ -26,7 +27,7 @@ public class Puzzle implements Serializable, Comparable <Puzzle>{
 		tempo.setTime(new Date());
 		gridPuzzle = new Tabuleiro((int) Math.sqrt(dificuldade.getValor() + 1));
 	}
-	
+
 	public Jogador getJogador() {
 		return jogador;
 	}
@@ -62,7 +63,7 @@ public class Puzzle implements Serializable, Comparable <Puzzle>{
 	public void setVenceu(boolean venceu) {
 		this.venceu = venceu;
 	}
-
+	
 	public Calendar getTempo() {
 		return tempo;
 	}
@@ -73,7 +74,24 @@ public class Puzzle implements Serializable, Comparable <Puzzle>{
 
 	public long getTempo(Calendar now) {
 		now.setTime(new Date());
-		return tempo.get(Calendar.MILLISECOND) - now.get(Calendar.MILLISECOND);
+		return now.get(Calendar.MILLISECOND) - tempo.get(Calendar.MILLISECOND) ;
+	}
+	public Calendar getFinalTime() {
+		return finalTime;
+	}
+
+	public void setFinalTime(Calendar finalTime) {
+		this.finalTime = finalTime;
+	}
+	public void setFinalTime() {
+		this.finalTime = Calendar.getInstance();
+		finalTime.setTime(new Date());
+	}
+	public float getTempoDecorrido() {
+		
+		int start = tempo.get(Calendar.SECOND);
+		int end = finalTime.get(Calendar.SECOND);
+		return (float) (end - start) / 60;
 	}
 
 	public boolean isFimDeJogo() {
@@ -97,15 +115,15 @@ public class Puzzle implements Serializable, Comparable <Puzzle>{
 	}
 
 	public void resolveTabuleiro() throws Error {
-		// this.setTempo(Calendar.getInstance());
-		// if (this.getTempo(Calendar.getInstance()) > 200.000)
-		// 	throw new TempoExcedido();
-		int k = gridPuzzle.getGrid().length;
-		for(int i = 0; i < k; i ++)
-			for(int j = 0; j < k; j++){
-				gridPuzzle.getGrid()[i][j].setValor(((i*k) + j) + 1);
-			}
-		gridPuzzle.getGrid()[k - 1][k - 1].setValor(0);
+		this.setTempo(Calendar.getInstance());
+		if (this.getTempo(Calendar.getInstance()) > 200.000)
+			throw new TempoExcedido();
+		// int k = gridPuzzle.getGrid().length;
+		// for (int i = 0; i < k; i++)
+		// for (int j = 0; j < k; j++) {
+		// gridPuzzle.getGrid()[i][j].setValor(((i * k) + j) + 1);
+		// }
+		// gridPuzzle.getGrid()[k - 1][k - 1].setValor(0);
 	}
 
 	private boolean inRange(int in, int min, int max) {
@@ -115,7 +133,7 @@ public class Puzzle implements Serializable, Comparable <Puzzle>{
 	public String smartMove(int x, int y) throws MovimentoInvalido {
 
 		String sentido = "null";
-		int i , j;
+		int i, j;
 		for (i = -1; i <= 1; i += 2) {
 			if (inRange((y + i), 0, gridPuzzle.getGrid().length))
 				if (gridPuzzle.getGrid()[y + i][x].getValor() == 0) {
@@ -146,6 +164,8 @@ public class Puzzle implements Serializable, Comparable <Puzzle>{
 		return sentido;
 	}
 	/*
+	 * *********Vai ser usado para gera o tabuleiro "possive" na etapa 4 ***********
+	 * 
 	 * private boolean bubbleZeroMove(int move) { int x = 0, y = 0; boolean check =
 	 * true; for (y = 0; y < gridPuzzle.getGrid().length &&
 	 * gridPuzzle.getGrid()[y][x].getValor() != 0; y++) for (x = 0; x <
@@ -165,8 +185,9 @@ public class Puzzle implements Serializable, Comparable <Puzzle>{
 	 * 
 	 * }
 	 */
-	public int compareTo(Puzzle puzzle){
-        return (this.getScore().getPontos() > puzzle.getScore().getPontos()) ? -1 : 1;
-    }
+
+	public int compareTo(Puzzle puzzle) {
+		return (this.getScore().getPontos() > puzzle.getScore().getPontos()) ? -1 : 1;
+	}
 
 }

@@ -5,30 +5,24 @@ import javax.swing.JLabel;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Calendar;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import br.com.poli.puzzleN.puzzles.*;
-import javax.swing.JButton;
-
 public class Menu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	private JButton startButton;
-
+	private JComboBox dificuldade;
 	public Menu(PuzzleFrame frame) {
 
 		super();
+
 		JLabel lblPuzzleN = new JLabel("PUZZLE-N");
-		lblPuzzleN.setFont(new Font("Franklin Gothic Medium", Font.ITALIC, 63));
-		lblPuzzleN.setBounds(245, 59, 330, 56);
+		lblPuzzleN.setFont(new Font("Impact", Font.BOLD + Font.ITALIC, 63));
+		lblPuzzleN.setBounds(200, 59, 400, 56);
 		lblPuzzleN.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPuzzleN.setForeground(Color.WHITE);
 		this.add(lblPuzzleN);
@@ -49,73 +43,25 @@ public class Menu extends JPanel {
 		lblNivel.setHorizontalTextPosition(SwingConstants.CENTER);
 		lblNivel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.add(lblNivel);
-		final JComboBox dificuldade = new JComboBox();
-		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil"}));
+
+		this.dificuldade = new JComboBox();
+		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil" }));
 		dificuldade.setBounds(335, 195 + 10, 140, 20);
-		dificuldade.addActionListener(new SelectedDificult(frame));
 		dificuldade.setAlignmentX(SwingConstants.CENTER);
 		this.add(dificuldade);
 
-		JButton ranking = new JButton("ranking");
-		ranking.setBounds(360, 255, 89, 23);
-		ranking.setHorizontalAlignment(SwingConstants.CENTER);
-		ranking.addActionListener(new ActionListener() {
+		this.add(new RankingButton(frame));
 
-			public void actionPerformed(ActionEvent a) {
-					frame.updateTela(new RankingScreen(frame, "save1.dat"));
+		this.add(new StartButton(frame));
 
-			}
-		});
-		this.add(ranking);
-
-		startButton = new JButton("iniciar");
-		startButton.setBounds(360, 303, 89, 23);
-		startButton.addActionListener(new StartGame(frame));
-		startButton.setHorizontalAlignment(SwingConstants.CENTER);
-		this.add(startButton);
-
-		JLabel backGround = new BackGround();
-		this.add(backGround);
-
+		this.add(new BackGround());
 	}
 
-	private class SelectedDificult implements ActionListener {
-		private PuzzleFrame frame;
-
-		public SelectedDificult(PuzzleFrame in) {
-			frame = in;
-		}
-
-		public void actionPerformed(ActionEvent e) {
-
-			switch (((JComboBox) e.getSource()).getSelectedIndex()) {
-			case 1:
-				frame.setPartida(new PuzzleFacil(textField.getText()));
-				break;
-			case 2:
-				frame.setPartida(new PuzzleMedio(textField.getText()));
-				break;
-			case 3:
-				frame.setPartida(new PuzzleDificil(textField.getText()));
-				break;
-			default:
-			}
-		}
+	public JTextField getTextField() {
+		return textField;
 	}
 
-	private class StartGame implements ActionListener {
-		PuzzleFrame frame;
-
-		public StartGame(PuzzleFrame frame) {
-			this.frame = frame;
-		}
-
-		public void actionPerformed(ActionEvent a) {
-
-			if (a.getSource() == startButton) {
-				frame.updateTela(new Game(frame));
-				frame.getPartida().setTempo(Calendar.getInstance());
-			}
-		}
+	public JComboBox getDificuldade() {
+		return dificuldade;
 	}
 }
