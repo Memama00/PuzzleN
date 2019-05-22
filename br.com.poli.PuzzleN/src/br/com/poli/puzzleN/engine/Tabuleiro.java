@@ -30,7 +30,7 @@ public class Tabuleiro implements Serializable{
 		return check;
 	}
 
-	public boolean executaMovimento(int x, int y, String movimento) {
+	public boolean executaMovimento(int x, int y, String movimento){
 		try {
 			if (x < 0 || y < 0)
 				throw new MovimentoInvalido();

@@ -5,37 +5,111 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
 import br.com.poli.puzzleN.engine.Puzzle;
+import br.com.poli.puzzleN.engine.Ranking;
 import br.com.poli.puzzleN.engine.Tabuleiro;
-public class BlocoButton extends JButton {
+import br.com.poli.puzzleN.exceptions.MovimentoInvalido;
+
+public class BlocoButton extends JButton implements ActionListener {
 
     private static final long serialVersionUID = 1L;
     int xButton;
     int yButton;
+    private PuzzleFrame frame;
+    private Puzzle partida;
 
     public BlocoButton(int numero) {
         super(Integer.toString(numero));
         this.setForeground(Color.WHITE);
-		this.setBackground(Color.BLACK);
-/*=======
->>>>>>> master*/
+        this.setBackground(Color.BLACK);
     }
 
-    public BlocoButton(Puzzle partida, PuzzleFrame frame, int x, int y) {
-        super(Integer.toString(partida.getTabuleiro().getGrid()[y][x].getValor()));
-        xButton = x;
-        yButton = y;
-        float middleX = (float) (frame.getSize().getWidth()/ 2);
-        float middleY = (float) (frame.getSize().getHeight()/ 2);
-        int blocoSize = 300 /partida.getTabuleiro().getGrid().length;
+    public BlocoButton(PuzzleFrame frame, int x, int y) {
+        
+        super(Integer.toString(frame.getPartida().getTabuleiro().getGrid()[y][x].getValor()));
+        
+        this.xButton = x;
+        this.yButton = y;
+        this.frame = frame;
+        this.partida = frame.getPartida();
+        
+        float middleX = (float) (frame.getSize().getWidth() / 2);
+        float middleY = (float) (frame.getSize().getHeight() / 2);
+        int blocoSize = 350 / partida.getTabuleiro().getGrid().length;
         int tab_size = partida.getTabuleiro().getGrid().length * blocoSize;
         float startX = middleX - (tab_size / 2);
         float startY = middleY - (tab_size / 2) - 30;
+        
         this.setBounds((int) (startX + (blocoSize * x)), (int) (startY + (blocoSize * y)), blocoSize, blocoSize);
-        this.setFont(new Font(this.getFont().getName(),Font.BOLD, blocoSize/5));
-        this.addActionListener(new PressBlock(partida, frame));
+        this.setFont(new Font(this.getFont().getName(), Font.BOLD, blocoSize / 5));
+        this.addActionListener(this);
         this.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        this.moveButton(e.getSource());
+        showTab(partida.getTabuleiro());
+        int k = partida.getTabuleiro().getGrid().length - 1;
+        if (partida.getTabuleiro().getGrid()[k][k].getValor() == 0)
+            if (partida.isFimDeJogo()){
+                frame.getPartida().setFinalTime();
+				frame.getPartida().getScore().pontos(partida);//calcula e salva os pontos imediatamente para maior precisão
+				Ranking.save(frame.getPartida());
+				frame.updateTela(new InfoGame(frame));
+            }
+    }
+
+    private void moveButton(Object in) {
+        if (in == this) {
+            try {
+                String sentido = partida.smartMove(xButton, yButton);
+                System.out.println("Selected:");
+                System.out.println("X:" + this.getX() + "/[x]:" + xButton);
+                System.out.println("Y:" + this.getY() + "/[Y]:" + yButton);
+                System.out.println("sentido:" + sentido);
+                switch (sentido) {
+                case "cima":
+                    this.setLocation(this.getX(),
+                            this.getY() - this.getWidth());
+                    this.setYButton(this.getYButton() - 1);
+                    break;
+                case "baixo":
+                    this.setLocation(this.getX(),
+                            this.getY() + this.getWidth());
+                    this.setYButton(this.getYButton() + 1);
+                    break;
+                case "direita":
+                    this.setLocation(this.getX() + this.getHeight(),
+                            this.getY());
+                    this.setXButton(this.getXButton() + 1);
+                    break;
+                case "esquerda":
+                    this.setLocation(this.getX() - this.getHeight(),
+                            this.getY());
+                    this.setXButton(this.getXButton() - 1);
+                    break;
+                default:
+                    throw new MovimentoInvalido();
+                }
+            } catch (MovimentoInvalido e) {
+                JOptionPane.showMessageDialog(null,e.getMessage());
+            }
+            System.out.println("Moves: " + partida.getQuantidadeMovimentos());
+        }
+    }
+
+    private void showTab(Tabuleiro tab) {
+        for (int i = 0; i < tab.getGrid().length; i++) {
+            System.out.printf("\t   ");
+            for (int j = 0; j < tab.getGrid().length; j++) {
+                System.out.printf(" %02d", tab.getGrid()[i][j].getValor());
+            }
+            System.out.printf("\n\n");
+        }
+        System.out.printf("\n\n");
     }
 
     public void setNumero(int in) {
@@ -58,66 +132,4 @@ public class BlocoButton extends JButton {
         this.yButton = in;
     }
 
-    private class PressBlock implements ActionListener {
-        Puzzle partida;
-        PuzzleFrame frame;
-        public PressBlock(Puzzle partida, PuzzleFrame frame) {
-            this.partida = partida;
-            this.frame = frame;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            this.moveButton(e.getSource());
-            showTab(partida.getTabuleiro());
-            int k = partida.getTabuleiro().getGrid().length - 1;
-            if (partida.getTabuleiro().getGrid()[k][k].getValor() == 0)
-                if (partida.isFimDeJogo())
-                    frame.updateTela(new InfoGame(frame));
-        }
-
-        private void moveButton(Object in) {
-            if (in == BlocoButton.this) {
-                try {
-                    String sentido = partida.smartMove(xButton, yButton);
-                    System.out.println("Selected:");
-                    System.out.println("X:" + BlocoButton.this.getX() + "/[x]:" + xButton);
-                    System.out.println("Y:" + BlocoButton.this.getY() + "/[Y]:" + yButton);
-                    System.out.println("sentido:" + sentido);
-                    switch (sentido) {
-                    case "cima":
-                        BlocoButton.this.setLocation(BlocoButton.this.getX(), BlocoButton.this.getY() - BlocoButton.this.getWidth());
-                        BlocoButton.this.setYButton(BlocoButton.this.getYButton() - 1);
-                        break;
-                    case "baixo":
-                        BlocoButton.this.setLocation(BlocoButton.this.getX(), BlocoButton.this.getY() + BlocoButton.this.getWidth());
-                        BlocoButton.this.setYButton(BlocoButton.this.getYButton() + 1);
-                        break;
-                    case "direita":
-                        BlocoButton.this.setLocation(BlocoButton.this.getX() + BlocoButton.this.getHeight(), BlocoButton.this.getY());
-                        BlocoButton.this.setXButton(BlocoButton.this.getXButton() + 1);
-                        break;
-                    case "esquerda":
-                        BlocoButton.this.setLocation(BlocoButton.this.getX() - BlocoButton.this.getHeight(), BlocoButton.this.getY());
-                        BlocoButton.this.setXButton(BlocoButton.this.getXButton() - 1);
-                        break;
-                    default:
-                    }
-                } catch (Exception e) {
-                    System.out.println(e.getLocalizedMessage());
-                }
-                System.out.println("Moves: " + partida.getQuantidadeMovimentos());
-            }
-        }
-
-        private void showTab(Tabuleiro tab) {
-            for (int i = 0; i < tab.getGrid().length; i++) {
-                System.out.printf("\t   ");
-                for (int j = 0; j < tab.getGrid().length; j++) {
-                    System.out.printf(" %02d", tab.getGrid()[i][j].getValor());
-                }
-                System.out.printf("\n\n");
-            }
-            System.out.printf("\n\n");
-        }
-    }
 }

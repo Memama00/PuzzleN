@@ -39,15 +39,23 @@ public class Game extends JPanel {
 		desistir.setForeground(Color.WHITE);
 		desistir.setBackground(Color.BLACK);
 		this.add(desistir);
-
+		
+		/*
+		 * O jbutton "save", salva a partida independente de das condições de jogo e
+		 * encerra a partida. Tem o objetivo de testar tanto o ranking como a tela de
+		 * fim de partida.
+		 */
+		
 		JButton save = new JButton("salvar");
 		save.setBounds(700, 470, 90, 30);
 		save.setForeground(Color.WHITE);
 		save.setBackground(Color.BLACK);
-		save.addActionListener(new ActionListener(){
-		
+		save.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPartida().setFinalTime();
+				frame.getPartida().getScore().pontos(partida);//calcula e salva os pontos imediatamente para maior precisão
 				Ranking.save(frame.getPartida());
 				frame.updateTela(new InfoGame(frame));
 			}
@@ -58,13 +66,14 @@ public class Game extends JPanel {
 			for (int x = 0; x < k; x++) {
 				if (partida.getTabuleiro().getGrid()[y][x].getValor() == 0)
 					continue;
-				this.tabuleiro[(y * k) + x] = new BlocoButton(partida, frame, x, y);
+				this.tabuleiro[(y * k) + x] = new BlocoButton(frame, x, y);
 				this.add(this.tabuleiro[(y * k) + x]);
 			}
 		}
 		this.add(new BackGround());
 	}
-	Puzzle getPartida(){
+
+	Puzzle getPartida() {
 		return this.partida;
 	}
 }
