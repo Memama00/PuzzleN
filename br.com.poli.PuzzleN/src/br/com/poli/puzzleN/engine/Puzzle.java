@@ -6,7 +6,9 @@ import java.util.Date;
 import br.com.poli.puzzleN.Interfaces.CalculaScore;
 import br.com.poli.puzzleN.exceptions.*;
 
-public class Puzzle implements Serializable{
+public class Puzzle implements Serializable, Comparable <Puzzle>{
+	
+	private static final long serialVersionUID = 0104L;
 	private Jogador jogador;
 	private Tabuleiro gridPuzzle;
 	private int quantidadeMovimentos;
@@ -163,4 +165,8 @@ public class Puzzle implements Serializable{
 	 * 
 	 * }
 	 */
+	public int compareTo(Puzzle puzzle){
+        return (this.getScore().getPontos() > puzzle.getScore().getPontos()) ? -1 : 1;
+    }
+
 }

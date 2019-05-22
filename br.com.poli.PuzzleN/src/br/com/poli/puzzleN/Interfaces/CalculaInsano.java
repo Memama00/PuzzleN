@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import br.com.poli.puzzleN.engine.Puzzle;
 
-public class CalculaInsano implements CalculaScore , Serializable {
+public class CalculaInsano implements CalculaScore{
 	private int pontos;
 
 	public CalculaInsano(Puzzle partida) {

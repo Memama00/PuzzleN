@@ -9,7 +9,7 @@ import br.com.poli.puzzleN.engine.Dificuldade;
 import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.exceptions.K_Invalido;
 
-public class PuzzleInsano extends Puzzle implements Serializable{
+public class PuzzleInsano extends Puzzle {
 
 	private static final long serialVersionUID = 1L;
 	private int tamanho;

@@ -3,7 +3,6 @@ package br.com.poli.puzzleN.frontend;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 
 import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.engine.Ranking;

@@ -1,12 +1,10 @@
 package br.com.poli.puzzleN.puzzles;
 
-import java.io.Serializable;
-
 import br.com.poli.puzzleN.Interfaces.CalculaMedio;
 import br.com.poli.puzzleN.engine.Dificuldade;
 import br.com.poli.puzzleN.engine.Puzzle;
 
-public class PuzzleMedio extends Puzzle implements Serializable{
+public class PuzzleMedio extends Puzzle {
 
 	private static final long serialVersionUID = 1L;
 

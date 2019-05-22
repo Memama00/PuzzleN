@@ -5,6 +5,7 @@ import java.util.Random;
 import br.com.poli.puzzleN.exceptions.MovimentoInvalido;
 
 public class Tabuleiro implements Serializable{
+	private static final long serialVersionUID = 0102L;
 	private Bloco[][] grid;
 
 	public Tabuleiro(int k) {

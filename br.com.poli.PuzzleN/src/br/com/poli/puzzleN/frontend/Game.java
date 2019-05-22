@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import br.com.poli.puzzleN.engine.Puzzle;
+import br.com.poli.puzzleN.engine.Ranking;
 
 public class Game extends JPanel {
 
@@ -47,7 +48,7 @@ public class Game extends JPanel {
 		
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getRanking().save(frame.getPartida());
+				Ranking.save(frame.getPartida());
 				frame.updateTela(new InfoGame(frame));
 			}
 		});

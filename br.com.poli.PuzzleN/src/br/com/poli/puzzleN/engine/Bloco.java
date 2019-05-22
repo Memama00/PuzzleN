@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Bloco implements Serializable{
 
+	private static final long serialVersionUID = 0101L;
 	private int valor;
 	private boolean valido;
 

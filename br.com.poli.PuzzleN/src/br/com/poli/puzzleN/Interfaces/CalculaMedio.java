@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 import br.com.poli.puzzleN.engine.Puzzle;
 
-public class CalculaMedio implements CalculaScore , Serializable{
+public class CalculaMedio implements CalculaScore {
 	private int pontos;
 
 	public CalculaMedio(Puzzle partida) {

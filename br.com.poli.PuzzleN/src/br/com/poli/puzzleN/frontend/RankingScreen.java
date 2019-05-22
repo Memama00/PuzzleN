@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import br.com.poli.puzzleN.engine.Puzzle;
+import br.com.poli.puzzleN.engine.Ranking;
 
 public class RankingScreen extends JPanel {
 
@@ -20,9 +21,9 @@ public class RankingScreen extends JPanel {
         this.frame = frame;
         jogos = new ArrayList<JButton>();
 
-        for (int i = 0; i < frame.getRanking().read().size(); i++) {
+        for (int i = 0; i < Ranking.size(); i++) {
 
-            Puzzle partida = frame.getRanking().read().get(i);
+            Puzzle partida = Ranking.get(i);
             String nome = " Nome:" + partida.getJogador().getNome();
             String pontos = "Pontos:" + Integer.toString(partida.getScore().getPontos());
             jogos.add(new GameInfo(nome + "\t" + pontos, partida, i));
@@ -51,6 +52,7 @@ public class RankingScreen extends JPanel {
             this.addActionListener(new ActionListener() {
 
                 public void actionPerformed(ActionEvent a) {
+                    frame.setPartida(Ranking.get(index));
                     RankingScreen.this.frame.updateTela(new InfoGame(RankingScreen.this.frame));
                 }
             });
