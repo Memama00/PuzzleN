@@ -8,18 +8,21 @@
             "type": "java",
             "name": "Debug (Launch)",
             "request": "launch",
+            "console": "externalTerminal",
             "mainClass": ""
         },
         {
             "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
+            "console": "externalTerminal",
             "mainClass": "${file}"
         },
         {
             "type": "java",
             "name": "Debug (Launch)-Main<br.com.poli.PuzzleN>",
             "request": "launch",
+            "console": "externalTerminal",
             "mainClass": "br.com.poli.puzzleN.frontend.Main",
             "projectName": "br.com.poli.PuzzleN"
         }

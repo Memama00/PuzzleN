@@ -13,10 +13,10 @@ public class PuzzleInsano extends Puzzle {
 	private static final long serialVersionUID = 1L;
 	private int tamanho;
 
-	public PuzzleInsano(String nome) {
+	public PuzzleInsano(String nome, Scanner k) {
 		super(nome, Dificuldade.INSANO);
 		super.setScore(new CalculaInsano(this));
-		tamanho = defineK();
+		tamanho = defineK(k);
 	}
 
 	public int getTamanho() {
@@ -38,21 +38,19 @@ public class PuzzleInsano extends Puzzle {
 		getTabuleiro().geraTabuleiro(tamanho);
 	}
 	
-	private int defineK() {
+	private int defineK(Scanner read) {
 		int in = 1;
-		Scanner read = new Scanner(System.in);
+		if(read == null)
+			read = new Scanner(System.in);
 		try {		
 			System.out.println("Digite um numero de 6 a 200");
 			in =  read.nextInt();
 			if (in < 5 || in > 200)// Sem numeros negativos dessa vez <3
 				throw new K_Invalido();
-		} catch (K_Invalido e) {
+		} catch (Exception e) {
 			System.out.println(e.getMessage() + " O valor foi automaticamente definido como maximo!");
 			in = 200;
-		} finally {
-			read.close();
 		}
-
 		return in;
 	}
 }
