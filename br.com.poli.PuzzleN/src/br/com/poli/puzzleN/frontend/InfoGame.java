@@ -12,6 +12,8 @@ public class InfoGame extends JPanel {
 
     public InfoGame(PuzzleFrame frame) {
         super();
+        if(frame.getPartida().getVenceu() == false && SondTrack.getClip().isRunning())
+            SondTrack.changeTrack("LoseTrack");
         JLabel[][] infoIcons = new JLabel[2][5];
         String[][] text = new String[][] { 
             { "Nome:", "Movimentos:", "Dificuldade:", "Pontos:" , "Tempo:"},

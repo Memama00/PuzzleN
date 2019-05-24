@@ -1,5 +1,6 @@
 package br.com.poli.puzzleN.frontend;
 
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -7,7 +8,7 @@ import java.awt.GridLayout;
 import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.engine.Ranking;
 
-public class PuzzleFrame extends JFrame {
+public class PuzzleFrame extends JFrame implements Runnable {
     private static final long serialVersionUID = 1L;
 
     private JPanel tela;
@@ -16,8 +17,8 @@ public class PuzzleFrame extends JFrame {
     private Ranking ranking;
 
     public PuzzleFrame() {
-
-        super("Puzzle-N :o");
+        super("Puzzle-N *-*");
+        new SondTrack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, 820, 600);
         setLocationRelativeTo(null);
@@ -27,12 +28,17 @@ public class PuzzleFrame extends JFrame {
         this.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
         this.getContentPane().add(this.getTela());
         tela.setLayout(null);
+    }
 
+    public void run() {
+        
+        SondTrack.play();
+        this.setVisible(true);
     }
 
     public void updateTela(JPanel tela) {
         lastTela = this.tela;
-        if(tela.getClass() == Menu.class)
+        if (tela.getClass() == Menu.class)
             partida = null;
         this.setTela(tela);
         this.setContentPane(new JPanel());

@@ -2,20 +2,21 @@ package br.com.poli.puzzleN.frontend;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import java.awt.Color;
 import java.awt.Font;
-
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 public class Menu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JComboBox dificuldade;
+
 	public Menu(PuzzleFrame frame) {
 
 		super();
@@ -48,12 +49,21 @@ public class Menu extends JPanel {
 		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil" }));
 		dificuldade.setBounds(335, 195 + 10, 140, 20);
 		dificuldade.setAlignmentX(SwingConstants.CENTER);
+		
+		JLabel icon = new JLabel(new ImageIcon("images/Metro-Sound-32.png"));
+		icon.setAlignmentY(icon.getAlignmentY() - 16);
+		icon.setBounds(24, 474, 100, 100);
+		icon.setVisible(true);
+		
+		
 		this.add(dificuldade);
 
 		this.add(new RankingButton(frame));
 
 		this.add(new StartButton(frame));
 
+		this.add(new MuteButton());
+		
 		this.add(new BackGround());
 	}
 

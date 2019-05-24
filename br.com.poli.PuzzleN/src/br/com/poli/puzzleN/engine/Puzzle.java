@@ -91,7 +91,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		
 		int start = tempo.get(Calendar.SECOND);
 		int end = finalTime.get(Calendar.SECOND);
-		return (float) (end - start) / 60;
+		return (float) (end - start);
 	}
 
 	public boolean isFimDeJogo() {
