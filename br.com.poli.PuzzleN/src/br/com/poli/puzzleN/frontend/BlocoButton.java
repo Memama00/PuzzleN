@@ -95,7 +95,7 @@ public class BlocoButton extends JButton implements ActionListener {
                     throw new MovimentoInvalido();
                 }
             } catch (MovimentoInvalido e) {
-                JOptionPane.showMessageDialog(null,e.getMessage());
+                JOptionPane.showMessageDialog(frame,e.getMessage());
             }
             System.out.println("Moves: " + partida.getQuantidadeMovimentos());
         }

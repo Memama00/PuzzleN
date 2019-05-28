@@ -10,9 +10,9 @@ public class MuteButton extends JButton implements ActionListener {
     public MuteButton() {
         super();
         this.setBounds(40, 480, 32, 32);
-        // this.setOpaque(false);
-        // this.setContentAreaFilled(false);
-        // this.setBorderPainted(false);
+        this.setOpaque(false);
+        this.setContentAreaFilled(false);
+        this.setBorderPainted(false);
         this.addActionListener(this);
 
     }

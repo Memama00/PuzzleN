@@ -20,7 +20,7 @@ public class Menu extends JPanel {
 	public Menu(PuzzleFrame frame) {
 
 		super();
-
+		SondTrack.changeTrack("MainTrack");
 		JLabel lblPuzzleN = new JLabel("PUZZLE-N");
 		lblPuzzleN.setFont(new Font("Impact", Font.BOLD + Font.ITALIC, 63));
 		lblPuzzleN.setBounds(200, 59, 400, 56);
@@ -52,9 +52,9 @@ public class Menu extends JPanel {
 		
 		JLabel icon = new JLabel(new ImageIcon("images/Metro-Sound-32.png"));
 		icon.setAlignmentY(icon.getAlignmentY() - 16);
-		icon.setBounds(24, 474, 100, 100);
+		icon.setBounds(24, 475, 64, 42);
 		icon.setVisible(true);
-		
+		this.add(icon);
 		
 		this.add(dificuldade);
 
