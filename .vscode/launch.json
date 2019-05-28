@@ -23,6 +23,7 @@
             "type": "java",
             "name": "Debug (Launch)-Main<br.com.poli.PuzzleN>",
             "request": "launch",
+            "console": "externalTerminal",
             "mainClass": "br.com.poli.puzzleN.frontend.Main",
             "projectName": "br.com.poli.PuzzleN"
         }
