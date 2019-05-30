@@ -1,10 +1,13 @@
 package br.com.poli.puzzleN.engine;
 
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import br.com.poli.puzzleN.Interfaces.CalculaScore;
 import br.com.poli.puzzleN.exceptions.*;
+import br.com.poli.puzzleN.testes.Testes;
 
 public class Puzzle implements Serializable, Comparable<Puzzle> {
 
@@ -17,6 +20,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 	private Calendar tempo;
 	private Calendar finalTime;
 	private Dificuldade dificuldade;
+	private Point zero;
 
 	public Puzzle(String nome, Dificuldade dificuldade) {
 		jogador = new Jogador(nome);
@@ -63,7 +67,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 	public void setVenceu(boolean venceu) {
 		this.venceu = venceu;
 	}
-	
+
 	public Calendar getTempo() {
 		return tempo;
 	}
@@ -74,8 +78,9 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 
 	public long getTempo(Calendar now) {
 		now.setTime(new Date());
-		return now.get(Calendar.MILLISECOND) - tempo.get(Calendar.MILLISECOND) ;
+		return now.get(Calendar.MILLISECOND) - tempo.get(Calendar.MILLISECOND);
 	}
+
 	public Calendar getFinalTime() {
 		return finalTime;
 	}
@@ -83,15 +88,16 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 	public void setFinalTime(Calendar finalTime) {
 		this.finalTime = finalTime;
 	}
+
 	public void setFinalTime() {
 		this.finalTime = Calendar.getInstance();
 		finalTime.setTime(new Date());
 	}
+
 	public float getTempoDecorrido() {
-		
-		int start = tempo.get(Calendar.SECOND);
-		int end = finalTime.get(Calendar.SECOND);
-		return (float) ((end - start)/60);
+		long start = tempo.getTime().getTime();
+		long end = finalTime.getTime().getTime();
+		return (float) ((float) (end - start) / (60 * 1000));
 	}
 
 	public boolean isFimDeJogo() {
@@ -112,6 +118,75 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		venceu = false;
 		tempo.setTime(new Date());
 		gridPuzzle.geraTabuleiro((int) Math.sqrt(dificuldade.getValor() + 1));
+		zero = new Point(gridPuzzle.getGrid().length - 1, gridPuzzle.getGrid().length - 1);
+		this.jhonnyBravo();
+	}
+
+	private void jhonnyBravo() {
+		Random r = new Random();
+		int k = gridPuzzle.getGrid().length - 1;
+		int i = 1, j = 0, R, last_r = 0;
+		// bubbleMoveZero(4);
+		// bubbleMoveZero(1);
+		while (i < 1000 && j < 500) {
+			R = (int) ((r.nextInt(100) + r.nextInt(60)) / 20) + 1;
+			System.out.print(i + "-> *" + R + "X" + last_r + "*\t");
+			if ((j - i) > 2) {
+				if (last_r == 3) {
+					last_r = 4;
+				} else if (last_r == 4) {
+					last_r = 3;
+				} else if (last_r == 2) {
+					last_r = 1;
+				} else {
+					last_r = 2;
+				}
+			}
+			System.out.println("Zero-> x:[" + zero.x + "]|y:[" + zero.y + "]");
+			if (R == last_r || R == 1 ? last_r != 2 && zero.y > 0
+					: R == 2 ? last_r != 1 && zero.y < k
+							: R == 3 ? last_r != 4 && zero.x < k : R == 4 ? last_r != 3 && zero.x > 0 : true) {
+
+				if (bubbleMoveZero(R)) {
+
+					Testes.showTab(gridPuzzle);
+					last_r = R;
+					i++;
+				}
+
+			}
+			if (i > 1)
+				j++;
+		}
+
+	}
+
+	private boolean bubbleMoveZero(int move) {
+		switch (move) {
+		case 1:
+			return zeroMap("cima");
+		case 2:
+			return zeroMap("baixo");
+		case 3:
+			return zeroMap("direita");
+		case 4:
+			return zeroMap("esquerda");
+
+		case 5:// Noroeste
+			return zeroMap("cima") || zeroMap("esquerda");
+
+		case 6:// Sudoeste
+			return zeroMap("baixo") || zeroMap("esquerda");
+
+		case 7:// Nordeste
+			return zeroMap("direita") || zeroMap("cima");
+
+		case 8:// Sudeste
+			return zeroMap("direita") || zeroMap("baixo");
+
+		default:
+			return false;
+		}
 	}
 
 	public void resolveTabuleiro() throws Error {
@@ -163,28 +238,44 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		}
 		return sentido;
 	}
+
 	/*
-	 * *********Vai ser usado para gera o tabuleiro "possive" na etapa 4 ***********
-	 * 
-	 * private boolean bubbleZeroMove(int move) { int x = 0, y = 0; boolean check =
-	 * true; for (y = 0; y < gridPuzzle.getGrid().length &&
-	 * gridPuzzle.getGrid()[y][x].getValor() != 0; y++) for (x = 0; x <
-	 * gridPuzzle.getGrid().length && gridPuzzle.getGrid()[y][x].getValor() != 0;
-	 * x++) try { switch (move) { case 1:// direita gridPuzzle.executaMovimento(x +
-	 * 1, y, "esquerda"); break;
-	 * 
-	 * case 2:// baixo gridPuzzle.executaMovimento(x, y - 1, "cima"); break;
-	 * 
-	 * case 3:// esquerda gridPuzzle.executaMovimento(x - 1, y, "direita"); break;
-	 * 
-	 * case 4:// cima gridPuzzle.executaMovimento(x, y + 1, "baixo"); break;
-	 * default: check = false; } } catch (Exception e) { check = false;
-	 * System.out.println(e.getLocalizedMessage()); }
-	 * 
-	 * return check;
-	 * 
-	 * }
+	 * Atualiza as cordenadas do zero para o seu FUTURO local e retorna o sentido q
+	 * a peça correspondente deve fazer para tocar de lugar o mesmo
 	 */
+	private boolean zeroMap(String sentido) {
+		switch (sentido) {
+		case "direita":
+			if (gridPuzzle.executaMovimento(zero.x + 1, zero.y, "esquerda")) {
+				zero.setLocation(zero.x + 1, zero.y);
+				return true;
+			} else
+				return false;
+
+		case "baixo":
+			if (gridPuzzle.executaMovimento(zero.x, zero.y + 1, "cima")) {
+				zero.setLocation(zero.x, zero.y + 1);
+				return true;
+			} else
+				return false;
+
+		case "esquerda":
+			if (gridPuzzle.executaMovimento(zero.x - 1, zero.y, "direita")) {
+				zero.setLocation(zero.x - 1, zero.y);
+				return true;
+			} else
+				return false;
+
+		case "cima":
+			if (gridPuzzle.executaMovimento(zero.x, zero.y - 1, "baixo")) {
+				zero.setLocation(zero.x, zero.y - 1);
+				return true;
+			} else
+				return false;
+		default:
+			return false;
+		}
+	}
 
 	public int compareTo(Puzzle puzzle) {
 		return (this.getScore().getPontos() > puzzle.getScore().getPontos()) ? -1 : 1;
