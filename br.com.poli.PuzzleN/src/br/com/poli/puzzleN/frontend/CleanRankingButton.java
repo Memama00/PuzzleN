@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 import br.com.poli.puzzleN.engine.Ranking;
@@ -24,9 +25,13 @@ public class CleanRankingButton extends JButton implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent a) {
-        Ranking.getRank().clear();
-        Ranking.save();
-        frame.updateTela(new RankingScreen(frame));
+        if (Ranking.getRank().size() > 0)
+            if (JOptionPane.showConfirmDialog(frame, "você tem certeza que dezeja limpar o ranking?", "Limpar ranking",
+                    JOptionPane.YES_NO_OPTION) == 0) {
+                Ranking.getRank().clear();
+                Ranking.save();
+                frame.updateTela(new RankingScreen(frame));
+            }
 
     }
 

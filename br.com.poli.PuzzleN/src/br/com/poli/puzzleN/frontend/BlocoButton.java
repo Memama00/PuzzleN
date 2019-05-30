@@ -112,10 +112,6 @@ public class BlocoButton extends JButton implements ActionListener {
         System.out.printf("\n\n");
     }
 
-    public void setNumero(int in) {
-        super.setName(Integer.toString(in));
-    }
-
     public int getXButton() {
         return this.xButton;
     }

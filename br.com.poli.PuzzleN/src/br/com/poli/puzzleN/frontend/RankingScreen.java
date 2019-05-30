@@ -24,9 +24,9 @@ public class RankingScreen extends JPanel {
         for (int i = 0; i < Ranking.size(); i++) {
 
             Puzzle partida = Ranking.get(i);
-            String nome = " Nome:" + partida.getJogador().getNome();
+            String nome = " Nome: " + partida.getJogador().getNome();
             String pontos = "Pontos:" + Integer.toString(partida.getScore().getPontos());
-            jogos.add(new GameInfoButton(nome + "\t" + pontos, partida, i));
+            jogos.add(new GameInfoButton(nome + "          " + pontos, partida, i));
             this.add(jogos.get(i));
         }
         this.add(new BackButton(frame));

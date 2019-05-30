@@ -13,15 +13,17 @@ public class SondTrack {
     private static Line.Info info;
     private static Clip clip;
     private static int level;
+    private static boolean paused;
 
     public SondTrack() {
         try {
-            SondTrack.soundFile = new File("res/MainTrack.wav");
+            SondTrack.soundFile = new File("res/MainTrack2.wav");
             SondTrack.info = new Line.Info(Clip.class);
             SondTrack.line = AudioSystem.getLine(SondTrack.info);
             SondTrack.clip = (Clip) line;
             SondTrack.clip.open(AudioSystem.getAudioInputStream(SondTrack.soundFile));
             SondTrack.clip.loop(Clip.LOOP_CONTINUOUSLY);
+            SondTrack.paused = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,16 +34,20 @@ public class SondTrack {
             SondTrack.clip.stop();
             SondTrack.clip.close();
             SondTrack.soundFile = new File("res/" + track + ".wav");
+            SondTrack.line = AudioSystem.getLine(SondTrack.info);
             SondTrack.info = new Line.Info(Clip.class);
             SondTrack.clip = (Clip) line;
             SondTrack.clip.open(AudioSystem.getAudioInputStream(SondTrack.soundFile));
             SondTrack.clip.loop(Clip.LOOP_CONTINUOUSLY);
 
-            SondTrack.line = AudioSystem.getLine(SondTrack.info);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static String getTrackName() {
+        return soundFile.getName();
     }
 
     public static void stop() {
@@ -50,24 +56,30 @@ public class SondTrack {
     }
 
     public static void pause() {
-        SondTrack.clip.stop();
+        if (!SondTrack.paused) {
+            SondTrack.clip.stop();
+            SondTrack.paused = true;
+        }
     }
 
     public static void play() {
-        if (SondTrack.clip.isOpen() == false)
+        if (!SondTrack.clip.isOpen()) {
             try {
                 SondTrack.clip.open(AudioSystem.getAudioInputStream(SondTrack.soundFile));
                 SondTrack.clip.loop(Clip.LOOP_CONTINUOUSLY);
+                SondTrack.paused = false;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        else if (SondTrack.clip.isRunning() == false)
+        } else if (!SondTrack.clip.isRunning() && SondTrack.paused) {
             SondTrack.clip.start();
+            SondTrack.paused = false;
+        }
     }
 
     public static void altern() {
         if (SondTrack.clip.isRunning() && SondTrack.clip.isOpen())
-            SondTrack.pause();
+            SondTrack.stop();
         else
             SondTrack.play();
     }
@@ -79,7 +91,8 @@ public class SondTrack {
         float def = level.getValue() + (level.getMaximum() / 100) * SondTrack.level;
         level.setValue(def);
     }
-    public static Clip getClip(){
-        return clip;
+
+    public static boolean isPlaying() {
+        return !paused && clip.isRunning();
     }
 }

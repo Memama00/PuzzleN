@@ -16,9 +16,6 @@ public class Game extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Puzzle partida;
 	private JButton[] tabuleiro;
-	JLabel nome;
-	SurrenderButton desistir;
-
 	public Game(PuzzleFrame frame) {
 
 		this.partida = frame.getPartida();
@@ -28,18 +25,13 @@ public class Game extends JPanel {
 		int k = this.partida.getTabuleiro().getGrid().length;
 		this.tabuleiro = new JButton[k * k];
 
-		nome = new JLabel("nome: " + this.partida.getJogador().getNome());
+		JLabel nome = new JLabel("nome: " + this.partida.getJogador().getNome());
 		nome.setBounds(30, 500, 10 * (6 + this.partida.getJogador().getNome().length()), 20);
 		nome.setForeground(Color.WHITE);
 		nome.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.add(nome);
 
-		desistir = new SurrenderButton(this.partida, frame);
-		desistir.setBounds(700, 500, 90, 30);
-		desistir.setForeground(Color.WHITE);
-		desistir.setBackground(Color.BLACK);
-		this.add(desistir);
-		
+		this.add(new SurrenderButton(frame));
 		/*
 		 * O jbutton "save", salva a partida independente de das condições de jogo e
 		 * encerra a partida. Tem o objetivo de testar tanto o ranking como a tela de
@@ -71,9 +63,5 @@ public class Game extends JPanel {
 			}
 		}
 		this.add(new BackGround());
-	}
-
-	Puzzle getPartida() {
-		return this.partida;
 	}
 }
