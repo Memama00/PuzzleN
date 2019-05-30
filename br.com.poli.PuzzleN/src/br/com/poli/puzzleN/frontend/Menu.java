@@ -20,7 +20,8 @@ public class Menu extends JPanel {
 	public Menu(PuzzleFrame frame) {
 
 		super();
-		SondTrack.changeTrack("MainTrack");
+		if (SondTrack.getTrackName() != "MainTrack2.wav" && SondTrack.isPlaying())
+			SondTrack.changeTrack("MainTrack2");
 		JLabel lblPuzzleN = new JLabel("PUZZLE-N");
 		lblPuzzleN.setFont(new Font("Impact", Font.BOLD + Font.ITALIC, 63));
 		lblPuzzleN.setBounds(200, 59, 400, 56);
@@ -49,13 +50,13 @@ public class Menu extends JPanel {
 		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil" }));
 		dificuldade.setBounds(335, 195 + 10, 140, 20);
 		dificuldade.setAlignmentX(SwingConstants.CENTER);
-		
+
 		JLabel icon = new JLabel(new ImageIcon("images/Metro-Sound-32.png"));
 		icon.setAlignmentY(icon.getAlignmentY() - 16);
 		icon.setBounds(24, 475, 64, 42);
 		icon.setVisible(true);
 		this.add(icon);
-		
+
 		this.add(dificuldade);
 
 		this.add(new RankingButton(frame));
@@ -63,7 +64,7 @@ public class Menu extends JPanel {
 		this.add(new StartButton(frame));
 
 		this.add(new MuteButton());
-		
+
 		this.add(new BackGround());
 	}
 

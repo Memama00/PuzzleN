@@ -12,21 +12,19 @@ public class InfoGame extends JPanel {
 
     public InfoGame(PuzzleFrame frame) {
         super();
-        if(frame.getPartida().getVenceu() == false && SondTrack.getClip().isRunning())
+        if (frame.getLastTela().getClass() != RankingScreen.class && !frame.getPartida().getVenceu()
+                && SondTrack.isPlaying())
             SondTrack.changeTrack("LoseTrack");
         JLabel[][] infoIcons = new JLabel[2][5];
-        String[][] text = new String[][] { 
-            { "Nome:", "Movimentos:", "Dificuldade:", "Pontos:" , "Tempo:"},
-            { frame.getPartida().getJogador().getNome()
-            , Integer.toString(frame.getPartida().getQuantidadeMovimentos())
-            , frame.getPartida().getDificuldade().toString()
-            , Integer.toString(frame.getPartida().getScore().getPontos())
-            , Float.toString(frame.getPartida().getTempoDecorrido()) + "min(s)"}
-        };
+        String[][] text = new String[][] { { "Nome:", "Movimentos:", "Dificuldade:", "Pontos:", "Tempo:" },
+                { frame.getPartida().getJogador().getNome(),
+                        Integer.toString(frame.getPartida().getQuantidadeMovimentos()),
+                        frame.getPartida().getDificuldade().toString(),
+                        Integer.toString(frame.getPartida().getScore().getPontos()),
+                        Float.toString(frame.getPartida().getTempoDecorrido()) + "min(s)" } };
         for (int j = 0; j < 2; j++)
             for (int i = 0; i < 5; i++) {
                 infoIcons[j][i] = new JLabel(text[j][i]);
-                // if(i > 1){//820 x 600
                 infoIcons[j][i].setBounds(50 + (300 * j), 40 + (70 * i), 26 * text[j][i].length(), 40);
                 infoIcons[j][i].setHorizontalAlignment(SwingConstants.LEFT);
                 infoIcons[j][i].setFont(new Font("Franklin Gothic Medium", Font.ITALIC, 32));

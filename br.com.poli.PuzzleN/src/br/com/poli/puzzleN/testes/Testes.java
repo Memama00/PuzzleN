@@ -11,12 +11,13 @@ import br.com.poli.puzzleN.Interfaces.CalculaDificil;
 public class Testes {
 
 	public static void showTab(Tabuleiro tab) {
-		System.out.printf("\t #  ");
-		for (int i = 0; i < tab.getGrid().length; i++)
-			System.out.printf(" %02d", i);
-		System.out.printf("\n\n");
+		// System.out.printf("\t #  ");
+		// for (int i = 0; i < tab.getGrid().length; i++)
+		// 	System.out.printf(" %02d", i);
+		// System.out.printf("\n\n");
 		for (int i = 0; i < tab.getGrid().length; i++) {
-			System.out.printf("\t %02d-", i);
+			//System.out.printf("\t %02d-", i);
+			System.out.printf("\t");
 			for (int j = 0; j < tab.getGrid().length; j++) {
 				if (tab.getGrid().length >= 10)
 					System.out.printf(" %03d", tab.getGrid()[i][j].getValor());

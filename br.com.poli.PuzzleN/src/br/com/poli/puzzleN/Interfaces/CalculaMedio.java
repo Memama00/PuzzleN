@@ -8,7 +8,7 @@ public class CalculaMedio implements CalculaScore, Serializable {
 	private int pontos;
 
 	public CalculaMedio(Puzzle partida) {
-		pontos = 4 * 1000000;
+		pontos = 4000000;
 	}
 
 	public int getPontos() {
@@ -21,7 +21,7 @@ public class CalculaMedio implements CalculaScore, Serializable {
 		int moves = partida.getQuantidadeMovimentos();
 
 		if (partida.getVenceu())
-			pontos /= (time * 10) + moves;
+			pontos /= (time + moves);
 		else
 			pontos = 0;
 		return pontos;

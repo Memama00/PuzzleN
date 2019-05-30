@@ -8,7 +8,7 @@ public class CalculaDificil implements CalculaScore, Serializable {
 	private int pontos;
 
 	public CalculaDificil(Puzzle partida) {
-		pontos = 5000000;
+		pontos = 500000000;
 	}
 
 	public int getPontos() {
@@ -17,7 +17,7 @@ public class CalculaDificil implements CalculaScore, Serializable {
 
 	public int pontos(Puzzle partida) {
 
-		int time = (int) partida.getTempoDecorrido() * 60;
+		float time = partida.getTempoDecorrido() * 60;
 		int moves = partida.getQuantidadeMovimentos();
 
 		if (partida.getVenceu())

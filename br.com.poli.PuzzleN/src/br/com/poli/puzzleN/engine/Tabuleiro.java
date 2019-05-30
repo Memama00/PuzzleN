@@ -1,10 +1,9 @@
 package br.com.poli.puzzleN.engine;
 
 import java.io.Serializable;
-import java.util.Random;
 import br.com.poli.puzzleN.exceptions.MovimentoInvalido;
 
-public class Tabuleiro implements Serializable{
+public class Tabuleiro implements Serializable {
 	private static final long serialVersionUID = 0102L;
 	private Bloco[][] grid;
 
@@ -30,7 +29,7 @@ public class Tabuleiro implements Serializable{
 		return check;
 	}
 
-	public boolean executaMovimento(int x, int y, String movimento){
+	public boolean executaMovimento(int x, int y, String movimento) {
 		try {
 			if (x < 0 || y < 0)
 				throw new MovimentoInvalido();
@@ -72,10 +71,14 @@ public class Tabuleiro implements Serializable{
 			}
 			return true;
 		} catch (Exception e) {
-			System.out.println(e.getLocalizedMessage() + "\n tente um movimento valido");
+			//System.out.println(e.getLocalizedMessage() + "\n tente um movimento valido");
 			return false;
 		}
 
+	}
+
+	public boolean executaMovimento(Movimento m) {
+		return executaMovimento(m.X(), m.Y(), m.getSentido());
 	}
 
 	public boolean isTabuleiroOrdenado(Dificuldade dificuldade) {
@@ -91,26 +94,14 @@ public class Tabuleiro implements Serializable{
 			if (check)
 				break;
 		}
-			return !check;
-	}
-
-	private boolean fillGrid(int y, int x, int i) {
-
-		boolean check = (grid[y][x] == null);
-
-		if (check)
-			grid[y][x] = new Bloco(i);
-
-		return check;
+		return !check;
 	}
 
 	public void geraTabuleiro(int k) {
-		Random r = new Random();
 		this.grid = new Bloco[k][k];
-		int i = 0;
-		while (i <= ((k * k) - 1)) {
-			if (fillGrid(r.nextInt(grid.length), r.nextInt(grid.length), i))
-				i++;
-		}
+		for (int i = 0; i < grid.length; i++)
+			for (int j = 0; j < grid.length; j++)
+				this.grid[i][j] = new Bloco((i * k) + j + 1);
+		this.grid[k - 1][k - 1] = new Bloco(0);
 	}
 }
