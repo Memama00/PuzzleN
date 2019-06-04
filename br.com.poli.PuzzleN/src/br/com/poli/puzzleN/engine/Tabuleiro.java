@@ -83,7 +83,7 @@ public class Tabuleiro implements Serializable {
 			}
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getLocalizedMessage() + "\n tente um movimento valido");
 			return false;
 		}
 
