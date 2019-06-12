@@ -83,7 +83,7 @@ public class Tabuleiro implements Serializable {
 			}
 			return true;
 		} catch (Exception e) {
-			System.out.println(e.getLocalizedMessage() + "\n tente um movimento valido");
+			System.out.println(e.getMessage() + "\n tente um movimento valido");
 			return false;
 		}
 
@@ -91,6 +91,22 @@ public class Tabuleiro implements Serializable {
 
 	public boolean executaMovimento(Movimento m) {
 		return executaMovimento(m.X(), m.Y(), m.getSentido());
+	}
+
+	public void print() {
+		for (int y = 0; y < grid.length; y++) {
+			System.out.print("\t");
+			for (int x = 0; x < grid.length; x++) {
+				int valor = grid[y][x].getValor();
+				if (valor == 0)
+					System.out.print("   ");
+				else
+					System.out.printf(" %02d", valor);
+			}
+			System.out.println("\n");
+		}
+		System.out.println("\n");
+
 	}
 
 	public boolean isTabuleiroOrdenado(Dificuldade dificuldade) {
@@ -152,9 +168,10 @@ public class Tabuleiro implements Serializable {
 			for (int j = 0; j < k; j++)
 				tab[i][j] = grid[i][j].getValor();
 		PseudoTab novo = new PseudoTab(tab);
-		//novo.print();
+		// novo.print();
 		return novo;
 	}
+
 	public int[][] gerarPseudoTabuleiro() {
 		int k = grid.length;
 		int[][] tab = new int[k][k];

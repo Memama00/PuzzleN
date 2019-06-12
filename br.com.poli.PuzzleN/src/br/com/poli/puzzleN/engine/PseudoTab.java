@@ -13,79 +13,80 @@ import br.com.poli.puzzleN.testes.Testes;
 
 public class PseudoTab {
 
-    private int[][] tiles;
-    private int display_width;
-    private Point blank;
+    private int[][] tab;
+    private int espaco;
+    private Point zero;
+    private int etapa;
+    public Point move;
     public static PseudoTab SOLVED;
 
     private PseudoTab(int k) {
-        tiles = new int[k][k];
+        tab = new int[k][k];
         int cnt = 1;
         for (int i = 0; i < k; i++) {
             for (int j = 0; j < k; j++) {
-                tiles[i][j] = cnt;
+                tab[i][j] = cnt;
                 cnt++;
             }
         }
-        display_width = Integer.toString(cnt).length();
-
-        // init blank
-        blank = new Point(tiles.length - 1, tiles.length - 1);
-        tiles[blank.y][blank.x] = 0;
+        espaco = Integer.toString(cnt).length();
+        zero = new Point(tab.length - 1, tab.length - 1);
+        tab[zero.y][zero.x] = 0;
+        etapa = tab.length - 3;
     }
 
     public PseudoTab(int[][] tab) {
-        tiles = tab;
+        this.tab = tab;
         int cnt = 1;
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles.length; j++) {
-                if (tiles[i][j] == 0)
-                    blank = new Point(j, i);
+        for (int i = 0; i < tab.length; i++) {
+            for (int j = 0; j < tab.length; j++) {
+                if (tab[i][j] == 0)
+                    zero = new Point(j, i);
                 cnt++;
             }
         }
-        display_width = Integer.toString(cnt).length();
-        tiles[blank.y][blank.x] = 0;
-        SOLVED = new PseudoTab(tiles.length);
+        espaco = Integer.toString(cnt).length();
+        tab[zero.y][zero.x] = 0;
+        SOLVED = new PseudoTab(tab.length);
+        etapa = 0;
     }
 
     public PseudoTab(PseudoTab toClone) {
-        this(toClone.cloneTab()); // chain to basic init
-        for (Point p : allTilePos()) {
-            tiles[p.y][p.x] = toClone.tile(p);
+        this(toClone.cloneTab());
+        for (Point p : allPositions()) {
+            tab[p.y][p.x] = toClone.bloco(p);
         }
-        blank = toClone.getBlank();
+        zero = toClone.getZero();
+        etapa = toClone.etapa;
     }
 
     public int[][] cloneTab() {
-        int[][] clone = new int[tiles.length][tiles.length];
-        for (int y = 0; y < tiles.length; y++)
-            for (int x = 0; x < tiles.length; x++)
-                clone[y][x] = tiles[y][x];
+        int[][] clone = new int[tab.length][tab.length];
+        for (int y = 0; y < tab.length; y++)
+            for (int x = 0; x < tab.length; x++)
+                clone[y][x] = tab[y][x];
         return clone;
     }
 
-    public List<Point> allTilePos() {
+    public List<Point> allPositions() {
         ArrayList<Point> out = new ArrayList<Point>();
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles.length; j++) {
+        for (int i = 0; i < tab.length; i++)
+            for (int j = 0; j < tab.length; j++)
                 out.add(new Point(i, j));
-            }
-        }
         return out;
     }
 
-    public int tile(Point p) {
-        return tiles[p.y][p.x];
+    public int bloco(Point p) {
+        return tab[p.y][p.x];
     }
 
-    public Point getBlank() {
-        return blank;
+    public Point getZero() {
+        return zero;
     }
 
-    public Point whereIs(int x) {
-        for (Point p : allTilePos()) {
-            if (tile(p) == x) {
+    public Point posicao(int x) {
+        for (Point p : allPositions()) {
+            if (bloco(p) == x) {
                 return p;
             }
         }
@@ -95,8 +96,8 @@ public class PseudoTab {
     @Override
     public boolean equals(Object o) {
         if (o instanceof PseudoTab) {
-            for (Point p : allTilePos())
-                if (this.tile(p) != ((PseudoTab) o).tile(p))
+            for (Point p : allPositions())
+                if (this.bloco(p) != ((PseudoTab) o).bloco(p))
                     return false;
 
             return true;
@@ -107,25 +108,25 @@ public class PseudoTab {
     @Override
     public int hashCode() {
         int out = 0;
-        for (Point p : allTilePos()) {
-            out = (out * tiles.length * tiles.length) + this.tile(p);
+        for (Point p : allPositions()) {
+            out = (out * tab.length * tab.length) + this.bloco(p);
         }
         return out;
     }
 
     public void show() {
         System.out.println("-----------------");
-        for (int i = 0; i < tiles.length; i++) {
+        for (int i = 0; i < tab.length; i++) {
             System.out.print("| ");
-            for (int j = 0; j < tiles.length; j++) {
-                int n = tiles[i][j];
+            for (int j = 0; j < tab.length; j++) {
+                int n = tab[i][j];
                 String s;
                 if (n > 0) {
                     s = Integer.toString(n);
                 } else {
                     s = "";
                 }
-                while (s.length() < display_width) {
+                while (s.length() < espaco) {
                     s += " ";
                 }
                 System.out.print(s + "| ");
@@ -135,11 +136,11 @@ public class PseudoTab {
         System.out.print("-----------------\n\n");
     }
 
-    public List<Point> allValidMoves() {
+    public List<Point> validMoves() {
         ArrayList<Point> out = new ArrayList<Point>();
         for (int dx = -1; dx < 2; dx++) {
             for (int dy = -1; dy < 2; dy++) {
-                Point tp = new Point(blank.x + dx, blank.y + dy);
+                Point tp = new Point(zero.x + dx, zero.y + dy);
                 if (isValidMove(tp)) {
                     out.add(tp);
                 }
@@ -149,17 +150,36 @@ public class PseudoTab {
     }
 
     public boolean isValidMove(Point p) {
-        if ((p.x < 0) || (p.x >= tiles.length)) {
+        if ((p.x < etapa) || (p.x >= tab.length)) {
             return false;
         }
-        if ((p.y < 0) || (p.y >= tiles.length)) {
+        if ((p.y < etapa) || (p.y >= tab.length)) {
             return false;
         }
-        int dx = blank.x - p.x;
-        int dy = blank.y - p.y;
+        int dx = zero.x - p.x;
+        int dy = zero.y - p.y;
         if ((Math.abs(dx) + Math.abs(dy) != 1) || (dx * dy != 0)) {
             return false;
         }
+        return true;
+    }
+
+    private void updateEtapa() {
+        if (tab.length - etapa <= 3)
+            return;
+        if (isEtapaCompleat()) {
+            etapa++;
+            updateEtapa();
+        }
+    }
+
+    private boolean isEtapaCompleat() {
+        for (int y = 0; y < tab.length; y++)
+            for (int x = 0; x < tab.length; x++)
+                if (etapa == (x & y) && (tab[y][x] != (y * tab.length) + (x + 1)))
+                    return false;
+                else if(x > etapa)
+                    break;
         return true;
     }
 
@@ -167,10 +187,44 @@ public class PseudoTab {
         if (!isValidMove(p)) {
             throw new RuntimeException("Invalid move");
         }
-        assert tiles[blank.y][blank.x] == 0;
-        tiles[blank.y][blank.x] = tiles[p.y][p.x];
-        tiles[p.y][p.x] = 0;
-        blank = p;
+        assert tab[zero.y][zero.x] == 0;
+        tab[zero.y][zero.x] = tab[p.y][p.x];
+        tab[p.y][p.x] = 0;
+        zero = p;
+        this.move = p;
+        updateEtapa();
+    }
+
+    public void moveTo(Point p) {
+        if (zero.y == etapa)
+            move(new Point(zero.x, zero.y + 1));
+        if (zero.x == etapa)
+            move(new Point(zero.x + 1, zero.y));
+        Point nextP = new Point(zero.x + (zero.x - p.x) < 0 ? 1 : -1, zero.y);
+        while (zero.x != p.x && isValidMove(nextP)) {
+            nextP = new Point(zero.x + (zero.x - p.x) < 0 ? 1 : -1, zero.y);
+            if (blocoDistance(nextP) != 0)
+                move(nextP);
+            else {
+                nextP = new Point(zero.x, zero.y + 1);
+                if (blocoDistance(nextP) != 0 && isValidMove(nextP))
+                    move(nextP);
+                else
+                    move(new Point(zero.x, zero.y - 1));
+            }
+        }
+        while (zero.y != p.y && isValidMove(nextP)) {
+            nextP = new Point(zero.x, zero.y + (zero.y - p.y) < 0 ? 1 : -1);
+            if (blocoDistance(nextP) != 0 && isValidMove(nextP))
+                move(nextP);
+            else {
+                nextP = new Point(zero.x + 1, zero.y);
+                if (blocoDistance(nextP) != 0 && isValidMove(nextP))
+                    move(nextP);
+                else
+                    move(new Point(zero.x - 1, zero.y));
+            }
+        }
     }
 
     public PseudoTab moveClone(Point p) {
@@ -179,27 +233,11 @@ public class PseudoTab {
         return out;
     }
 
-    public void shuffle(int howmany) {
-        for (int i = 0; i < howmany; i++) {
-            List<Point> possible = allValidMoves();
-            int which = (int) (Math.random() * possible.size());
-            Point move = possible.get(which);
-            this.move(move);
-        }
-    }
-
-    public void shuffle() {
-        int mutplex = 1;
-        for (int i = 0; i <= (tiles.length * tiles.length); i++)
-            mutplex *= tiles.length;
-        shuffle(mutplex);
-    }
-
-    public int numberMisplacedTiles() {
+    public int foraDoLugar() {
         int wrong = 0;
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles.length; j++) {
-                if ((tiles[i][j] > 0) && (tiles[i][j] != (i * tiles.length) + (j + 1))) {
+        for (int i = 0; i < tab.length; i++) {
+            for (int j = 0; j < tab.length; j++) {
+                if ((tab[i][j] > 0) && (tab[i][j] != (i * tab.length) + (j + 1))) {
                     wrong++;
                 }
             }
@@ -208,35 +246,54 @@ public class PseudoTab {
     }
 
     public boolean isSolved() {
-        return numberMisplacedTiles() == 0;
+        return foraDoLugar() == 0;
     }
 
-    public int manhattanDistance() {
-        int sum = 0;
-        for (Point p : allTilePos()) {
-            int val = tile(p);
-            if (val > 0) {
-                Point correct = SOLVED.whereIs(val);
-                sum += Math.abs(correct.x = p.x);
-                sum += Math.abs(correct.y = p.y);
-            }
-        }
+    public float totalDistance() {
+        float sum = 0;
+        for (Point p : allPositions())
+            if (bloco(p) > 0)
+                sum = +blocoDistance(p);
         return sum;
     }
 
-    public int estimateError() {
-        return this.numberMisplacedTiles();
+    public float lineDistance(int y) {
+        float sum = 0;
+        for (Point p : allPositions())
+            if (bloco(p) > 0 && SOLVED.posicao(bloco(p)).y == y)
+                sum = +blocoDistance(p);
+        return sum;
     }
 
-    public List<PseudoTab> allAdjacentPuzzles() {
+    public float colDistance(int x) {
+        float sum = 0;
+        for (Point p : allPositions())
+            if (bloco(p) > 0 && SOLVED.posicao(bloco(p)).x == x)
+                sum = +blocoDistance(p);
+        return sum;
+    }
+
+    public float blocoDistance(Point bloco) {
+        return (float) bloco.distance(SOLVED.posicao(bloco(bloco)));
+    }
+
+    public float etapaDistance() {
+        return lineDistance(etapa) + colDistance(etapa);
+    }
+
+    public int estimateError() {
+        return this.foraDoLugar();
+    }
+
+    public List<PseudoTab> sucessores() {
         ArrayList<PseudoTab> out = new ArrayList<PseudoTab>();
-        for (Point move : allValidMoves()) {
+        for (Point move : validMoves()) {
             out.add(moveClone(move));
         }
         return out;
     }
 
-    public List<PseudoTab> aStarSolve() {
+    public LinkedList<PseudoTab> aStarSolve() {
 
         HashMap<PseudoTab, PseudoTab> anterior = new HashMap<PseudoTab, PseudoTab>();
         HashMap<PseudoTab, Integer> depth = new HashMap<PseudoTab, Integer>();
@@ -259,10 +316,11 @@ public class PseudoTab {
             PseudoTab candidate = proximo.remove();
             cnt++;
             if (cnt % 20000 == 0) {
-                System.out.printf("Considered %,d positions. Queue = %,d\n", cnt, proximo.size());
+                System.out.printf("Calculando... %,d tabuleiros. Fila = %,d\n", cnt, proximo.size());
             }
             if (candidate.isSolved()) {
-                System.out.printf("Solution considered %d boards\n", cnt);
+                System.out.printf("Resolvido considerando %d tabuleiros\n", cnt);
+                candidate.show();
                 LinkedList<PseudoTab> solution = new LinkedList<PseudoTab>();
                 PseudoTab backtrace = candidate;
                 while (backtrace != null) {
@@ -271,7 +329,7 @@ public class PseudoTab {
                 }
                 return solution;
             }
-            for (PseudoTab fp : candidate.allAdjacentPuzzles()) {
+            for (PseudoTab fp : candidate.sucessores()) {
                 if (!anterior.containsKey(fp)) {
                     anterior.put(fp, candidate);
                     depth.put(fp, depth.get(candidate) + 1);
@@ -285,7 +343,7 @@ public class PseudoTab {
         return null;
     }
 
-    private static void showSolution(List<PseudoTab> solution) {
+    public static void showSolution(List<PseudoTab> solution) {
         if (solution != null) {
             System.out.printf("Success!  Solution with %d moves:\n", solution.size());
             for (PseudoTab sp : solution) {
@@ -297,7 +355,7 @@ public class PseudoTab {
     }
 
     public static void main(String[] args) {
-        Puzzle partida = new PuzzleMedio("nome");
+        Puzzle partida = new PuzzleFacil("nome");
         partida.iniciaPartida();
         Testes.showTab(partida.getTabuleiro());
         PseudoTab p = new PseudoTab(partida.getTabuleiro().gerarPseudoTabuleiro());

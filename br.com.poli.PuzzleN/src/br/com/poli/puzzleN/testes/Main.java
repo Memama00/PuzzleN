@@ -2,7 +2,6 @@ package br.com.poli.puzzleN.testes;
 
 import java.util.Scanner;
 
-import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.engine.Ranking;
 import br.com.poli.puzzleN.puzzles.*;
 

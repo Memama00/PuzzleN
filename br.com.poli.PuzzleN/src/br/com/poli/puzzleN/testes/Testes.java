@@ -11,15 +11,17 @@ import br.com.poli.puzzleN.Interfaces.CalculaDificil;
 public class Testes {
 
 	public static void showTab(Tabuleiro tab) {
-		// System.out.printf("\t #  ");
+		// System.out.printf("\t # ");
 		// for (int i = 0; i < tab.getGrid().length; i++)
-		// 	System.out.printf(" %02d", i);
+		// System.out.printf(" %02d", i);
 		// System.out.printf("\n\n");
 		for (int i = 0; i < tab.getGrid().length; i++) {
-			//System.out.printf("\t %02d-", i);
+			// System.out.printf("\t %02d-", i);
 			System.out.printf("\t");
 			for (int j = 0; j < tab.getGrid().length; j++) {
-				if (tab.getGrid().length >= 10)
+				if (tab.getGrid()[i][j].getValor() == 0)
+					System.out.printf("   ", tab.getGrid()[i][j].getValor());
+				else if (tab.getGrid().length >= 10)
 					System.out.printf(" %03d", tab.getGrid()[i][j].getValor());
 				else
 					System.out.printf(" %02d", tab.getGrid()[i][j].getValor());
@@ -158,8 +160,8 @@ public class Testes {
 		Testes.showTab(Testes.partida.getTabuleiro());
 		System.out.println(
 				"Mover - digite:\n o 'x'do bloco\n e 'y' do bloco \n para move-lo em direção do zero (se possivel)");
-		int x = in.nextInt();
-		int y = in.nextInt();
+		int x = Integer.valueOf(in.nextLine());
+		int y = Integer.valueOf(in.nextLine());
 		try {
 			Testes.partida.smartMove(x, y);
 		} catch (MovimentoInvalido e) {
