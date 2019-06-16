@@ -89,10 +89,6 @@ public class Tabuleiro implements Serializable {
 
 	}
 
-	public boolean executaMovimento(Movimento m) {
-		return executaMovimento(m.X(), m.Y(), m.getSentido());
-	}
-
 	public void print() {
 		for (int y = 0; y < grid.length; y++) {
 			System.out.print("\t");
@@ -162,13 +158,8 @@ public class Tabuleiro implements Serializable {
 	}
 
 	public PseudoTab getPseudoTabuleiro() {
-		int k = grid.length;
-		int[][] tab = new int[k][k];
-		for (int i = 0; i < k; i++)
-			for (int j = 0; j < k; j++)
-				tab[i][j] = grid[i][j].getValor();
-		PseudoTab novo = new PseudoTab(tab);
-		// novo.print();
+
+		PseudoTab novo = new PseudoTab(gerarPseudoTabuleiro());
 		return novo;
 	}
 

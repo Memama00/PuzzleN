@@ -8,9 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import br.com.poli.puzzleN.puzzles.*;
-import br.com.poli.puzzleN.testes.Testes;
-
 public class PseudoTab {
 
     private int[][] tab;
@@ -22,14 +19,14 @@ public class PseudoTab {
 
     private PseudoTab(int k) {
         tab = new int[k][k];
-        int cnt = 1;
-        for (int i = 0; i < k; i++) {
-            for (int j = 0; j < k; j++) {
-                tab[i][j] = cnt;
-                cnt++;
+        int i = 1;
+        for (int y = 0; y < k; y++) {
+            for (int x = 0; x < k; x++) {
+                tab[y][x] = i;
+                i++;
             }
         }
-        espaco = Integer.toString(cnt).length();
+        espaco = Integer.toString(i).length();
         zero = new Point(tab.length - 1, tab.length - 1);
         tab[zero.y][zero.x] = 0;
         etapa = tab.length - 3;
@@ -37,18 +34,19 @@ public class PseudoTab {
 
     public PseudoTab(int[][] tab) {
         this.tab = tab;
-        int cnt = 1;
-        for (int i = 0; i < tab.length; i++) {
-            for (int j = 0; j < tab.length; j++) {
-                if (tab[i][j] == 0)
-                    zero = new Point(j, i);
-                cnt++;
+        int i = 1;
+        for (int y = 0; y < tab.length; y++) {
+            for (int x = 0; x < tab.length; x++) {
+                if (tab[y][x] == 0)
+                    zero = new Point(x, y);
+                i++;
             }
         }
-        espaco = Integer.toString(cnt).length();
+        espaco = Integer.toString(i).length();
         tab[zero.y][zero.x] = 0;
         SOLVED = new PseudoTab(tab.length);
         etapa = 0;
+        updateEtapa();
     }
 
     public PseudoTab(PseudoTab toClone) {
@@ -58,6 +56,7 @@ public class PseudoTab {
         }
         zero = toClone.getZero();
         etapa = toClone.etapa;
+        updateEtapa();
     }
 
     public int[][] cloneTab() {
@@ -68,11 +67,11 @@ public class PseudoTab {
         return clone;
     }
 
-    public List<Point> allPositions() {
-        ArrayList<Point> out = new ArrayList<Point>();
+    public List<P> allPositions() {
+        ArrayList<P> out = new ArrayList<P>();
         for (int i = 0; i < tab.length; i++)
             for (int j = 0; j < tab.length; j++)
-                out.add(new Point(i, j));
+                out.add(new P(i, j));
         return out;
     }
 
@@ -84,8 +83,8 @@ public class PseudoTab {
         return zero;
     }
 
-    public Point posicao(int x) {
-        for (Point p : allPositions()) {
+    public P position(int x) {
+        for (P p : allPositions()) {
             if (bloco(p) == x) {
                 return p;
             }
@@ -164,7 +163,7 @@ public class PseudoTab {
         return true;
     }
 
-    private void updateEtapa() {
+    public void updateEtapa() {
         if (tab.length - etapa <= 3)
             return;
         if (isEtapaCompleat()) {
@@ -173,16 +172,18 @@ public class PseudoTab {
         }
     }
 
-    private boolean isEtapaCompleat() {
+    public boolean isEtapaCompleat(int etapa) {
         for (int y = 0; y < tab.length; y++)
-            for (int x = 0; x < tab.length; x++)
-                if (etapa == (x & y) && (tab[y][x] != (y * tab.length) + (x + 1)))
-                    return false;
-                else if(x > etapa)
-                    break;
+            if (tab[y][etapa] != SOLVED.tab[y][etapa])
+                return false;
+        for (int x = 0; x < tab.length; x++)
+            if (tab[etapa][x] != SOLVED.tab[etapa][x])
+                return false;
         return true;
     }
-
+    public boolean isEtapaCompleat() {
+        return isEtapaCompleat(this.etapa);
+    }
     public void move(Point p) {
         if (!isValidMove(p)) {
             throw new RuntimeException("Invalid move");
@@ -192,39 +193,6 @@ public class PseudoTab {
         tab[p.y][p.x] = 0;
         zero = p;
         this.move = p;
-        updateEtapa();
-    }
-
-    public void moveTo(Point p) {
-        if (zero.y == etapa)
-            move(new Point(zero.x, zero.y + 1));
-        if (zero.x == etapa)
-            move(new Point(zero.x + 1, zero.y));
-        Point nextP = new Point(zero.x + (zero.x - p.x) < 0 ? 1 : -1, zero.y);
-        while (zero.x != p.x && isValidMove(nextP)) {
-            nextP = new Point(zero.x + (zero.x - p.x) < 0 ? 1 : -1, zero.y);
-            if (blocoDistance(nextP) != 0)
-                move(nextP);
-            else {
-                nextP = new Point(zero.x, zero.y + 1);
-                if (blocoDistance(nextP) != 0 && isValidMove(nextP))
-                    move(nextP);
-                else
-                    move(new Point(zero.x, zero.y - 1));
-            }
-        }
-        while (zero.y != p.y && isValidMove(nextP)) {
-            nextP = new Point(zero.x, zero.y + (zero.y - p.y) < 0 ? 1 : -1);
-            if (blocoDistance(nextP) != 0 && isValidMove(nextP))
-                move(nextP);
-            else {
-                nextP = new Point(zero.x + 1, zero.y);
-                if (blocoDistance(nextP) != 0 && isValidMove(nextP))
-                    move(nextP);
-                else
-                    move(new Point(zero.x - 1, zero.y));
-            }
-        }
     }
 
     public PseudoTab moveClone(Point p) {
@@ -249,35 +217,36 @@ public class PseudoTab {
         return foraDoLugar() == 0;
     }
 
-    public float totalDistance() {
-        float sum = 0;
+    public int totalDistance() {
+        int sum = 0;
         for (Point p : allPositions())
             if (bloco(p) > 0)
                 sum = +blocoDistance(p);
         return sum;
     }
 
-    public float lineDistance(int y) {
-        float sum = 0;
+    public int lineDistance(int y) {
+        int sum = 0;
         for (Point p : allPositions())
-            if (bloco(p) > 0 && SOLVED.posicao(bloco(p)).y == y)
+            if (bloco(p) > 0 && SOLVED.position(bloco(p)).y == y)
                 sum = +blocoDistance(p);
         return sum;
     }
 
-    public float colDistance(int x) {
-        float sum = 0;
+    public int colDistance(int x) {
+        int sum = 0;
         for (Point p : allPositions())
-            if (bloco(p) > 0 && SOLVED.posicao(bloco(p)).x == x)
+            if (bloco(p) > 0 && SOLVED.position(bloco(p)).x == x)
                 sum = +blocoDistance(p);
         return sum;
     }
 
-    public float blocoDistance(Point bloco) {
-        return (float) bloco.distance(SOLVED.posicao(bloco(bloco)));
+    public int blocoDistance(Point bloco) {
+        return Math.abs(bloco.x - SOLVED.position(bloco(bloco)).x)
+                + Math.abs(bloco.y - SOLVED.position(bloco(bloco)).y);
     }
 
-    public float etapaDistance() {
+    public int etapaDistance() {
         return lineDistance(etapa) + colDistance(etapa);
     }
 
@@ -293,8 +262,7 @@ public class PseudoTab {
         return out;
     }
 
-    public LinkedList<PseudoTab> aStarSolve() {
-
+    public LinkedList<PseudoTab> escorelSolver(int bloco, Point to) {
         HashMap<PseudoTab, PseudoTab> anterior = new HashMap<PseudoTab, PseudoTab>();
         HashMap<PseudoTab, Integer> depth = new HashMap<PseudoTab, Integer>();
         final HashMap<PseudoTab, Integer> score = new HashMap<PseudoTab, Integer>();
@@ -302,24 +270,23 @@ public class PseudoTab {
         Comparator<PseudoTab> comparator = new Comparator<PseudoTab>() {
             @Override
             public int compare(PseudoTab a, PseudoTab b) {
-                return score.get(a) - score.get(b);
+                return (score.get(a) - score.get(b));
             }
         };
-        PriorityQueue<PseudoTab> proximo = new PriorityQueue<PseudoTab>(100000, comparator);
+        PriorityQueue<PseudoTab> proximo = new PriorityQueue<PseudoTab>(10000, comparator);
 
         anterior.put(this, null);
         depth.put(this, 0);
-        score.put(this, this.estimateError());
+        if (bloco != 0)
+            score.put(this, etapaDistance() + (position(bloco).distanceTo(to) * tab.length));
         proximo.add(this);
-        int cnt = 0;
+        int i = 0;
         while (proximo.size() > 0) {
             PseudoTab candidate = proximo.remove();
-            cnt++;
-            if (cnt % 20000 == 0) {
-                System.out.printf("Calculando... %,d tabuleiros. Fila = %,d\n", cnt, proximo.size());
-            }
-            if (candidate.isSolved()) {
-                System.out.printf("Resolvido considerando %d tabuleiros\n", cnt);
+            i++;
+            currentStatus(i, proximo.size(), candidate);
+            if (candidate.isEtapaCompleat() || candidate.position(bloco).distanceTo(to) == 0) {
+                System.out.printf("Previsão de movimento completa considerando %d tabuleiros\n", i);
                 candidate.show();
                 LinkedList<PseudoTab> solution = new LinkedList<PseudoTab>();
                 PseudoTab backtrace = candidate;
@@ -333,14 +300,74 @@ public class PseudoTab {
                 if (!anterior.containsKey(fp)) {
                     anterior.put(fp, candidate);
                     depth.put(fp, depth.get(candidate) + 1);
-                    int estimate = fp.estimateError();
-                    score.put(fp, depth.get(candidate) + 1 + estimate);
+                    int estimate = fp.etapaDistance() + (position(bloco).distanceTo(to) * tab.length);
+                    score.put(fp, depth.get(candidate) + estimate);
                     // dont' add to p-queue until the metadata is in place that the comparator needs
                     proximo.add(fp);
                 }
             }
         }
         return null;
+    }
+
+    public LinkedList<PseudoTab> aStarSolve() {
+
+        HashMap<PseudoTab, PseudoTab> anterior = new HashMap<PseudoTab, PseudoTab>();
+        HashMap<PseudoTab, Integer> depth = new HashMap<PseudoTab, Integer>();
+        final HashMap<PseudoTab, Integer> score = new HashMap<PseudoTab, Integer>();
+
+        Comparator<PseudoTab> comparator = new Comparator<PseudoTab>() {
+            @Override
+            public int compare(PseudoTab a, PseudoTab b) {
+                return (score.get(a) - score.get(b));
+            }
+        };
+        PriorityQueue<PseudoTab> proximos = new PriorityQueue<PseudoTab>(10000, comparator);
+
+        anterior.put(this, null);
+        depth.put(this, 0);
+        score.put(this, totalDistance());
+        proximos.add(this);
+        int i = 0;
+        while (proximos.size() > 0) {
+            PseudoTab candidate = proximos.remove();
+            i++;
+            currentStatus(i, proximos.size(), candidate);
+            if (candidate.isSolved()) {
+                System.out.printf("Resolvido considerando %d tabuleiros\n", i);
+                candidate.show();
+                return backTrak(candidate, anterior);
+            }
+            for (PseudoTab fp : candidate.sucessores()) {
+                if (!anterior.containsKey(fp)) {
+                    anterior.put(fp, candidate);
+                    depth.put(fp, depth.get(candidate) + 1);
+                    int estimate = fp.totalDistance();
+                    score.put(fp, depth.get(candidate) + 1 + estimate);
+                    proximos.add(fp);
+                }
+            }
+        }
+        return null;
+    }
+
+    private void currentStatus(int status, int fila, PseudoTab candidate) {
+        if (status % 10000 == 0)
+            if (status % 30000 == 0) {
+                candidate.show();
+                System.out.printf("Calculando... %,d tabuleiros. Fila = %,d\n", status, fila);
+            } else
+                System.out.printf("Calculando... %,d tabuleiros. Fila = %,d\n", status, fila);
+    }
+
+    private LinkedList<PseudoTab> backTrak(PseudoTab last, HashMap<PseudoTab, PseudoTab> anteriores) {
+        LinkedList<PseudoTab> solution = new LinkedList<PseudoTab>();
+        PseudoTab backtrace = last;
+        while (backtrace != null) {
+            solution.addFirst(backtrace);
+            backtrace = anteriores.get(backtrace);
+        }
+        return solution;
     }
 
     public static void showSolution(List<PseudoTab> solution) {
@@ -354,20 +381,28 @@ public class PseudoTab {
         }
     }
 
-    public static void main(String[] args) {
-        Puzzle partida = new PuzzleFacil("nome");
-        partida.iniciaPartida();
-        Testes.showTab(partida.getTabuleiro());
-        PseudoTab p = new PseudoTab(partida.getTabuleiro().gerarPseudoTabuleiro());
-        System.out.println("Shuffled board:");
-        p.show();
+    public boolean isInPositons(int[] blocos, Point[] positions, int y) {
 
-        List<PseudoTab> solution;
+        for (int i = 0; i < blocos.length; i++) {
+            if (i < blocos.length - 2 && this.position(blocos[i])
+                    .distanceTo(positions == null ? PseudoTab.SOLVED.position(blocos[i]) : positions[i]) != 0)
+                return false;
+            else if (i > blocos.length - 2 && i < blocos.length - 1 && this.position(blocos[i])
+                    .distanceTo(positions == null ? new Point(blocos.length - 1, y + 1) : positions[i]) != 0)
+                return false;
+            else if (i > blocos.length - 2 && i < blocos.length && this.position(blocos[i])
+                    .distanceTo(positions == null ? new Point(blocos.length - 1, y + 2) : positions[i]) != 0)
+                return false;
+        }
+        return true;
+    }
 
-        System.out.println("Solving with A*");
-        solution = p.aStarSolve();
-        showSolution(solution);
+    public int getEtapa() {
+        return etapa;
+    }
 
+    public void setEtapa(int etapa) {
+        this.etapa = etapa;
     }
 
 }

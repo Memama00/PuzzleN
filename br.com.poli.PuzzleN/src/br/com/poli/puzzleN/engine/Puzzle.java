@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+
 import br.com.poli.puzzleN.Interfaces.CalculaScore;
 import br.com.poli.puzzleN.exceptions.*;
 import br.com.poli.puzzleN.frontend.screens.Game;
@@ -46,7 +47,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		int k = gridPuzzle.getGrid().length - 1;
 		int i = 1, j = 0, R, last_r = 0;
 
-		while (i < (120 * k + 1)) {
+		while (i < (200 * k + 1)) {
 			R = (int) ((r.nextInt(100) + r.nextInt(60)) / 40) + 1;
 			// System.out.print(i + "-> *" + R + "X" + last_r + "*\t");
 			if ((j - i) > 2)
@@ -191,12 +192,23 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 
 	}
 
-	public void especialMove(Point bloco) {
+	public void executarMovimentoAuto(int x, int y) {
 		if (Game.getTabuleiro() != null) {
-			Game.getTabuleiro().get(gridPuzzle.getGrid()[bloco.y][bloco.x].getValor()).doClick();
-		}
-		else
-			System.out.print("x");
+			int index = gridPuzzle.getGrid()[y][x].getValor();
+			if (index != 0)
+				Game.getTabuleiro().get(index).doClick();
+		} else
+			try {
+				smartMove(x, y);
+			} catch (MovimentoInvalido e) {
+			}
+	}
+
+	public void executarMovimentoAuto(Point bloco) {
+		if(bloco != null)
+		executarMovimentoAuto(bloco.x, bloco.y);
+		else 
+			System.out.println("err-606");
 	}
 
 	public Jogador getJogador() {

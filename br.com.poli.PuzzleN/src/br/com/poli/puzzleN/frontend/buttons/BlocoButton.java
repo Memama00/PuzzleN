@@ -94,6 +94,7 @@ public class BlocoButton extends JButton implements ActionListener {
                 JOptionPane.showMessageDialog(frame, e.getMessage());
             }
             System.out.println("Moves: " + partida.getQuantidadeMovimentos());
+            frame.setVisible(true);
         }
     }
 

@@ -22,6 +22,7 @@ public class SolverButton extends JButton {
             @Override
             public void actionPerformed(ActionEvent e) {
                     frame.getPartida().resolveTabuleiro();
+                    frame.setVisible(true);
             }
         });
     }

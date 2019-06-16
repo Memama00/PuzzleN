@@ -9,7 +9,7 @@ public class CalculaFacil implements CalculaScore, Serializable {
 	private int pontos;
 
 	public CalculaFacil(Puzzle partida) {
-		pontos = 3000000;
+		pontos = 350000;
 	}
 
 	public int getPontos() {

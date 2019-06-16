@@ -17,15 +17,12 @@ public class PuzzleFacil extends Puzzle {
 	}
 
 	@Override
-	public void resolveTabuleiro(){
+	public void resolveTabuleiro() {
 		PseudoTab way = new PseudoTab(this.getTabuleiro().gerarPseudoTabuleiro());
 		LinkedList<PseudoTab> solution = way.aStarSolve();
 		solution.pollFirst();
-		for (PseudoTab p : solution) {
-			//Calendar t = Calendar.getInstance();
-			this.especialMove(p.move);
-			//while (t.get(Calendar.MILLISECOND) < 10);
-		}
+		for (PseudoTab p : solution)
+			this.executarMovimentoAuto(p.move);
 	}
 
 }

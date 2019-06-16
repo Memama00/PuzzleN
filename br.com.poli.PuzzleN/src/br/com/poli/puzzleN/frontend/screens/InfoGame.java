@@ -23,7 +23,10 @@ public class InfoGame extends JPanel {
                         Integer.toString(frame.getPartida().getQuantidadeMovimentos()),
                         frame.getPartida().getDificuldade().toString(),
                         Integer.toString(frame.getPartida().getScore().getPontos()),
-                        Float.toString(frame.getPartida().getTempoDecorrido()) + "min(s)" } };
+                        Integer.toString((int) frame.getPartida().getTempoDecorrido() / 1) + "m"
+                                + Float.toString(
+                                        (float) ((int) ((frame.getPartida().getTempoDecorrido() % 1) * 6000)) / 100)
+                                + "s" } };
         for (int j = 0; j < 2; j++)
             for (int i = 0; i < 5; i++) {
                 infoIcons[j][i] = new JLabel(text[j][i]);
@@ -40,6 +43,6 @@ public class InfoGame extends JPanel {
         this.add(vitoria);
         this.add(new BackButton(frame));
         this.add(new BackGround());
-        //frame.setPartida(null);
+        // frame.setPartida(null);
     }
 }

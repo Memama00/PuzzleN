@@ -1,6 +1,5 @@
 package br.com.poli.puzzleN.frontend.screens;
 
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -31,7 +30,7 @@ public class PuzzleFrame extends JFrame implements Runnable {
     }
 
     public void run() {
-        
+
         SondTrack.play();
         this.setVisible(true);
     }
