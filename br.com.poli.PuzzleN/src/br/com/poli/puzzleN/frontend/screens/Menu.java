@@ -51,7 +51,7 @@ public class Menu extends JPanel {
 		this.add(lblNivel);
 
 		this.dificuldade = new JComboBox<>();
-		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil" }));
+		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil", "Teste"}));
 		dificuldade.setBounds(335, 195 + 10, 140, 20);
 		dificuldade.setAlignmentX(SwingConstants.CENTER);
 

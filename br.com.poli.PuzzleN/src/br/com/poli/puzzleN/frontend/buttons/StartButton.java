@@ -1,4 +1,5 @@
 package br.com.poli.puzzleN.frontend.buttons;
+import br.com.poli.puzzleN.engine.TesteSpeedPuzzle;
 import br.com.poli.puzzleN.frontend.screens.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +40,8 @@ public class StartButton extends JButton implements ActionListener {
             case 3:
                 frame.setPartida(new PuzzleDificil(nome));
                 break;
+            case 4:
+                frame.setPartida(new TesteSpeedPuzzle());
             default:
             }
             try{

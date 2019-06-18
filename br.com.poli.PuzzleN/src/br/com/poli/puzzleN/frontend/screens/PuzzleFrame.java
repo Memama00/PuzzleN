@@ -33,6 +33,7 @@ public class PuzzleFrame extends JFrame implements Runnable {
 
         SondTrack.play();
         this.setVisible(true);
+    
     }
 
     public void updateTela(JPanel tela) {

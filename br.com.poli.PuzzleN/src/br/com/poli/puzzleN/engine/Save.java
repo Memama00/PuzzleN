@@ -1,10 +1,10 @@
 package br.com.poli.puzzleN.engine;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 
-public class Save extends ArrayList<Puzzle> implements Serializable {
+public class Save extends LinkedList<Puzzle> implements Serializable {
 
     private static final long serialVersionUID = 105L;
 
@@ -12,19 +12,12 @@ public class Save extends ArrayList<Puzzle> implements Serializable {
         super();
     }
 
-    public Save(int i) {
-        super(i);
-    }
-
     public boolean addGame(Puzzle partida) {
         Boolean sucessfull = false;
-        if (super.size() > 9 && super.get(9).getScore().getPontos() < partida.getScore().getPontos())
-            sucessfull = super.add(partida);
-        else
-            sucessfull = super.add(partida);
+        sucessfull = super.add(partida);
         Collections.sort(this);
-        if (super.size() > 9)
-            super.remove(10);
+        if(super.indexOf(super.getLast()) >= 10)
+            sucessfull = !super.contains(super.removeLast());
         return sucessfull;
     }
 

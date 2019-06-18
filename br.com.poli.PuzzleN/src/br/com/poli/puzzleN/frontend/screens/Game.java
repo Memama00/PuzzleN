@@ -33,27 +33,6 @@ public class Game extends JPanel {
 		this.add(nome);
 
 		this.add(new SurrenderButton(frame));
-		/*
-		 * O jbutton "save", salva a partida independente de das condições de jogo e
-		 * encerra a partida. Tem o objetivo de testar tanto o ranking como a tela de
-		 * fim de partida.
-		 */
-		
-		// JButton save = new JButton("salvar");
-		// save.setBounds(700, 470, 90, 30);
-		// save.setForeground(Color.WHITE);
-		// save.setBackground(Color.BLACK);
-		// save.addActionListener(new ActionListener() {
-
-		// 	@Override
-		// 	public void actionPerformed(ActionEvent e) {
-		// 		// frame.getPartida().setFinalTime();
-		// 		// frame.getPartida().getScore().pontos(partida);//calcula e salva os pontos imediatamente para maior precisão
-		// 		// Ranking.save(frame.getPartida());
-		// 		// frame.updateTela(new InfoGame(frame));
-		// 		frame.getPartida().resolveTabuleiro();
-		// 	}
-		// });
 		this.add(new SolverButton(frame));
 
 		for (int y = 0; y < k; y++) {

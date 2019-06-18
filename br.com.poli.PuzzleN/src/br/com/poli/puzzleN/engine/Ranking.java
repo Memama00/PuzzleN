@@ -51,7 +51,7 @@ public class Ranking {
         return ranking.get(index);
     }
 
-    public static void save(Puzzle partida) {
+    public static boolean save(Puzzle partida) {
         try {
             if ((new File(FILE_NAME)).delete() && ranking.addGame(partida)) {
                 System.out.print("Salvando...");
@@ -59,11 +59,14 @@ public class Ranking {
                 write.writeObject(ranking);
                 write.close();
                 System.out.println("Sucesso!");
+                return true;
             }
+            return false;
         } catch (IOException e) {
             System.out.println("Falha!");
             System.out.println(e.getMessage());
-            e.printStackTrace();
+            return false;
+            
         }
     }
 

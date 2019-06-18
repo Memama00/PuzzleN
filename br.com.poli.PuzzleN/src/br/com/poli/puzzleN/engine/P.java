@@ -4,6 +4,7 @@ import java.awt.Point;
 
 public class P extends Point {
     private static final long serialVersionUID = 1L;
+
     public P(Point p) {
         super(p.x, p.y);
     }
@@ -29,9 +30,9 @@ public class P extends Point {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof P) {
-            return (((P) o).x == this.x && ((P) o).y == this.y);
-        } else
+        if (o instanceof P)
+            return (((Point) o).x == this.x && ((Point) o).y == this.y);
+        else
             return false;
     }
 

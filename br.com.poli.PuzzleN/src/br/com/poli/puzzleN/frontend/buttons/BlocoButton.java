@@ -50,52 +50,56 @@ public class BlocoButton extends JButton implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        this.moveButton(e.getSource());
+        if (e.getSource() == this)
+            this.moveButton();
+    }
+
+    public void moveButton() {
+        String sentido = "null";
+        try {
+            sentido = partida.smartMove(xButton, yButton);
+            switch (sentido) {
+            case "cima":
+                this.setLocation(this.getX(), this.getY() - this.getWidth());
+                this.setYButton(this.getYButton() - 1);
+                break;
+            case "baixo":
+                this.setLocation(this.getX(), this.getY() + this.getWidth());
+                this.setYButton(this.getYButton() + 1);
+                break;
+            case "direita":
+                this.setLocation(this.getX() + this.getHeight(), this.getY());
+                this.setXButton(this.getXButton() + 1);
+                break;
+            case "esquerda":
+                this.setLocation(this.getX() - this.getHeight(), this.getY());
+                this.setXButton(this.getXButton() - 1);
+                break;
+            default:
+                throw new MovimentoInvalido();
+            }
+        } catch (MovimentoInvalido e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage());
+        }
+        System.out.println("Selected:");
+        System.out.println("X:" + this.getX() + "/[x]:" + xButton);
+        System.out.println("Y:" + this.getY() + "/[Y]:" + yButton);
+        System.out.println("Moves: " + partida.getQuantidadeMovimentos());
+        System.out.println("sentido: " + sentido);
         partida.getTabuleiro().print();
         int k = partida.getTabuleiro().getGrid().length - 1;
         if (partida.getTabuleiro().getGrid()[k][k].getValor() == 0)
             if (partida.isFimDeJogo()) {
-                frame.getPartida().setFinalTime();
-                frame.getPartida().getScore().pontos(partida);// calcula e salva os pontos imediatamente para maior precisão
-                Ranking.save(frame.getPartida());
-                frame.updateTela(new InfoGame(frame));
+                partida.setFinalTime();
+                // calcula e salva os pontos imediatamente para maior precisão
+                partida.getScore().pontos(partida);
+                if (!Ranking.save(partida))
+                    JOptionPane.showMessageDialog(frame,
+                            "Ops! Ocorreu um erro ao tentar finalizar a seu puzzle.\n Tente jogar novamente!");
+                else
+                    frame.updateTela(new InfoGame(frame));
             }
-    }
 
-    private void moveButton(Object in) {
-        if (in == this) {
-            try {
-                String sentido = partida.smartMove(xButton, yButton);
-                System.out.println("Selected:");
-                System.out.println("X:" + this.getX() + "/[x]:" + xButton);
-                System.out.println("Y:" + this.getY() + "/[Y]:" + yButton);
-                System.out.println("sentido:" + sentido);
-                switch (sentido) {
-                case "cima":
-                    this.setLocation(this.getX(), this.getY() - this.getWidth());
-                    this.setYButton(this.getYButton() - 1);
-                    break;
-                case "baixo":
-                    this.setLocation(this.getX(), this.getY() + this.getWidth());
-                    this.setYButton(this.getYButton() + 1);
-                    break;
-                case "direita":
-                    this.setLocation(this.getX() + this.getHeight(), this.getY());
-                    this.setXButton(this.getXButton() + 1);
-                    break;
-                case "esquerda":
-                    this.setLocation(this.getX() - this.getHeight(), this.getY());
-                    this.setXButton(this.getXButton() - 1);
-                    break;
-                default:
-                    throw new MovimentoInvalido();
-                }
-            } catch (MovimentoInvalido e) {
-                JOptionPane.showMessageDialog(frame, e.getMessage());
-            }
-            System.out.println("Moves: " + partida.getQuantidadeMovimentos());
-            frame.setVisible(true);
-        }
     }
 
     public int getXButton() {
