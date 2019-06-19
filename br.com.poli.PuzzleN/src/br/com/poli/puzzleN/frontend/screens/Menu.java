@@ -19,7 +19,7 @@ public class Menu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
-	private JComboBox <String> dificuldade;
+	private JComboBox<String> dificuldade;
 
 	public Menu(PuzzleFrame frame) {
 
@@ -43,6 +43,10 @@ public class Menu extends JPanel {
 		this.add(textField);
 		textField.setColumns(20);
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
+		textField.setForeground(Color.WHITE);
+		textField.setBackground(Color.BLACK);
+		textField.setOpaque(false);
+
 
 		JLabel lblNivel = new JLabel("NIVEL");
 		lblNivel.setBounds(381, 186, 48, 14);
@@ -51,9 +55,12 @@ public class Menu extends JPanel {
 		this.add(lblNivel);
 
 		this.dificuldade = new JComboBox<>();
-		dificuldade.setModel(new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil", "Teste"}));
+		dificuldade.setModel(
+				new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil", "Insano" }));
 		dificuldade.setBounds(335, 195 + 10, 140, 20);
 		dificuldade.setAlignmentX(SwingConstants.CENTER);
+		dificuldade.setForeground(Color.WHITE);
+		dificuldade.setBackground(Color.BLACK);
 
 		JLabel icon = new JLabel(new ImageIcon("images/Metro-Sound-32.png"));
 		icon.setAlignmentY(icon.getAlignmentY() - 16);

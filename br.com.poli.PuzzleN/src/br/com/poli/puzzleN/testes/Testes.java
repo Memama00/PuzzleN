@@ -5,18 +5,20 @@ import br.com.poli.puzzleN.exceptions.MovimentoInvalido;
 import br.com.poli.puzzleN.puzzles.*;
 import java.util.Calendar;
 import java.util.Scanner;
+
+
 import br.com.poli.puzzleN.Interfaces.CalculaFacil;
 import br.com.poli.puzzleN.Interfaces.CalculaDificil;
 
 public class Testes {
 
 	public static void showTab(Tabuleiro tab) {
-		// System.out.printf("\t # ");
-		// for (int i = 0; i < tab.getGrid().length; i++)
-		// System.out.printf(" %02d", i);
-		// System.out.printf("\n\n");
+		System.out.printf("\t # ");
+		for (int i = 0; i < tab.getGrid().length; i++)
+			System.out.printf(" %02d", i);
+		System.out.printf("\n\n");
 		for (int i = 0; i < tab.getGrid().length; i++) {
-			// System.out.printf("\t %02d-", i);
+			System.out.printf("\t %02d-", i);
 			System.out.printf("\t");
 			for (int j = 0; j < tab.getGrid().length; j++) {
 				if (tab.getGrid()[i][j].getValor() == 0)
@@ -154,22 +156,30 @@ public class Testes {
 		partida.iniciaPartida();
 	}
 
-	public static void mover(Scanner in) {
-		// System.out.flush();
+	public static String mover(Scanner in) {
+		System.out.flush();
 		in.reset();
 		Testes.showTab(Testes.partida.getTabuleiro());
 		System.out.println(
-				"Mover - digite:\n o 'x'do bloco\n e 'y' do bloco \n para move-lo em direção do zero (se possivel)");
-		int x = Integer.valueOf(in.nextLine());
-		int y = Integer.valueOf(in.nextLine());
-		try {
-			Testes.partida.smartMove(x, y);
-		} catch (MovimentoInvalido e) {
-			System.out.println(e.getMessage());
+				"Mover - digite:\n o 'x'do bloco\n e 'y' do bloco \n para move-lo em direção do zero (se possivel) ou 'HELP' para resolver o tabuleiro automaticamente");
+		String comand = in.nextLine();
+		String[] n = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
+		for (int i = 0; i < 10; i++) {
+			if (comand.contains(n[i])) {
+				int x = Integer.valueOf(comand);
+				int y = Integer.valueOf(in.nextLine());
+				try {
+					Testes.partida.smartMove(x, y);
+					if (Testes.partida.getTabuleiro().getGrid()[Testes.partida.getTamanho() - 1][Testes.partida
+							.getTamanho() - 1].getValor() == 0)
+						Testes.partida.isFimDeJogo();
+				} catch (MovimentoInvalido e) {
+					System.out.println(e.getMessage());
+				}
+				return "";
+			}
 		}
+		return comand;
 
-		if (Testes.partida.getTabuleiro().getGrid()[Testes.partida.getTamanho() - 1][Testes.partida.getTamanho() - 1]
-				.getValor() == 0)
-			Testes.partida.isFimDeJogo();
 	}
 }

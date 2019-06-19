@@ -127,14 +127,14 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 
 				if (!way.position(line[i]).equals(places == null ? PseudoTab.SOLVED.position(line[i]) : places[i]))
 					autoZeroMove(way.position(line[i]));
-				autoMoveTo(line[i], places == null ? PseudoTab.SOLVED.position(line[i]) : places[i]);
+				executarMovimentoAuto(line[i], places == null ? PseudoTab.SOLVED.position(line[i]) : places[i]);
 
 			} else if (i < line.length && line.length == this.getTabuleiro().getGrid().length) {
 
 				if (!way.position(line[i])
 						.equals(places == null ? new P(max, (i - (line.length - 2) + 1) + y) : places[i]))
 					autoZeroMove(way.position(line[i]));
-				autoMoveTo(line[i], new P(max, (i - (line.length - 2) + 1) + y));
+				executarMovimentoAuto(line[i], new P(max, (i - (line.length - 2) + 1) + y));
 			}
 
 		way = this.getTabuleiro().getPseudoTabuleiro();
@@ -156,7 +156,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		}
 		way = this.getTabuleiro().getPseudoTabuleiro();
 		for (PseudoTab pst : way.ordernLine(y))
-			executarMovimentoAuto(pst.move);
+			autoPress(pst.move);
 	}
 
 	public void fillColl(int[] coll) {
@@ -170,13 +170,13 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 
 				if (!way.position(coll[i]).equals(PseudoTab.SOLVED.position(coll[i])))
 					autoZeroMove(way.position(coll[i]));
-				autoMoveTo(coll[i], PseudoTab.SOLVED.position(coll[i]));
+				executarMovimentoAuto(coll[i], PseudoTab.SOLVED.position(coll[i]));
 
 			} else if (i < coll.length && coll.length == k) {
 
-				if (!way.position(coll[i]).equals(new P(max, (i - (coll.length - 2) + 1) + x)))
+				if (!way.position(coll[i]).equals(new P((i - (coll.length - 2) + 1) + x, k - max)))
 					autoZeroMove(way.position(coll[i]));
-				autoMoveTo(coll[i], new P((i - (coll.length - 2) + 1) + x, k - max));
+				executarMovimentoAuto(coll[i], new P((i - (coll.length - 2) + 1) + x, k - max));
 
 			}
 
@@ -199,7 +199,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		}
 		way = this.getTabuleiro().getPseudoTabuleiro();
 		for (PseudoTab pst : way.ordernColl(x))
-			executarMovimentoAuto(pst.move);
+			autoPress(pst.move);
 	}
 
 	private boolean inRange(int in, int min, int max) {
@@ -280,13 +280,12 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 
 	}
 
-	public void executarMovimentoAuto(int x, int y) {
+	public void autoPress(int x, int y) {
 		try {
 			if (Game.getTabuleiro() != null) {
 				int index = gridPuzzle.getGrid()[y][x].getValor();
 				if (index != 0)
-					((BlocoButton) Game.getTabuleiro().get(index)).moveButton();
-				this.getTabuleiro().print();
+					((BlocoButton) Game.getTabuleiro().get(index)).doClick(5);
 			} else
 				smartMove(x, y);
 			int k = this.getTabuleiro().getGrid().length - 1;
@@ -301,14 +300,14 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		}
 	}
 
-	public void executarMovimentoAuto(Point bloco) {
+	public void autoPress(Point bloco) {
 		if (bloco != null)
-			executarMovimentoAuto(bloco.x, bloco.y);
+			autoPress(bloco.x, bloco.y);
 		else
 			System.out.println("err-606");
 	}
 
-	public void autoMoveTo(int quem, P to) {
+	public void executarMovimentoAuto(int quem, P to) {
 		PseudoTab way = getTabuleiro().getPseudoTabuleiro();
 		LinkedList<PseudoTab> solution;
 		if (way.position(quem).equals(to))
@@ -316,11 +315,11 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		solution = way.pointWay(quem, to);
 		solution.poll();
 		for (PseudoTab p : solution)
-			this.executarMovimentoAuto(p.move);
+			this.autoPress(p.move);
 	}
 
 	public void autoZeroMove(P to) {
-		autoMoveTo(0, to);
+		executarMovimentoAuto(0, to);
 	}
 
 	public Jogador getJogador() {

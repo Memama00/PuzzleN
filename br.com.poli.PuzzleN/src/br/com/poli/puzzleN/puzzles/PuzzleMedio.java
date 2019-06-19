@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import br.com.poli.puzzleN.Interfaces.CalculaMedio;
 import br.com.poli.puzzleN.engine.*;
+import br.com.poli.puzzleN.exceptions.TempoExcedido;
 
 public class PuzzleMedio extends Puzzle {
 
@@ -15,31 +16,23 @@ public class PuzzleMedio extends Puzzle {
 	}
 
 	@Override
-	public void resolveTabuleiro() {
-
-		PseudoTab way = new PseudoTab(this.getTabuleiro().gerarPseudoTabuleiro());
-		int k = this.getTabuleiro().getGrid().length;
-		int selecteds[][] = new int[2][k];
-		for (int i = 0; i < k; i++)
-			selecteds[0][i] = (way.getEtapa() * k) + i + 1;
-
-		for (int i = 0; i < k; i++)
-			selecteds[1][i] = (i * k) + way.getEtapa() + 1;
-
-		if (k - way.getEtapa() <= 3) {
-			LinkedList<PseudoTab> solution;
-			System.out.println(way.getEtapa());
-			solution = way.aStarSolve();
-			solution.poll();
-			for (PseudoTab p : solution)
-				this.executarMovimentoAuto(p.move);
-		} else {
-			if (way.lineDistance(way.getEtapa()) != 0)
-				fillLine(selecteds[0], null);
-			way = getTabuleiro().getPseudoTabuleiro();
-			if (way.collDistance(way.getEtapa()) != 0)
-				fillColl(selecteds[1]);
-			resolveTabuleiro();
-		}
+	public void resolveTabuleiro() throws TempoExcedido{
+			PseudoTab way = new PseudoTab(this.getTabuleiro().gerarPseudoTabuleiro());
+			int k = this.getTabuleiro().getGrid().length;
+			if (k - way.getEtapa() <= 3) {
+				LinkedList<PseudoTab> solution;
+				System.out.println(way.getEtapa());
+				solution = way.aStarSolve();
+				solution.poll();
+				for (PseudoTab p : solution)
+					this.autoPress(p.move);
+			} else {
+				if (way.lineDistance(way.getEtapa()) != 0)
+					fillLine(new int[]{1, 2, 3, 4}, null);
+				way = getTabuleiro().getPseudoTabuleiro();
+				if (way.collDistance(way.getEtapa()) != 0)
+					fillColl(new int[]{13, 9, 5});
+				resolveTabuleiro();
+			}
 	}
 }

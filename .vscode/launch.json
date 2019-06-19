@@ -24,7 +24,7 @@
             "name": "Debug (Launch)-Main<br.com.poli.PuzzleN>",
             "request": "launch",
             "console": "externalTerminal",
-            "mainClass": "br.com.poli.puzzleN.frontend.screens.Main",
+            "mainClass": "br.com.poli.puzzleN.testes.Main",
             "projectName": "br.com.poli.PuzzleN"
         }
     ]

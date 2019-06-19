@@ -13,7 +13,7 @@ public class SolverButton extends JButton {
     private static final long serialVersionUID = 1L;
 
     public SolverButton(PuzzleFrame frame) {
-        super("Help!");
+        super("Solve!");
         this.setBounds(700, 470, 90, 30);
         this.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);

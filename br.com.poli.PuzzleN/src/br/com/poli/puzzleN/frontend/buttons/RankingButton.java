@@ -1,5 +1,8 @@
 package br.com.poli.puzzleN.frontend.buttons;
+
 import br.com.poli.puzzleN.frontend.screens.*;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,6 +18,8 @@ public class RankingButton extends JButton implements ActionListener {
         this.frame = frame;
         this.setBounds(360, 255, 90, 23);
         this.setHorizontalAlignment(SwingConstants.CENTER);
+        this.setForeground(Color.WHITE);
+        this.setBackground(Color.BLACK);
         this.addActionListener(this);
     }
 

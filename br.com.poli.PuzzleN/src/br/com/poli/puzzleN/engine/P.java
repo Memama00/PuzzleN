@@ -2,7 +2,7 @@ package br.com.poli.puzzleN.engine;
 
 import java.awt.Point;
 
-public class P extends Point {
+public class P extends Point {// P de Ponto
     private static final long serialVersionUID = 1L;
 
     public P(Point p) {

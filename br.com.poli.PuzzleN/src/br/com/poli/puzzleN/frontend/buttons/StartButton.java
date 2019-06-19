@@ -1,6 +1,6 @@
 package br.com.poli.puzzleN.frontend.buttons;
-import br.com.poli.puzzleN.engine.TesteSpeedPuzzle;
-import br.com.poli.puzzleN.frontend.screens.*;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -12,6 +12,8 @@ import javax.swing.SwingConstants;
 import br.com.poli.puzzleN.puzzles.PuzzleDificil;
 import br.com.poli.puzzleN.puzzles.PuzzleFacil;
 import br.com.poli.puzzleN.puzzles.PuzzleMedio;
+import br.com.poli.puzzleN.frontend.screens.*;
+import br.com.poli.puzzleN.testes.Main;
 
 public class StartButton extends JButton implements ActionListener {
 
@@ -23,6 +25,8 @@ public class StartButton extends JButton implements ActionListener {
         this.frame = frame;
         this.setBounds(360, 303, 89, 23);
         this.addActionListener(this);
+        this.setForeground(Color.WHITE);
+        this.setBackground(Color.BLACK);
         this.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
@@ -41,16 +45,17 @@ public class StartButton extends JButton implements ActionListener {
                 frame.setPartida(new PuzzleDificil(nome));
                 break;
             case 4:
-                frame.setPartida(new TesteSpeedPuzzle());
+                Main.InsanoPlayer();
+                frame.dispose();
             default:
             }
-            try{
+            try {
                 frame.updateTela(new Game(frame));
                 frame.getPartida().setTempo(Calendar.getInstance());
-            }catch(NullPointerException e){
-                JOptionPane.showMessageDialog(null,"Selecione uma dificuldade!");
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(frame, "Selecione uma dificuldade!");
             }
-            
+
         }
     }
 }
