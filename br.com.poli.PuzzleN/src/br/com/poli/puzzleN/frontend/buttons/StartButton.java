@@ -1,6 +1,9 @@
 package br.com.poli.puzzleN.frontend.buttons;
+
 import br.com.poli.puzzleN.engine.TesteSpeedPuzzle;
 import br.com.poli.puzzleN.frontend.screens.*;
+
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -23,6 +26,8 @@ public class StartButton extends JButton implements ActionListener {
         this.frame = frame;
         this.setBounds(360, 303, 89, 23);
         this.addActionListener(this);
+        this.setForeground(Color.WHITE);
+        this.setBackground(Color.BLACK);
         this.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
@@ -44,13 +49,13 @@ public class StartButton extends JButton implements ActionListener {
                 frame.setPartida(new TesteSpeedPuzzle());
             default:
             }
-            try{
+            try {
                 frame.updateTela(new Game(frame));
                 frame.getPartida().setTempo(Calendar.getInstance());
-            }catch(NullPointerException e){
-                JOptionPane.showMessageDialog(null,"Selecione uma dificuldade!");
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Selecione uma dificuldade!");
             }
-            
+
         }
     }
 }

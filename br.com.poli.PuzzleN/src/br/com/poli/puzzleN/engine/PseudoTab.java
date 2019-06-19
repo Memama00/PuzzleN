@@ -2,13 +2,19 @@ package br.com.poli.puzzleN.engine;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
 import br.com.poli.puzzleN.Interfaces.Solver;
+import br.com.poli.puzzleN.exceptions.TempoExcedido;
 
+/*
+* Classe auxiliar para resolver o tabuleiro atraves de comparações de movimentos possiveis, priorizando os pseudo 
+* Tabuleiros q apresentam menor "peso"(criterio defino pela interfaçe Solver).
+*/
 public class PseudoTab {
 
     private int[][] tab;
@@ -104,18 +110,21 @@ public class PseudoTab {
                 return false;
         return true;
     }
-    public boolean isLineCompleat(int y){
+
+    public boolean isLineCompleat(int y) {
         for (int i = 0; i < tab.length; i++)
-            if(tab[y][i] != SOLVED.tab[y][i])
+            if (tab[y][i] != SOLVED.tab[y][i])
                 return false;
         return true;
     }
-    public boolean isCollCompleat(int x){
+
+    public boolean isCollCompleat(int x) {
         for (int i = 0; i < tab.length; i++)
-            if(tab[i][x] != SOLVED.tab[i][x])
+            if (tab[i][x] != SOLVED.tab[i][x])
                 return false;
         return true;
-    }   
+    }
+
     public boolean isEtapaCompleat() {
         return isEtapaCompleat(this.etapa);
     }
@@ -297,7 +306,8 @@ public class PseudoTab {
         return solution;
     }
 
-    public LinkedList<PseudoTab> solver(Solver predict) {
+    public LinkedList<PseudoTab> solver(Solver predict) throws TempoExcedido {
+        Long initTime = (new Date()).getTime();
         HashMap<PseudoTab, PseudoTab> anterior = new HashMap<PseudoTab, PseudoTab>();
         HashMap<PseudoTab, Integer> depth = new HashMap<PseudoTab, Integer>();
         final HashMap<PseudoTab, Integer> score = new HashMap<PseudoTab, Integer>();
@@ -316,6 +326,9 @@ public class PseudoTab {
         proximos.add(this);
         int i = 0;
         while (proximos.size() > 0) {
+            if ((initTime - (new Date()).getTime()) >= 10000) {
+                throw new TempoExcedido();
+            }
             PseudoTab candidate = proximos.remove();
             i++;
             currentStatus(i, proximos.size(), candidate);
@@ -337,7 +350,7 @@ public class PseudoTab {
         return null;
     }
 
-    public LinkedList<PseudoTab> aStarSolve() {
+    public LinkedList<PseudoTab> aStarSolve() throws TempoExcedido {
         return solver(new Solver() {
 
             @Override
@@ -352,7 +365,7 @@ public class PseudoTab {
         });
     }
 
-    public LinkedList<PseudoTab> pointWay(int bloco, P to) {
+    public LinkedList<PseudoTab> pointWay(int bloco, P to) throws TempoExcedido {
         return solver(new Solver() {
 
             @Override
@@ -365,7 +378,7 @@ public class PseudoTab {
             public int distance(Object o) {
                 return (((PseudoTab) o).position(bloco).distanceTo(to) * (tab.length * tab.length))
                         + (((PseudoTab) o).etapaDistance() * (tab.length - 1))
-                        + (((PseudoTab) o).totalDistance(PseudoTab.this));
+                        + ((((PseudoTab) o).totalDistance(PseudoTab.this) * 2));
             }
         });
     }
@@ -385,6 +398,7 @@ public class PseudoTab {
             }
         });
     }
+
     public LinkedList<PseudoTab> ordernColl(int x) {
         return solver(new Solver() {
 
@@ -400,6 +414,7 @@ public class PseudoTab {
             }
         });
     }
+
     public void show() {
         System.out.println("-----------------");
         for (int i = 0; i < tab.length; i++) {
@@ -428,6 +443,14 @@ public class PseudoTab {
 
     public void setEtapa(int etapa) {
         this.etapa = etapa;
+    }
+
+    public int[][] getTab() {
+        return tab;
+    }
+
+    public void setTab(int[][] tab) {
+        this.tab = tab;
     }
 
 }

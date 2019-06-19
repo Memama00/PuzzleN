@@ -9,6 +9,7 @@ import java.util.HashMap;
 import javax.swing.JButton;
 import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.frontend.buttons.BlocoButton;
+import br.com.poli.puzzleN.frontend.buttons.HelpButton;
 import br.com.poli.puzzleN.frontend.buttons.SolverButton;
 import br.com.poli.puzzleN.frontend.buttons.SurrenderButton;
 
@@ -31,7 +32,7 @@ public class Game extends JPanel {
 		nome.setForeground(Color.WHITE);
 		nome.setHorizontalTextPosition(SwingConstants.LEFT);
 		this.add(nome);
-
+		this.add(new HelpButton(frame));
 		this.add(new SurrenderButton(frame));
 		this.add(new SolverButton(frame));
 
