@@ -2,6 +2,8 @@ package br.com.poli.puzzleN.puzzles;
 
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
 import br.com.poli.puzzleN.Interfaces.CalculaDificil;
 import br.com.poli.puzzleN.engine.Dificuldade;
 import br.com.poli.puzzleN.engine.PseudoTab;
