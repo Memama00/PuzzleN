@@ -41,13 +41,49 @@ public class PuzzleInsano extends Puzzle {
 		getTempo().setTime(new Date());
 		getTabuleiro().geraTabuleiro(tamanho);
 		super.setZero(new Point(tamanho - 1, tamanho - 1));
-		jhonnyBravo();
-		//autoZeroMove(new P(0, 0));
-		jhonnyBravo();
-		//autoZeroMove(new P(tamanho - 1, 0));
-		jhonnyBravo();
-		//autoZeroMove(new P(0, tamanho - 1));
-		jhonnyBravo();
+
+		for (int j = 0; j < 2; j++) {
+			jhonnyBravo();
+
+			for (int i = 0; i < tamanho; i++)
+				if (!bubbleMoveZero(1))
+					break;
+			for (int i = 0; i < tamanho; i++)
+				if (!bubbleMoveZero(4))
+					break;
+			jhonnyBravo();
+
+			for (int i = 0; i < tamanho; i++)
+				if (!bubbleMoveZero(4))
+					break;
+			for (int i = 0; i < tamanho; i++)
+				if (!bubbleMoveZero(2))
+					break;
+			jhonnyBravo();
+
+			for (int i = 0; i < tamanho; i++)
+				if (!bubbleMoveZero(3))
+					break;
+			for (int i = 0; i < tamanho; i++)
+				if (!bubbleMoveZero(1))
+					break;
+			jhonnyBravo();
+
+			if (j == 0) {
+				for (int i = 0; i < tamanho; i++)
+					if (!bubbleMoveZero(1))
+						break;
+				for (int i = 0; i < tamanho; i++)
+					if (!bubbleMoveZero(3))
+						break;
+				for (int i = 0; i < tamanho / 2; i++)
+					if (!bubbleMoveZero(2))
+						break;
+				for (int i = 0; i < tamanho / 2; i++)
+					if (!bubbleMoveZero(4))
+						break;
+			}
+		}
 	}
 
 	private int defineK(PuzzleFrame frame) {
@@ -76,7 +112,7 @@ public class PuzzleInsano extends Puzzle {
 			for (P move : moves)
 				this.autoPress(move);
 		} else {
-		
+
 		}
 	}
 

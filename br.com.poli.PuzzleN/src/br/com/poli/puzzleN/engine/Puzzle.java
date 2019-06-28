@@ -60,7 +60,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		int j = 0;
 		int R;
 		int last_r = 0;
-		while (i < (500 * gridPuzzle.getGrid().length)) {
+		while (i < (250 * gridPuzzle.getGrid().length)) {
 			R = (int) ((r.nextInt(100) + r.nextInt(60)) / 40) + 1;
 			if ((j - i) > 2)
 				if (last_r == 3)
@@ -118,7 +118,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 
 	}
 
-	private boolean bubbleMoveZero(int move) {
+	protected boolean bubbleMoveZero(int move) {
 		switch (move) {
 		case 1:
 			return zeroMap("cima");
@@ -206,18 +206,19 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		Loading.stop();
 		for (P move : moves)
 			try {
+				if (move == null)
+					continue;
 				autoPress(move);
-				Thread.sleep(167);
+				Thread.sleep(137);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 	}
 
 	public synchronized LinkedList<P> executarMovimentoAuto(Integer bloco, Boolean execute) throws TempoExcedido {
-		PseudoTab way = this.getTabuleiro().gerarPseudoTabuleiro();
+		PseudoTab way = this.getTabuleiro().getPseudoTabuleiro();
 		int k = this.getTabuleiro().getGrid().length;
 		int max = k - 1;
-		bloco = 1;
 		final LinkedList<P> moves = new LinkedList<P>();
 		for (; way.position(bloco).equals(PseudoTab.SOLVED.position(bloco)); bloco++)
 			;
@@ -230,9 +231,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 			moves.addAll(way.goCloseOf(bloco));
 
 			if (way.position(bloco).x + 1 <= PseudoTab.SOLVED.position(bloco).x) {
-
 				moves.addAll(way.pointWay(bloco, max, way.position(bloco).y));
-
 				moves.addAll(way.pointWay(bloco, max, PseudoTab.SOLVED.position(bloco).y));
 			}
 
@@ -240,26 +239,20 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 
 		} else if (PseudoTab.SOLVED.position(bloco).x == max) {
 
-			if (PseudoTab.SOLVED.position(bloco).y < max - 1) {
+			moves.addAll(way.goCloseOf(bloco));
+			moves.addAll(way.pointWay(bloco, max, way.position(bloco).y));
+			moves.addAll(way.pointWay(0, way.position(bloco - 2).x, way.zero.y));
+			moves.addAll(way.pointWay(0, bloco - 2));
+			moves.addAll(way.pointWay(0, bloco - 1));
+			moves.addAll(way.goCloseOf(bloco));
+			moves.addAll(way.pointWay(0, way.zero.x, way.position(bloco - 2).y + 1));
+			moves.addAll(way.pointWay(bloco, PseudoTab.SOLVED.position(bloco)));
+			moves.addAll(way.pointWay(0, max - 1, PseudoTab.SOLVED.position(bloco).y + 1));
+			moves.addAll(way.pointWay(0, max - 1, PseudoTab.SOLVED.position(bloco).y));
+			moves.addAll(way.pointWay(0, bloco - 1));
+			moves.addAll(way.pointWay(0, bloco - 2));
 
-				moves.addAll(way.pointWay(bloco, max, way.position(bloco).y));
-
-				moves.addAll(way.pointWay(0, way.zero.x, way.zero.y + 1));
-
-				moves.addAll(way.pointWay(0, way.position(bloco - 2).x, way.zero.y));
-
-				moves.addAll(way.pointWay(0, bloco - 2));
-
-				moves.addAll(way.pointWay(0, way.zero.x, way.position(bloco - 2).y + 1));
-
-				moves.addAll(way.pointWay(bloco, PseudoTab.SOLVED.position(bloco)));
-
-				moves.addAll(way.pointWay(0, max - 1, PseudoTab.SOLVED.position(bloco).y + 1));
-				moves.addAll(way.pointWay(0, max - 1, PseudoTab.SOLVED.position(bloco).y));
-				moves.addAll(way.pointWay(0, bloco - 1));
-				moves.addAll(way.pointWay(0, bloco - 2));
-			}
-			moves.addAll(way.ordernLine(PseudoTab.SOLVED.position(bloco).y));
+			// moves.addAll(way.ordernLine(PseudoTab.SOLVED.position(bloco).y));
 		}
 		if (execute) {
 			Loading.stop();

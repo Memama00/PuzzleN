@@ -79,6 +79,7 @@ public class PseudoTab implements Serializable {
     private void be(PseudoTab o) {
         tab = o.cloneTab();
         zero = new P(o.zero.x, o.zero.y);
+        updateEtapa();
     }
 
     @Override
@@ -387,7 +388,7 @@ public class PseudoTab implements Serializable {
             @Override
             public boolean isEnd(Object o) {
                 return ((PseudoTab) o).isEtapaCompleat() || ((PseudoTab) o).isSolved()
-                        || ((PseudoTab) o).position(bloco).equals(x, y);
+                        || ((PseudoTab) o).position(bloco).equals(x, y) || (x | y) < etapa ;
             }
 
             @Override

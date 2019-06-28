@@ -3,7 +3,12 @@ package br.com.poli.puzzleN.frontend.buttons;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
+import br.com.poli.puzzleN.engine.PseudoTab;
 import br.com.poli.puzzleN.frontend.screens.Loading;
 import br.com.poli.puzzleN.frontend.screens.PuzzleFrame;
 import br.com.poli.puzzleN.testes.Main;
@@ -27,15 +32,24 @@ public class HelpButton extends JButton {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                Main.compareTime = null;
+                frame.getPartida().getTabuleiro().gerarPseudoTabuleiro();
                 if (permission)
                     permission = false;
                 else
                     return;
+                Main.compareTime = Calendar.getInstance();
                 Loading.start();
                 mover = new Thread(new Runnable() {
                     public void run() {
-                        frame.getPartida().executarMovimentoAuto(bloco, true);
+                        try {
+                            frame.getPartida().executarMovimentoAuto(bloco, true);
+                            if (frame.getPartida().getTabuleiro().gerarPseudoTabuleiro().position(bloco - 1)
+                                    .equals(PseudoTab.SOLVED.position(bloco - 1)))
+                                bloco++;
+                        } catch (Error e) {
+                            Loading.stop();
+                            JOptionPane.showMessageDialog(frame, e.getMessage());
+                        }
                         permission = true;
                     }
                 }, "moving");

@@ -3,6 +3,8 @@ package br.com.poli.puzzleN.frontend.buttons;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Calendar;
 
 import javax.swing.JButton;
@@ -25,6 +27,16 @@ public class StartButton extends JButton implements ActionListener {
         this.frame = frame;
         this.setBounds(360, 303, 89, 23);
         this.addActionListener(this);
+        addKeyListener(new KeyListener(){
+        
+            @Override
+            public void keyTyped(KeyEvent arg0) {
+                if(arg0.getKeyChar() == '\n')
+                    doClick(1);
+            }
+            public void keyReleased(KeyEvent arg0) {}
+            public void keyPressed(KeyEvent arg0) {}
+        });
         this.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
         this.setHorizontalAlignment(SwingConstants.CENTER);

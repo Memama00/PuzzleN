@@ -82,6 +82,7 @@ public class Tabuleiro implements Serializable {
 			default:
 				throw new MovimentoInvalido();
 			}
+			gerarPseudoTabuleiro();
 			return true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage() + "\n tente um movimento valido");

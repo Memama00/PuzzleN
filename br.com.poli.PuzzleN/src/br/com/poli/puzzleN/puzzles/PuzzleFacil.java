@@ -25,7 +25,6 @@ public class PuzzleFacil extends Puzzle {
 	@Override
 	public void resolveTabuleiro() {
 		try {
-
 			PseudoTab way = this.getTabuleiro().gerarPseudoTabuleiro();
 			LinkedList<P> moves = way.aStarSolve();
 			Loading.stop();

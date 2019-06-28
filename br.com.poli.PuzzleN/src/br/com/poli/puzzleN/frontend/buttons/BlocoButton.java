@@ -101,8 +101,8 @@ public class BlocoButton extends JButton implements ActionListener {
         System.out.println("Selected:");
         System.out.println("X:" + this.getX() + "/[x]:" + xButton);
         System.out.println("Y:" + this.getY() + "/[Y]:" + yButton);
-        System.out.println("Moves: " + partida.getQuantidadeMovimentos());
         System.out.println("sentido: " + sentido);
+        System.out.println("Moves: " + partida.getQuantidadeMovimentos());
         partida.getTabuleiro().print();
 
         this.repaint();
