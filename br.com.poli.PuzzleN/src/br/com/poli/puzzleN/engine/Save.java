@@ -17,7 +17,7 @@ public class Save extends LinkedList<Puzzle> implements Serializable {
         sucessfull = super.add(partida);
         Collections.sort(this);
         if (super.indexOf(super.getLast()) >= 10)
-            return sucessfull && super.contains(super.removeLast());
+            return sucessfull && !super.contains(super.removeLast());
         return sucessfull;
     }
 

@@ -1,34 +1,36 @@
 package br.com.poli.puzzleN.puzzles;
 
+import java.awt.Point;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.Scanner;
+
+import javax.swing.JOptionPane;
 
 import br.com.poli.puzzleN.Interfaces.CalculaInsano;
 import br.com.poli.puzzleN.engine.Dificuldade;
+import br.com.poli.puzzleN.engine.P;
 import br.com.poli.puzzleN.engine.PseudoTab;
 import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.exceptions.K_Invalido;
 import br.com.poli.puzzleN.exceptions.TempoExcedido;
+import br.com.poli.puzzleN.frontend.screens.PuzzleFrame;
+import br.com.poli.puzzleN.testes.Main;
 
 public class PuzzleInsano extends Puzzle {
 
 	private static final long serialVersionUID = 1L;
 	private int tamanho;
 
-	public PuzzleInsano(String nome, Scanner k) {
+	public PuzzleInsano(String nome) {
 		super(nome, Dificuldade.INSANO);
 		super.setScore(new CalculaInsano(this));
-		tamanho = defineK(k);
+		tamanho = defineK(Main.janela);
 	}
 
 	public int getTamanho() {
 		return tamanho;
 	}
 
-	/*
-	 * public void setTamanho() { tamanho = defineK(); }
-	 */
 	public void setTamanho(int in) {
 		tamanho = in;
 	}
@@ -38,20 +40,26 @@ public class PuzzleInsano extends Puzzle {
 		super.setVenceu(false);
 		getTempo().setTime(new Date());
 		getTabuleiro().geraTabuleiro(tamanho);
+		super.setZero(new Point(tamanho - 1, tamanho - 1));
+		jhonnyBravo();
+		//autoZeroMove(new P(0, 0));
+		jhonnyBravo();
+		//autoZeroMove(new P(tamanho - 1, 0));
+		jhonnyBravo();
+		//autoZeroMove(new P(0, tamanho - 1));
+		jhonnyBravo();
 	}
 
-	private int defineK(Scanner read) {
+	private int defineK(PuzzleFrame frame) {
 		int in = 1;
-		if (read == null)
-			read = new Scanner(System.in);
 		try {
-			System.out.println("Digite um numero de 6 a 10");
-			in = read.nextInt();
-			if (in < 5 || in > 10)// Sem numeros negativos dessa vez <3
+			in = Integer.valueOf(JOptionPane.showInputDialog(frame, "Digite um numero de 6 a 10"));
+			if (in < 6 || in > 10)
 				throw new K_Invalido();
-		} catch (Exception e) {
-			System.out.println(e.getMessage() + " O valor foi automaticamente definido como maximo!");
-			in = 200;
+		} catch (K_Invalido | NumberFormatException e) {
+			String show = e.getClass() == NumberFormatException.class ? "Character invalido!" : e.getMessage();
+			JOptionPane.showMessageDialog(null, show + " O valor foi automaticamente definido como maximo!");
+			in = 10;
 		}
 		return in;
 	}
@@ -59,29 +67,17 @@ public class PuzzleInsano extends Puzzle {
 	@Override
 	public void resolveTabuleiro() throws TempoExcedido {
 
-		PseudoTab way = new PseudoTab(this.getTabuleiro().gerarPseudoTabuleiro());
+		PseudoTab way = this.getTabuleiro().gerarPseudoTabuleiro();
 
 		if (tamanho - way.getEtapa() <= 3) {
-			LinkedList<PseudoTab> solution;
+			LinkedList<P> moves;
 			System.out.println(way.getEtapa());
-			solution = way.aStarSolve();
-			solution.poll();
-			for (PseudoTab p : solution)
-				this.autoPress(p.move);
+			moves = way.aStarSolve();
+			for (P move : moves)
+				this.autoPress(move);
 		} else {
-			for (int i = 0; i < tamanho - 3; i++) {
-				if (way.lineDistance(i) != 0)
-					fillLine(PseudoTab.SOLVED.getTab()[i], null);
-				way = getTabuleiro().getPseudoTabuleiro();
-			}
-			for (int i = 0; i < tamanho - 3; i++) {
-				int[] col = new int[3];
-				for (int j = 0; j < 3; j++) {
-					col[j] = PseudoTab.SOLVED.getTab()[(tamanho - 1) - j][i];
-				}
-				if (way.collDistance(i) != 0)
-					fillColl(col);
-			}
+		
 		}
 	}
+
 }

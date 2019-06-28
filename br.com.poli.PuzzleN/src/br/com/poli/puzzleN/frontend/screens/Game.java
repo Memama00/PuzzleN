@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -27,10 +28,12 @@ public class Game extends JPanel {
 		int k = this.partida.getTabuleiro().getGrid().length;
 		Game.tabuleiro = new HashMap<Integer, JButton>();
 
-		JLabel nome = new JLabel("nome: " + this.partida.getJogador().getNome());
-		nome.setBounds(30, 500, 10 * (6 + this.partida.getJogador().getNome().length()), 20);
+		JLabel nome = new JLabel("Nome: " + this.partida.getJogador().getNome());
+		nome.setBounds(30, 20, 19 * (10 + this.partida.getJogador().getNome().length()), 32);
+		nome.setFont(new Font(nome.getFont().getFontName(), Font.BOLD, 17));
 		nome.setForeground(Color.WHITE);
 		nome.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.add(Loading.peparar());
 		this.add(nome);
 		this.add(new HelpButton(frame));
 		this.add(new SurrenderButton(frame));

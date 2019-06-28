@@ -1,10 +1,13 @@
 package br.com.poli.puzzleN.frontend.buttons;
 
 import br.com.poli.puzzleN.frontend.screens.*;
+import br.com.poli.puzzleN.puzzles.PuzzleInsano;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
@@ -37,21 +40,35 @@ public class BlocoButton extends JButton implements ActionListener {
 
         float middleX = (float) (frame.getSize().getWidth() / 2);
         float middleY = (float) (frame.getSize().getHeight() / 2);
-        int blocoSize = 350 / partida.getTabuleiro().getGrid().length;
+        int blocoSize = (partida.getClass() == PuzzleInsano.class ? (int) (frame.getHeight() / 1.27) : 350)
+                / partida.getTabuleiro().getGrid().length;
         int tab_size = partida.getTabuleiro().getGrid().length * blocoSize;
         float startX = middleX - (tab_size / 2);
         float startY = middleY - (tab_size / 2) - 30;
-
         this.setBounds((int) (startX + (blocoSize * x)), (int) (startY + (blocoSize * y)), blocoSize, blocoSize);
-        this.setFont(new Font(this.getFont().getName(), Font.BOLD, blocoSize / 5));
+        this.setFont(new Font(this.getFont().getName(), Font.BOLD, (int) (blocoSize / 4.3)));
         this.addActionListener(this);
         this.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == this)
-            this.moveButton();
+        if (e.getSource() == this) {
+            moveButton();
+            int k = partida.getTabuleiro().getGrid().length - 1;
+            if (partida.getTabuleiro().getGrid()[k][k].getValor() == 0)
+                if (partida.isFimDeJogo()) {
+                    partida.setFinalTime();
+                    // calcula e salva os pontos logo após o movimento para maior precisão
+                    partida.getScore().pontos(partida);
+                    if (!Ranking.save(partida))
+                        JOptionPane.showMessageDialog(frame,
+                                "Ops! Ocorreu um erro ao tentar finalizar a seu puzzle.\n Tente jogar novamente!");
+                    else
+                        frame.updateTela(new InfoGame(frame));
+                }
+        }
+
     }
 
     public void moveButton() {
@@ -87,19 +104,13 @@ public class BlocoButton extends JButton implements ActionListener {
         System.out.println("Moves: " + partida.getQuantidadeMovimentos());
         System.out.println("sentido: " + sentido);
         partida.getTabuleiro().print();
-        int k = partida.getTabuleiro().getGrid().length - 1;
-        if (partida.getTabuleiro().getGrid()[k][k].getValor() == 0)
-            if (partida.isFimDeJogo()) {
-                partida.setFinalTime();
-                // calcula e salva os pontos imediatamente para maior precisão
-                partida.getScore().pontos(partida);
-                if (!Ranking.save(partida))
-                    JOptionPane.showMessageDialog(frame,
-                            "Ops! Ocorreu um erro ao tentar finalizar a seu puzzle.\n Tente jogar novamente!");
-                else
-                    frame.updateTela(new InfoGame(frame));
-            }
 
+        this.repaint();
+        this.revalidate();
+        frame.getTela().repaint();
+        frame.getTela().revalidate();
+        frame.repaint();
+        frame.revalidate();
     }
 
     public int getXButton() {

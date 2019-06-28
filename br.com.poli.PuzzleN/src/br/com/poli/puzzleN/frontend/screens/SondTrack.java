@@ -14,9 +14,11 @@ public class SondTrack {
     private static Clip clip;
     private static int level;
     private static boolean paused;
+    private static String name;
 
     public SondTrack() {
         try {
+            name = "MainTrack2";
             SondTrack.soundFile = new File("res/MainTrack2.wav");
             SondTrack.info = new Line.Info(Clip.class);
             SondTrack.line = AudioSystem.getLine(SondTrack.info);
@@ -31,6 +33,7 @@ public class SondTrack {
 
     public static void changeTrack(String track) {
         try {
+            name = track;
             SondTrack.clip.stop();
             SondTrack.clip.close();
             SondTrack.soundFile = new File("res/" + track + ".wav");
@@ -47,7 +50,7 @@ public class SondTrack {
     }
 
     public static String getTrackName() {
-        return soundFile.getName();
+        return name;
     }
 
     public static void stop() {
@@ -93,6 +96,6 @@ public class SondTrack {
     }
 
     public static boolean isPlaying() {
-        return !paused && clip.isRunning();
+        return clip.isRunning();
     }
 }

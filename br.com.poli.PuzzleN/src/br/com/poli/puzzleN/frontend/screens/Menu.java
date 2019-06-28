@@ -14,6 +14,8 @@ import br.com.poli.puzzleN.frontend.buttons.StartButton;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Menu extends JPanel {
 
@@ -22,12 +24,13 @@ public class Menu extends JPanel {
 	private JComboBox<String> dificuldade;
 
 	public Menu(PuzzleFrame frame) {
-
 		super();
-		if (SondTrack.getTrackName() != "MainTrack2.wav" && SondTrack.isPlaying())
+		if (SondTrack.getTrackName() != "MainTrack2" && SondTrack.isPlaying())
 			SondTrack.changeTrack("MainTrack2");
+		if(frame.getHeight() > 600)
+			frame.setSize(820, 600);
 		JLabel lblPuzzleN = new JLabel("PUZZLE-N");
-		lblPuzzleN.setFont(new Font("Impact", Font.BOLD + Font.ITALIC, 63));
+		lblPuzzleN.setFont(new Font("Umbuntu", Font.BOLD + Font.ITALIC, 63));
 		lblPuzzleN.setBounds(200, 59, 400, 56);
 		lblPuzzleN.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPuzzleN.setForeground(Color.WHITE);
@@ -43,10 +46,14 @@ public class Menu extends JPanel {
 		this.add(textField);
 		textField.setColumns(20);
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setForeground(Color.WHITE);
-		textField.setBackground(Color.BLACK);
-		textField.setOpaque(false);
-
+		textField.setForeground(Color.black);
+		textField.setBackground(Color.LIGHT_GRAY);
+		textField.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e){
+                textField.setText("");
+            }
+        });
 
 		JLabel lblNivel = new JLabel("NIVEL");
 		lblNivel.setBounds(381, 186, 48, 14);
@@ -56,7 +63,7 @@ public class Menu extends JPanel {
 
 		this.dificuldade = new JComboBox<>();
 		dificuldade.setModel(
-				new DefaultComboBoxModel(new String[] { "selecione", "facil", "medio ", "dificil", "Insano" }));
+				new DefaultComboBoxModel<>(new String[] { "selecione", "facil", "medio ", "dificil", "Insano" }));
 		dificuldade.setBounds(335, 195 + 10, 140, 20);
 		dificuldade.setAlignmentX(SwingConstants.CENTER);
 		dificuldade.setForeground(Color.WHITE);
@@ -77,13 +84,14 @@ public class Menu extends JPanel {
 		this.add(new MuteButton());
 
 		this.add(new BackGround());
+
 	}
 
 	public JTextField getTextField() {
 		return textField;
 	}
 
-	public JComboBox getDificuldade() {
+	public JComboBox<String> getDificuldade() {
 		return dificuldade;
 	}
 }

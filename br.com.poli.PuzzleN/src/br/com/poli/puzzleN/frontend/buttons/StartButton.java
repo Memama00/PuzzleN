@@ -11,9 +11,9 @@ import javax.swing.SwingConstants;
 
 import br.com.poli.puzzleN.puzzles.PuzzleDificil;
 import br.com.poli.puzzleN.puzzles.PuzzleFacil;
+import br.com.poli.puzzleN.puzzles.PuzzleInsano;
 import br.com.poli.puzzleN.puzzles.PuzzleMedio;
 import br.com.poli.puzzleN.frontend.screens.*;
-import br.com.poli.puzzleN.testes.Main;
 
 public class StartButton extends JButton implements ActionListener {
 
@@ -32,28 +32,32 @@ public class StartButton extends JButton implements ActionListener {
 
     public void actionPerformed(ActionEvent a) {
         if (a.getSource() == this) {
-            String nome = ((Menu) frame.getTela()).getTextField().getText();
-            int index = ((Menu) frame.getTela()).getDificuldade().getSelectedIndex();
-            switch (index) {
-            case 1:
-                frame.setPartida(new PuzzleFacil(nome));
-                break;
-            case 2:
-                frame.setPartida(new PuzzleMedio(nome));
-                break;
-            case 3:
-                frame.setPartida(new PuzzleDificil(nome));
-                break;
-            case 4:
-                Main.InsanoPlayer();
-                frame.dispose();
-            default:
-            }
             try {
+                String nome = ((Menu) frame.getTela()).getTextField().getText();
+                if (nome.equals("Digite seu nome...") || nome.equals(""))
+                    throw new NullPointerException();
+                int index = ((Menu) frame.getTela()).getDificuldade().getSelectedIndex();
+                switch (index) {
+                case 1:
+                    frame.setPartida(new PuzzleFacil(nome));
+                    break;
+                case 2:
+                    frame.setPartida(new PuzzleMedio(nome));
+                    break;
+                case 3:
+                    frame.setPartida(new PuzzleDificil(nome));
+                    break;
+                case 4:
+                    frame.setPartida(new PuzzleInsano(nome));
+                    if (((PuzzleInsano) frame.getPartida()).getTamanho() > 6)
+                        frame.setSize(810 + ((PuzzleInsano) frame.getPartida()).getTamanho() * 9,
+                                ((PuzzleInsano) frame.getPartida()).getTamanho() * 80);
+                default:
+                }
                 frame.updateTela(new Game(frame));
                 frame.getPartida().setTempo(Calendar.getInstance());
             } catch (NullPointerException e) {
-                JOptionPane.showMessageDialog(frame, "Selecione uma dificuldade!");
+                JOptionPane.showMessageDialog(frame, "Prencha os campos corretamente!");
             }
 
         }

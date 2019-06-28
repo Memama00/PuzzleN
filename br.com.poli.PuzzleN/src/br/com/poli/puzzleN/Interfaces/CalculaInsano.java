@@ -2,13 +2,16 @@ package br.com.poli.puzzleN.Interfaces;
 
 import java.io.Serializable;
 import br.com.poli.puzzleN.engine.Puzzle;
+import br.com.poli.puzzleN.puzzles.PuzzleInsano;
 
 public class CalculaInsano implements CalculaScore, Serializable {
 	private static final long serialVersionUID = 204L;
 	private int pontos;
 
 	public CalculaInsano(Puzzle partida) {
-		pontos = partida.getTabuleiro().getGrid().length * 1000000;
+		pontos = ((PuzzleInsano)partida).getTamanho();
+		for (int i = 0; i < ((PuzzleInsano)partida).getTamanho(); i++)
+			pontos *= 10;
 	}
 
 	public int getPontos() {
@@ -17,11 +20,11 @@ public class CalculaInsano implements CalculaScore, Serializable {
 
 	public int pontos(Puzzle partida) {
 
-		int time = (int) partida.getTempoDecorrido() * 60;
+		int time = (int) partida.getTempoDecorrido() * 10;
 		int moves = partida.getQuantidadeMovimentos();
 
 		if (partida.getVenceu())
-			pontos /= (time * 10) + moves;
+			pontos = (pontos - time) / moves;
 		else
 			pontos = 0;
 		return pontos;

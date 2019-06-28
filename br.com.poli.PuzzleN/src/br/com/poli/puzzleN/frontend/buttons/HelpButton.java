@@ -3,43 +3,53 @@ package br.com.poli.puzzleN.frontend.buttons;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
-
-import br.com.poli.puzzleN.engine.P;
-import br.com.poli.puzzleN.engine.PseudoTab;
-import br.com.poli.puzzleN.frontend.screens.Game;
+import br.com.poli.puzzleN.frontend.screens.Loading;
 import br.com.poli.puzzleN.frontend.screens.PuzzleFrame;
+import br.com.poli.puzzleN.testes.Main;
 
 public class HelpButton extends JButton {
 
     private static final long serialVersionUID = 1L;
-    private int i;
+    private boolean permission;
+    private Integer bloco;
+    private static Thread mover;
 
     public HelpButton(PuzzleFrame frame) {
         super("Help!");
-        this.setBounds(700, 440, 90, 30);
+        this.setBounds(frame.getWidth() - 110, frame.getHeight() - 140, 90, 30);
         this.setForeground(Color.WHITE);
         this.setBackground(Color.BLACK);
-        i = 1;
+        permission = true;
+        bloco = new Integer(1);
+
         this.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent e) {
-
-                PseudoTab way = frame.getPartida().getTabuleiro().getPseudoTabuleiro();
-                if (Game.getTabuleiro().getOrDefault(i, null) == null)
-                    i = 1;
-                P objetivo = PseudoTab.SOLVED.position(i);
-
-                for (; way.position(i).equals(objetivo); i++)
-                    objetivo = PseudoTab.SOLVED.position(i);
-
-                if (!way.position(i).equals(objetivo))
-                    frame.getPartida().autoZeroMove(way.position(i));
-                frame.getPartida().executarMovimentoAuto(i, objetivo);
-
+            public void actionPerformed(ActionEvent arg0) {
+                Main.compareTime = null;
+                if (permission)
+                    permission = false;
+                else
+                    return;
+                Loading.start();
+                mover = new Thread(new Runnable() {
+                    public void run() {
+                        frame.getPartida().executarMovimentoAuto(bloco, true);
+                        permission = true;
+                    }
+                }, "moving");
+                mover.start();
             }
         });
+
     }
+
+    public synchronized static Thread getMover() {
+        for (int i = 2; i < 22; i = +2)
+            if (Thread.currentThread().getStackTrace()[i].getMethodName().equals("surrender"))
+                return mover;
+        return null;
+    }
+
 }

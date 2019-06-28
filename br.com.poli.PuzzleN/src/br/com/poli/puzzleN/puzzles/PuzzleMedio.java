@@ -16,23 +16,18 @@ public class PuzzleMedio extends Puzzle {
 	}
 
 	@Override
-	public void resolveTabuleiro() throws TempoExcedido{
-			PseudoTab way = new PseudoTab(this.getTabuleiro().gerarPseudoTabuleiro());
-			int k = this.getTabuleiro().getGrid().length;
-			if (k - way.getEtapa() <= 3) {
-				LinkedList<PseudoTab> solution;
-				System.out.println(way.getEtapa());
-				solution = way.aStarSolve();
-				solution.poll();
-				for (PseudoTab p : solution)
-					this.autoPress(p.move);
-			} else {
-				if (way.lineDistance(way.getEtapa()) != 0)
-					fillLine(new int[]{1, 2, 3, 4}, null);
-				way = getTabuleiro().getPseudoTabuleiro();
-				if (way.collDistance(way.getEtapa()) != 0)
-					fillColl(new int[]{13, 9, 5});
-				resolveTabuleiro();
-			}
+	public void resolveTabuleiro() throws TempoExcedido {
+		PseudoTab way = this.getTabuleiro().getPseudoTabuleiro();
+		int k = this.getTabuleiro().getGrid().length;
+		if (k - way.getEtapa() <= 3) {
+			LinkedList<P> solution;
+			System.out.println(way.getEtapa());
+			solution = way.aStarSolve();
+			solution.poll();
+			for (P move : solution)
+				this.autoPress(move);
+		} else {
+			
+		}
 	}
 }

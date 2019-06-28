@@ -152,7 +152,7 @@ public class Testes {
 
 	public static void start(Scanner in) {
 		// System.out.flush();
-		partida = new PuzzleInsano(in.nextLine(), in);
+		//partida = new PuzzleInsano(in.nextLine(), in);
 		partida.iniciaPartida();
 	}
 

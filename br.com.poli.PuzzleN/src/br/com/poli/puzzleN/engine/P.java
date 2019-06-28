@@ -1,9 +1,14 @@
 package br.com.poli.puzzleN.engine;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 
 public class P extends Point {// P de Ponto
     private static final long serialVersionUID = 1L;
+
+    public P() {
+        super(0, 0);
+    }
 
     public P(Point p) {
         super(p.x, p.y);
@@ -22,9 +27,15 @@ public class P extends Point {// P de Ponto
         this.y = ty;
     }
 
-    public int distanceTo(Point to) {
-        int dx = Math.abs(this.x - to.x);
-        int dy = Math.abs(this.y - to.y);
+    public int distanceTo(Point2D to) {
+        int dx = Math.abs(this.x - (int) to.getX());
+        int dy = Math.abs(this.y - (int) to.getY());
+        return (dx + dy);
+    }
+
+    public int distanceTo(int x, int y) {
+        int dx = Math.abs(this.x - x);
+        int dy = Math.abs(this.y - y);
         return (dx + dy);
     }
 
@@ -36,4 +47,12 @@ public class P extends Point {// P de Ponto
             return false;
     }
 
+    public boolean equals(int x, int y) {
+        return (x == this.x && y == this.y);
+    }
+
+    @Override
+    public P clone(){
+        return new P(x, y);
+    }
 }

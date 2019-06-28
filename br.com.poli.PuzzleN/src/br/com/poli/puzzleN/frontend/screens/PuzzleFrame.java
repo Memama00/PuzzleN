@@ -1,39 +1,36 @@
 package br.com.poli.puzzleN.frontend.screens;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.GridLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 
 import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.engine.Ranking;
 
-public class PuzzleFrame extends JFrame implements Runnable {
+public class PuzzleFrame extends JFrame {
     private static final long serialVersionUID = 1L;
 
     private JPanel tela;
     private JPanel lastTela;
     private Puzzle partida;
     private Ranking ranking;
-
     public PuzzleFrame() {
         super("Puzzle-N *-*");
+        super.setResizable(false);
         new SondTrack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0, 0, 820, 600);
         setLocationRelativeTo(null);
         ranking = new Ranking();
         this.tela = new Menu(this);
-        this.setContentPane(new JPanel());
+        this.setContentPane(new JLayeredPane());
         this.getContentPane().setLayout(new GridLayout(1, 0, 0, 0));
         this.getContentPane().add(this.getTela());
         tela.setLayout(null);
-    }
-
-    public void run() {
-
         SondTrack.play();
         this.setVisible(true);
-    
     }
 
     public void updateTela(JPanel tela) {

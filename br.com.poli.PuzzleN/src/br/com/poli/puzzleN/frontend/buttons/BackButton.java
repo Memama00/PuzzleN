@@ -21,8 +21,6 @@ public class BackButton extends JButton implements ActionListener {
         JPanel lastTela = frame.getLastTela();
         JPanel tela = frame.getTela();
 
-        // if(tela.getClass() == InfoGame.class && lastTela.getClass() == RankingScreen.class)
-        //     tela = lastTela;
         if(tela.getClass() == lastTela.getClass() || lastTela.getClass() == Game.class || lastTela.getClass() == InfoGame.class)
             tela = new Menu(frame);
         else 

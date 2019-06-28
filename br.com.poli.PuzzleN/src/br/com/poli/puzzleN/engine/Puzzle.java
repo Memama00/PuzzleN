@@ -5,12 +5,14 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import br.com.poli.puzzleN.Interfaces.CalculaScore;
 import br.com.poli.puzzleN.exceptions.*;
 import br.com.poli.puzzleN.frontend.buttons.BlocoButton;
 import br.com.poli.puzzleN.frontend.screens.Game;
+import br.com.poli.puzzleN.frontend.screens.Loading;
 
 public class Puzzle implements Serializable, Comparable<Puzzle> {
 
@@ -42,16 +44,24 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		gridPuzzle.geraTabuleiro((int) Math.sqrt(dificuldade.getValor() + 1));
 		zero = new Point(gridPuzzle.getGrid().length - 1, gridPuzzle.getGrid().length - 1);
 		this.jhonnyBravo();
+		gridPuzzle.gerarPseudoTabuleiro();
 	}
 
-	private void jhonnyBravo() {
+	public void resolveTabuleiro() throws Error {
+		this.setTempo(Calendar.getInstance());
+		if (this.getTempo().get(Calendar.SECOND) > 10)
+			throw new TempoExcedido();
+	}
+
+	protected void jhonnyBravo() {
 		Random r = new Random();
 		int k = gridPuzzle.getGrid().length - 1;
-		int i = 1, j = 0, R, last_r = 0;
-
-		while (i < (200 * gridPuzzle.getGrid().length)) {
+		int i = 1;
+		int j = 0;
+		int R;
+		int last_r = 0;
+		while (i < (500 * gridPuzzle.getGrid().length)) {
 			R = (int) ((r.nextInt(100) + r.nextInt(60)) / 40) + 1;
-			// System.out.print(i + "-> *" + R + "X" + last_r + "*\t");
 			if ((j - i) > 2)
 				if (last_r == 3)
 					last_r = 4;
@@ -61,19 +71,13 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 					last_r = 1;
 				else
 					last_r = 2;
-
-			// System.out.println("Zero-> x:[" + zero.x + "]|y:[" + zero.y + "]");
 			if (R == last_r || R == 1 ? last_r != 2 && zero.y > 0
 					: R == 2 ? last_r != 1 && zero.y < k
 							: R == 3 ? last_r != 4 && zero.x < k : R == 4 ? last_r != 3 && zero.x > 0 : true) {
-
 				if (bubbleMoveZero(R)) {
-
-					// Testes.showTab(gridPuzzle);
 					last_r = R;
 					i++;
 				}
-
 			}
 			if (i > 1)
 				j++;
@@ -81,7 +85,40 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		gridPuzzle.setZero(this.zero);
 	}
 
-	public boolean bubbleMoveZero(int move) {
+	private boolean zeroMap(String sentido) {
+		int k = this.gridPuzzle.getGrid().length - 1;
+		switch (sentido) {
+		case "direita":
+			if (zero.x < k ? this.gridPuzzle.executaMovimento(zero.x + 1, zero.y, "esquerda") : false) {
+				zero.setLocation(zero.x + 1, zero.y);
+				return true;
+			} else
+				return false;
+		case "baixo":
+			if (zero.y < k ? this.gridPuzzle.executaMovimento(zero.x, zero.y + 1, "cima") : false) {
+				zero.setLocation(zero.x, zero.y + 1);
+				return true;
+			} else
+				return false;
+		case "esquerda":
+			if (zero.x > 0 ? this.gridPuzzle.executaMovimento(zero.x - 1, zero.y, "direita") : false) {
+				zero.setLocation(zero.x - 1, zero.y);
+				return true;
+			} else
+				return false;
+		case "cima":
+			if (zero.y > 0 ? this.gridPuzzle.executaMovimento(zero.x, zero.y - 1, "baixo") : false) {
+				zero.setLocation(zero.x, zero.y - 1);
+				return true;
+			} else
+				return false;
+		default:
+			return false;
+		}
+
+	}
+
+	private boolean bubbleMoveZero(int move) {
 		switch (move) {
 		case 1:
 			return zeroMap("cima");
@@ -91,115 +128,25 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 			return zeroMap("direita");
 		case 4:
 			return zeroMap("esquerda");
-
 		case 5:// Noroeste
 			return zeroMap("cima") || zeroMap("esquerda");
-
+		case 9:// Noroeste
+			return zeroMap("esquerda") || zeroMap("cima");
 		case 6:// Sudoeste
 			return zeroMap("baixo") || zeroMap("esquerda");
-
+		case 10:// Sudoeste
+			return zeroMap("esquerda") || zeroMap("baixo");
 		case 7:// Nordeste
 			return zeroMap("direita") || zeroMap("cima");
-
+		case 11:// Nordeste
+			return zeroMap("cima") || zeroMap("direita");
 		case 8:// Sudeste
 			return zeroMap("direita") || zeroMap("baixo");
-
+		case 12:// Sudeste
+			return zeroMap("baixo") || zeroMap("direita");
 		default:
 			return false;
 		}
-	}
-
-	public void resolveTabuleiro() throws Error {
-
-		// this.setTempo(Calendar.getInstance());
-		// if (this.getTempo().get(Calendar.SECOND) > 10)
-		// throw new TempoExcedido();
-	}
-
-	public void fillLine(int[] line, P[] places) {
-
-		PseudoTab way = this.getTabuleiro().getPseudoTabuleiro();
-		int max = line.length - 1;
-		int y = places == null ? PseudoTab.SOLVED.position(line[0]).y : places[0].y;
-
-		for (int i = 0; i < line.length; i++)
-			if (i < line.length - 2) {
-
-				if (!way.position(line[i]).equals(places == null ? PseudoTab.SOLVED.position(line[i]) : places[i]))
-					autoZeroMove(way.position(line[i]));
-				executarMovimentoAuto(line[i], places == null ? PseudoTab.SOLVED.position(line[i]) : places[i]);
-
-			} else if (i < line.length && line.length == this.getTabuleiro().getGrid().length) {
-
-				if (!way.position(line[i])
-						.equals(places == null ? new P(max, (i - (line.length - 2) + 1) + y) : places[i]))
-					autoZeroMove(way.position(line[i]));
-				executarMovimentoAuto(line[i], new P(max, (i - (line.length - 2) + 1) + y));
-			}
-
-		way = this.getTabuleiro().getPseudoTabuleiro();
-		if (way.isInPositons(line, places)) {
-
-			autoZeroMove(new P(max - 1, 1 + y));
-			autoZeroMove(new P(max - 1, y));
-
-			autoZeroMove(new P(max, y));
-			autoZeroMove(new P(max, 1 + y));
-			autoZeroMove(new P(max, 2 + y));
-
-			autoZeroMove(new P(max - 1, 2 + y));
-			autoZeroMove(new P(max - 1, 1 + y));
-			autoZeroMove(new P(max - 1, y));
-
-			autoZeroMove(new P(max, y));
-			autoZeroMove(new P(max, 1 + y));
-		}
-		way = this.getTabuleiro().getPseudoTabuleiro();
-		for (PseudoTab pst : way.ordernLine(y))
-			autoPress(pst.move);
-	}
-
-	public void fillColl(int[] coll) {
-
-		PseudoTab way = this.getTabuleiro().getPseudoTabuleiro();
-		int max = coll.length - 1;
-		int x = PseudoTab.SOLVED.position(coll[0]).x;
-		int k = getTabuleiro().getGrid().length;
-		for (int i = 0; i < coll.length; i++)
-			if (i < coll.length - 2) {
-
-				if (!way.position(coll[i]).equals(PseudoTab.SOLVED.position(coll[i])))
-					autoZeroMove(way.position(coll[i]));
-				executarMovimentoAuto(coll[i], PseudoTab.SOLVED.position(coll[i]));
-
-			} else if (i < coll.length && coll.length == k) {
-
-				if (!way.position(coll[i]).equals(new P((i - (coll.length - 2) + 1) + x, k - max)))
-					autoZeroMove(way.position(coll[i]));
-				executarMovimentoAuto(coll[i], new P((i - (coll.length - 2) + 1) + x, k - max));
-
-			}
-
-		way = this.getTabuleiro().getPseudoTabuleiro();
-		if (way.isInPositons(coll, null)) {
-
-			autoZeroMove(new P(1 + x, max - 1));
-			autoZeroMove(new P(x, max - 1));
-
-			autoZeroMove(new P(x, max));
-			autoZeroMove(new P(1 + x, max));
-			autoZeroMove(new P(2 + x, max));
-
-			autoZeroMove(new P(2 + x, max - 1));
-			autoZeroMove(new P(1 + x, max - 1));
-			autoZeroMove(new P(x, max - 1));
-
-			autoZeroMove(new P(x, max));
-			autoZeroMove(new P(1 + x, max));
-		}
-		way = this.getTabuleiro().getPseudoTabuleiro();
-		for (PseudoTab pst : way.ordernColl(x))
-			autoPress(pst.move);
 	}
 
 	private boolean inRange(int in, int min, int max) {
@@ -240,63 +187,11 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		return sentido;
 	}
 
-	public String smartMove(Point bloco) throws MovimentoInvalido {
-		return smartMove(bloco.x, bloco.y);
-	}
-
-	private boolean zeroMap(String sentido) {
-		int k = this.gridPuzzle.getGrid().length - 1;
-		switch (sentido) {
-		case "direita":
-			if (zero.x < k ? this.gridPuzzle.executaMovimento(zero.x + 1, zero.y, "esquerda") : false) {
-				zero.setLocation(zero.x + 1, zero.y);
-				return true;
-			} else
-				return false;
-
-		case "baixo":
-			if (zero.y < k ? this.gridPuzzle.executaMovimento(zero.x, zero.y + 1, "cima") : false) {
-				zero.setLocation(zero.x, zero.y + 1);
-				return true;
-			} else
-				return false;
-
-		case "esquerda":
-			if (zero.x > 0 ? this.gridPuzzle.executaMovimento(zero.x - 1, zero.y, "direita") : false) {
-				zero.setLocation(zero.x - 1, zero.y);
-				return true;
-			} else
-				return false;
-
-		case "cima":
-			if (zero.y > 0 ? this.gridPuzzle.executaMovimento(zero.x, zero.y - 1, "baixo") : false) {
-				zero.setLocation(zero.x, zero.y - 1);
-				return true;
-			} else
-				return false;
-		default:
-			return false;
-		}
-
-	}
-
 	public void autoPress(int x, int y) {
-		try {
-			if (Game.getTabuleiro() != null) {
-				int index = gridPuzzle.getGrid()[y][x].getValor();
-				if (index != 0)
-					((BlocoButton) Game.getTabuleiro().get(index)).doClick(5);
-			} else
-				smartMove(x, y);
-			int k = this.getTabuleiro().getGrid().length - 1;
-			if (this.getTabuleiro().getGrid()[k][k].getValor() == 0)
-				if (this.isFimDeJogo()) {
-					this.setFinalTime();
-					// calcula e salva os pontos imediatamente para maior precisão
-					this.getScore().pontos(this);
-					Ranking.save(this);
-				}
-		} catch (Exception e) {
+		if (Game.getTabuleiro() != null) {
+			int index = gridPuzzle.getGrid()[y][x].getValor();
+			if (index != 0)
+				((BlocoButton) Game.getTabuleiro().get(index)).doClick(0);
 		}
 	}
 
@@ -304,22 +199,77 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 		if (bloco != null)
 			autoPress(bloco.x, bloco.y);
 		else
-			System.out.println("err-606");
+			System.err.println("bloco inexitente");
 	}
 
-	public void executarMovimentoAuto(int quem, P to) {
-		PseudoTab way = getTabuleiro().getPseudoTabuleiro();
-		LinkedList<PseudoTab> solution;
-		if (way.position(quem).equals(to))
-			return;
-		solution = way.pointWay(quem, to);
-		solution.poll();
-		for (PseudoTab p : solution)
-			this.autoPress(p.move);
+	public void autoPress(List<P> moves) {
+		Loading.stop();
+		for (P move : moves)
+			try {
+				autoPress(move);
+				Thread.sleep(167);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 	}
 
-	public void autoZeroMove(P to) {
-		executarMovimentoAuto(0, to);
+	public synchronized LinkedList<P> executarMovimentoAuto(Integer bloco, Boolean execute) throws TempoExcedido {
+		PseudoTab way = this.getTabuleiro().gerarPseudoTabuleiro();
+		int k = this.getTabuleiro().getGrid().length;
+		int max = k - 1;
+		bloco = 1;
+		final LinkedList<P> moves = new LinkedList<P>();
+		for (; way.position(bloco).equals(PseudoTab.SOLVED.position(bloco)); bloco++)
+			;
+
+		if (PseudoTab.SOLVED.position(bloco).x < max) {
+
+			if (PseudoTab.SOLVED.position(bloco).y + 1 == way.position(bloco).y)
+				moves.addAll(way.pointWay(0, way.zero.x, way.position(bloco).y + 1));
+
+			moves.addAll(way.goCloseOf(bloco));
+
+			if (way.position(bloco).x + 1 <= PseudoTab.SOLVED.position(bloco).x) {
+
+				moves.addAll(way.pointWay(bloco, max, way.position(bloco).y));
+
+				moves.addAll(way.pointWay(bloco, max, PseudoTab.SOLVED.position(bloco).y));
+			}
+
+			moves.addAll(way.pointWay(bloco, PseudoTab.SOLVED.position(bloco)));
+
+		} else if (PseudoTab.SOLVED.position(bloco).x == max) {
+
+			if (PseudoTab.SOLVED.position(bloco).y < max - 1) {
+
+				moves.addAll(way.pointWay(bloco, max, way.position(bloco).y));
+
+				moves.addAll(way.pointWay(0, way.zero.x, way.zero.y + 1));
+
+				moves.addAll(way.pointWay(0, way.position(bloco - 2).x, way.zero.y));
+
+				moves.addAll(way.pointWay(0, bloco - 2));
+
+				moves.addAll(way.pointWay(0, way.zero.x, way.position(bloco - 2).y + 1));
+
+				moves.addAll(way.pointWay(bloco, PseudoTab.SOLVED.position(bloco)));
+
+				moves.addAll(way.pointWay(0, max - 1, PseudoTab.SOLVED.position(bloco).y + 1));
+				moves.addAll(way.pointWay(0, max - 1, PseudoTab.SOLVED.position(bloco).y));
+				moves.addAll(way.pointWay(0, bloco - 1));
+				moves.addAll(way.pointWay(0, bloco - 2));
+			}
+			moves.addAll(way.ordernLine(PseudoTab.SOLVED.position(bloco).y));
+		}
+		if (execute) {
+			Loading.stop();
+			autoPress(moves);
+		}
+		return moves;
+	}
+
+	public void autoZeroMove(P to) throws TempoExcedido {
+
 	}
 
 	public Jogador getJogador() {
@@ -404,7 +354,10 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 	}
 
 	public int compareTo(Puzzle puzzle) {
-		return puzzle.getScore().getPontos() - this.getScore().getPontos();
+		if (puzzle.getScore().getPontos() - this.getScore().getPontos() != 0)
+			return puzzle.getScore().getPontos() - this.getScore().getPontos();
+		else // desempate por tempo
+			return (int) ((puzzle.getTempoDecorrido() * 10000) - (this.getTempoDecorrido() * 10000));
 	}
 
 	public Point getZero() {

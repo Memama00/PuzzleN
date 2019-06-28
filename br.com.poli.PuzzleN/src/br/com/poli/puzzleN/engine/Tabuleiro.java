@@ -7,6 +7,7 @@ import br.com.poli.puzzleN.exceptions.MovimentoInvalido;
 public class Tabuleiro implements Serializable {
 	private static final long serialVersionUID = 0102L;
 	private Bloco[][] grid;
+	private PseudoTab pseudoTab;
 	public Point zero;
 
 	public Tabuleiro(int k) {
@@ -158,17 +159,16 @@ public class Tabuleiro implements Serializable {
 	}
 
 	public PseudoTab getPseudoTabuleiro() {
-
-		PseudoTab novo = new PseudoTab(gerarPseudoTabuleiro());
-		return novo;
+		return pseudoTab;
 	}
 
-	public int[][] gerarPseudoTabuleiro() {
+	public PseudoTab gerarPseudoTabuleiro() {
 		int k = grid.length;
 		int[][] tab = new int[k][k];
 		for (int i = 0; i < k; i++)
 			for (int j = 0; j < k; j++)
 				tab[i][j] = grid[i][j].getValor();
-		return tab;
+		pseudoTab = new PseudoTab(tab);
+		return pseudoTab;
 	}
 }
