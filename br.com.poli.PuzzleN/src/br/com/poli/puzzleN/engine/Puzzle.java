@@ -209,7 +209,7 @@ public class Puzzle implements Serializable, Comparable<Puzzle> {
 				if (move == null)
 					continue;
 				autoPress(move);
-				Thread.sleep(137);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -13,6 +13,7 @@ import br.com.poli.puzzleN.engine.PseudoTab;
 import br.com.poli.puzzleN.engine.Puzzle;
 import br.com.poli.puzzleN.exceptions.K_Invalido;
 import br.com.poli.puzzleN.exceptions.TempoExcedido;
+import br.com.poli.puzzleN.frontend.screens.Loading;
 import br.com.poli.puzzleN.frontend.screens.PuzzleFrame;
 import br.com.poli.puzzleN.testes.Main;
 
@@ -102,17 +103,33 @@ public class PuzzleInsano extends Puzzle {
 
 	@Override
 	public void resolveTabuleiro() throws TempoExcedido {
+		PseudoTab way = getTabuleiro().gerarPseudoTabuleiro();
+		LinkedList<P> moves = new LinkedList<P>();
+		for (int i = 0; i < tamanho - 3; i++) {
 
-		PseudoTab way = this.getTabuleiro().gerarPseudoTabuleiro();
+			for (int j = 0; j < tamanho; j++) {
+				int bloco = PseudoTab.SOLVED.getTab()[i][j];
+				if (way.getTab()[i][j] != bloco)
+					moves.addAll(way.pointWay(bloco, way.position(bloco).x, i + 1));
+			}
+			for (int j = 0; j < tamanho; j++) {
+				int bloco = PseudoTab.SOLVED.getTab()[i][j];
+				moves.addAll(executarMovimentoAuto(bloco, false));
+			}
+			// moves.addAll(way.ordernLine(i));
+		}
+		for (int x = 0; x < tamanho - 3; x++) {
+			for (int y = tamanho - 3; y < tamanho; y++) {
+				int bloco = PseudoTab.SOLVED.getTab()[y][x];
 
-		if (tamanho - way.getEtapa() <= 3) {
-			LinkedList<P> moves;
-			System.out.println(way.getEtapa());
-			moves = way.aStarSolve();
-			for (P move : moves)
-				this.autoPress(move);
-		} else {
+				if (way.getTab()[y][x] != bloco)
+					moves.addAll(way.pointWay(bloco, x + 1, way.position(bloco).y));
 
+				moves.addAll(executarMovimentoAuto(bloco, false));
+			}
+			moves.addAll(way.ordernColl(x));
+			Loading.stop();
+			autoPress(moves);
 		}
 	}
 
